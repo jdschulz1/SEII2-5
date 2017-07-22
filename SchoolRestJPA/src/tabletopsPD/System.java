@@ -15,6 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import schoolDAO.StudentDAO;
 import schoolPD.Student;
+import tabletopsDAO.ClientDAO;
 import tabletopsDAO.EventDAO;
 
 /**
@@ -96,6 +97,16 @@ public class System implements Serializable{
 	
 	public Event findEventByIdNumber(String idNumber) {
 	    return EventDAO.findEventByIdNumber(idNumber); 
+	}
+	
+	public List<Client> getAllClients(int page, int perPage) {
+		
+		List clientList= ClientDAO.getAllClients(page,  perPage);
+		return clientList;
+	}
+	
+	public Client findClientByIdNumber(String idNumber) {
+	    return ClientDAO.findClientByIdNumber(idNumber); 
 	}
 
 }
