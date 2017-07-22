@@ -1,13 +1,26 @@
 package tabletopsPD;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import javax.persistence.Entity;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Events are records containing all information related to an event, including guest list and seating assignment information.
  */
-public class Event {
+@XmlRootElement(name = "event")
+@Entity(name = "event")
+public class Event implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	private long eventId;
+	
 	/**
 	 * Date and time that the event will take place.
 	 */
