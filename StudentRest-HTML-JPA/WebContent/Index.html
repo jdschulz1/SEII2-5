@@ -18,10 +18,25 @@
 		$.ajax({ 
 		   type: "GET",  
 	       url: "/SchoolRestJPA/rest/studentservice/students",  
-	       dataType: "json",  
+	       dataType: "jsonp",  
 	       success: function(resp){  
 	         // we have the response  
-	         alert("Server said123:\n '" + resp + "'");  
+	         
+	         $('#eventTable').html("");
+	         var tableRow;
+				alert(resp);		        
+	         $.each(resp, function(i,student){
+	        	  alert(student.firstName);
+	        	    tableRow = 
+	        	        "<tr>"
+	        	            +"<td>" + student.firstName + student.lastName + "</td>"
+	        	            +"<td>07/15/2017 13:00</td>"+ 
+							+"<td>Funeral Home</td>"+
+							"<td><a href=\"#\">Edit</a>&nbsp;<a href=\"#\">Delete</a></td>"
+	        	        +"</tr>";
+	        	        alert(student.firstName); 
+	        	$('#eventTable').append(tableRow);
+	         });
 	       },  
 	       error: function(e){  
 	         alert('Error: ' + e);  
@@ -66,7 +81,7 @@
 					</div>
 						<hr>
 					<div class="row">
-						<table id="eventTable" class="table table-striped table-hover ">
+						<table  class="table table-striped table-hover ">
 							<thead>
 								<tr>
 									<th>Title</th>
@@ -74,7 +89,7 @@
 									<th>Venue</th>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody id="eventTable">
 								<tr>
 
 									<td>Foster Wedding</td>
