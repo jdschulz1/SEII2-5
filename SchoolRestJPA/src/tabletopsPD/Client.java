@@ -10,6 +10,10 @@ import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import schoolDAO.StudentDAO;
+import schoolPD.Student;
+import tabletopsDAO.ClientDAO;
+
 /**
  * Client is a class representing a client that requests Eagle Event Planning's services.
  */
@@ -65,6 +69,10 @@ public class Client implements Serializable {
 	@XmlElement
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public Client findClientByID(int id) {
+		  return ClientDAO.findClientById(id);
 	}
 
 }

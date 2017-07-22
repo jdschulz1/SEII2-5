@@ -13,6 +13,10 @@ import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import schoolDAO.StudentDAO;
+import schoolPD.Student;
+import tabletopsDAO.EventDAO;
+
 /**
  * The object representing the system and overall company information for ACME Couriers.
  */
@@ -82,6 +86,16 @@ public class System implements Serializable{
 	@XmlElement
 	public void setUsers(List<User> users) {
 		this.users = users;
+	}
+	
+	public List<Event> getAllEvents(int page, int perPage) {
+		
+		List eventList= EventDAO.getAllEvents(this, page,  perPage);
+		return eventList;
+	}
+	
+	public Event findEventByIdNumber(String idNumber) {
+	    return EventDAO.findEventByIdNumber(idNumber); 
 	}
 
 }
