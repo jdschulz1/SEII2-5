@@ -20,6 +20,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import tabletopsPD.System;
 import tabletopsPD.Client;
 import tabletopsPD.Event;
 import tabletopsPD.Guest;
@@ -171,13 +172,13 @@ public class TabletopsService {
 //	      }
 //	   }
 //
-	   @OPTIONS
-	   @Path("/events")
-	   @Produces(MediaType.APPLICATION_JSON)
-	   public String getSupportedOperations(){
-	      return "{ {'POST' : { 'description' : 'add an event'}} {'GET' : {'description' : 'get an event'}}}";
-	   }
-	   
+//	   @OPTIONS
+//	   @Path("/events")
+//	   @Produces(MediaType.APPLICATION_JSON)
+//	   public String getSupportedOperations(){
+//	      return "{ {'POST' : { 'description' : 'add an event'}} {'GET' : {'description' : 'get an event'}}}";
+//	   }
+//	   
 	   	//Client REST Services
 		@GET
 		@Path("/clients")
