@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -43,18 +44,25 @@ public class Client implements Serializable {
 	public String getName() {
 		return name;
 	}
+	
+	@XmlElement
 	public void setName(String name) {
 		this.name = name;
 	}
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
+	
+	@XmlElement
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
+	
 	public String getEmail() {
 		return email;
 	}
+	
+	@XmlElement
 	public void setEmail(String email) {
 		this.email = email;
 	}

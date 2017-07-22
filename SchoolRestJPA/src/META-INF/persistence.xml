@@ -3,14 +3,18 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
 	version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
 
-    <persistence-unit name="School" transaction-type="RESOURCE_LOCAL">
-         <class>schoolPD.School</class>
-         <class>schoolPD.Student</class>
-         <class>schoolPD.Zip</class>
+    <persistence-unit name="team5tt" transaction-type="RESOURCE_LOCAL">
+         <class>tabletopsPD.Client</class>
+         <class>tabletopsPD.Event</class>
+         <class>tabletopsPD.Guest</class>
+         <class>tabletopsPD.SeatingArrangement</class>
+         <class>tabletopsPD.System</class>
+         <class>tabletopsPD.Table</class>
+         <class>tabletopsPD.User</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/studentJPA" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/team5tt" />
             <property name="javax.persistence.jdbc.user" value="test" />
             <property name="javax.persistence.jdbc.password" value="test" />
 
