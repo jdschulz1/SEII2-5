@@ -6,56 +6,61 @@
     <!-- Bootstrap -->
     <link href="css/bootstrap.css" rel="stylesheet" media="screen">
     <link href="css/Site.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+ 
     <script type="text/javascript">
 		$(document).ready(function() {
 			$('#nav-container').load('nav.html');
+			loadMyEvents();
 		});
 	</script>
-	<script type="text/javascript">
 	
-	$(document).ready(function() {
-		loadMyEvents();
-	});
-	</script>
 </head>
   <body>
   <script type="text/javascript">
   function loadMyEvents(){
 	  $.ajax({ 
 		   type: "GET",  
-	       url: "/SchoolRestJPA/rest/studentservice/students",  
+	       url: "/SchoolRestJPA/rest/tabletopservices/events",  
 	       dataType: "json",  
 	       success: function(resp){  
 	         // we have the response  
 	         
 	         $('#eventTable').html("");
+	      
 	         var tableRow;
-				        
-	         $.each(resp, function(i,student){
-	        	
+	         alert("success");    
+	         $.each(resp, function(i,event){
+	        		
 	        	    tableRow = 
 	        	        "<tr>"
-	        	            +"<td>" + student.firstName + student.lastName + "</td>"
+	        	            +"<td>" + event.eventTitle + "</td>"
 	        	            +"<td>07/15/2017 13:00</td>"+ 
 							+"<td>Funeral Home</td>"+
-							"<td><a href=\"editEvent()\">Edit</a>&nbsp;<a href=\"#\">Delete</a></td>"
+							"<td><a href=\"javascript:editEvent(" + event.eventId + ")\">Edit</a>&nbsp;<a href=\"javascript:deleteEvent(" + event.eventId + ")\">Delete</a></td>"
 	        	        +"</tr>";
 	        	       
 	        	$('#eventTable').append(tableRow);
 	         });
 	       },  
-	       error: function(e){  
-	         alert('Error: ' + e);  
-	       }  
+	       error: function (jqXHR, exception) {
+	    	    
+	    	    alert(jqXHR.responseText);
+	    	  }  
 		});
   }
   
-  function editEvent(){
-	  alert("hello");
+  function editEvent(id){
+	  alert(id);
   }
   
-  function deleteEvent(){
+  function deleteEvent(id){
+	  
+  }
+  
+  function search(date, client){
 	  
   }
   </script>
@@ -67,9 +72,10 @@
 <div class="form-inline">
 	
 	<div class="pull-right">
-	<input type="datetime" class="form-control input-sm" maxlength="64" placeholder="Event Date" />
+	<input type="datetime" class="form-control input-sm date-input" maxlength="64" placeholder="Event Date" />
 
-	<select class="form-control input-sm" id="select">
+	<select class="form-control input-sm" id="selectClient">
+					<option>Select Client</option>
 					<option>Anna Banana</option>
 					<option>Billy Bob</option>									
 	</select>
@@ -88,7 +94,7 @@
 				<div class="panel-body">
 					<div class="row">
 
-						<a href="#" class="btn btn-xs btn-primary pull-right"><i
+						<a href="EditEvent.html" class="btn btn-xs btn-primary pull-right"><i
 							class="glyphicon glyphicon-plus"></i>New Event</a>
 				
 					</div>
@@ -103,21 +109,7 @@
 								</tr>
 							</thead>
 							<tbody id="eventTable">
-								<tr>
-
-									<td>Foster Wedding</td>
-									<td>07/09/2017 13:00</td>
-									<td>Myriad Gardens</td>
-									<td><a href="#">Edit</a>&nbsp;<a href="#">Delete</a></td>
-
-								</tr>
-								<tr>
-
-									<td>Mr. Foster Funeral</td>
-									<td>07/15/2017 13:00</td>
-									<td>Funeral Home</td>
-									<td><a href="#">Edit</a>&nbsp;<a href="#">Delete</a></td>
-								</tr>
+								
 							</tbody>
 						</table>
 					</div>
@@ -126,7 +118,12 @@
 
 		</div>
     </div>
- 
+    <div class="row" id="searchResults">
+    
+    </div>
+ <script type="text/javascript">
+ 	$(".date-input").datepicker();
+ </script>
     </body>
 
 </html>

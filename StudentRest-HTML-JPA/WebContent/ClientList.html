@@ -8,17 +8,56 @@
     <link href="css/Site.css" rel="stylesheet" media="screen">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script type="text/javascript">
-$(document).ready(function() {
-	$('#nav-container').load('nav.html');
-	});
-
-
+		$(document).ready(function() {
+			$('#nav-container').load('nav.html');
+			$('#clients').addClass('active');
+			loadClientsTable();
+		});
 </script>
   </head>
  
 
  
 <body>
+<script type="text/javascript">
+function loadClientsTable(){
+	 $.ajax({ 
+		   type: "GET",  
+	       url: "/SchoolRestJPA/rest/tabletopservices/",  
+	       dataType: "json",  
+	       success: function(resp){  
+	         // we have the response  
+	       
+	         $('#clientsTable').html("");
+	         var tableRow;
+				        
+	         $.each(resp, function(i,student){
+	        		
+	        	    tableRow = 
+	        	        "<tr>"
+	        	            +"<td>" + student.firstName + " " + student.lastName + "</td>"	        	  
+							+"<td><a href=\"javascript:editClient(" + student.idNumber + ")\">Edit</a>&nbsp;<a href=\"javascript:deleteClient(" + student.idNumber + ")\">Delete</a></td>"
+	        	        +"</tr>";
+	        	       
+	        	$('#clientsTable').append(tableRow);
+	         });
+	       },  
+	       error: function(e){  
+	         alert('Error: ' + e);  
+	       }  
+		});
+}
+
+function editClient(id){
+	
+}
+
+function deleteClient(id){
+	//call to delete client service
+	//reload clientsTable after delete
+	loadClientsTable();
+}
+</script>
    <div id="nav-container">
 
   </div>  
@@ -28,7 +67,7 @@ $(document).ready(function() {
       </div>
         <div class="row">
           
-        	<a href="#" class="btn btn-xs btn-primary pull-right"><i class="glyphicon glyphicon-plus"></i>New Client</a>
+        	<a href="javascript:editClient(0)" class="btn btn-xs btn-primary pull-right"><i class="glyphicon glyphicon-plus"></i>New Client</a>
         </div>
         <div class="row">
         <table class="table table-striped table-hover ">
@@ -40,25 +79,15 @@ $(document).ready(function() {
       
     </tr>
   </thead>
-  <tbody>
-    <tr>
-      
-      <td>Debbie Downer</td>
-      <td><a href="#">Edit</a>&nbsp;<a href="#">Delete</a></td>
+  <tbody id="clientsTable">
    
-    </tr>
-    <tr>
-      
-      <td>Wendy Whiner</td>
-      <td><a href="#">Edit</a>&nbsp;<a href="#">Delete</a></td>
-    </tr>
       </tbody>
 </table>
 </div>
      
 </div>
 
-    <script src="http://code.jquery.com/jquery.js"></script>
+<!--     <script src="http://code.jquery.com/jquery.js"></script> -->
     <script src="js/bootstrap.min.js"></script>
  </body>
 </html>

@@ -39,6 +39,10 @@ public class Event implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long eventId;
 	
+	public long getEventId() {
+		return eventId;
+	}
+
 	/**
 	 * Date and time that the event will take place.
 	 */
