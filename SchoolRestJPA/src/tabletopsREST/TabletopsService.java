@@ -182,23 +182,23 @@ public class TabletopsService {
 //	      return "{ {'POST' : { 'description' : 'add an event'}} {'GET' : {'description' : 'get an event'}}}";
 //	   }
 //	   
-//	   	//Client REST Services
-//		@GET
-//		@Path("/clients")
-//		@Produces(MediaType.APPLICATION_JSON)
-//		public List<Client> getClients(
-//		    @DefaultValue("0") @QueryParam("page") String page,
-//		    @DefaultValue("10") @QueryParam("per_page") String perPage){
-//				EM.getEM().refresh(client);
-//				return system.getAllClients(Integer.parseInt(page),Integer.parseInt(perPage));
-//		}	
-//		
-//		@GET
-//		@Path("/clients/{id}")
-//		@Produces(MediaType.APPLICATION_JSON)
-//		public Client getClient(@PathParam("id") String id){
-//	      return system.findClientByIdNumber(id);
-//		}
+	   	//Client REST Services
+		@GET
+		@Path("/clients")
+		@Produces(MediaType.APPLICATION_JSON)
+		public List<Client> getClients(
+		    @DefaultValue("0") @QueryParam("page") String page,
+		    @DefaultValue("10") @QueryParam("per_page") String perPage){
+				EM.getEM().refresh(system);
+				return system.getAllClients(Integer.parseInt(page),Integer.parseInt(perPage));
+		}	
+		
+		@GET
+		@Path("/clients/{id}")
+		@Produces(MediaType.APPLICATION_JSON)
+		public Client getClient(@PathParam("id") String id){
+	      return system.findClientByIdNumber(id);
+		}
 //		
 //		@POST
 //		   @Path("/clients")
