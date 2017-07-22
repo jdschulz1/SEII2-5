@@ -51,6 +51,15 @@ public class Client implements Serializable {
 	@JoinColumn(name="system",referencedColumnName="system_id")
 	private tabletopsPD.System system;
 	
+	public int getClientID() {
+		return clientId;
+	}
+	
+	@XmlElement
+	public void setClientId(int id) {
+		this.clientId = id;
+	}
+	
 	public String getName() {
 		return name;
 	}
