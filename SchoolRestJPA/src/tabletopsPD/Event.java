@@ -4,8 +4,22 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import tabletopsDAO.LocalDateTimeConverter;
 
 /**
  * Events are records containing all information related to an event, including guest list and seating assignment information.
@@ -19,33 +33,53 @@ public class Event implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	@Id //signifies the primary key
+	@Column(name = "event_id", nullable = false)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long eventId;
 	
 	/**
 	 * Date and time that the event will take place.
 	 */
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "order_date_time", columnDefinition = "TIMESTAMP")
+	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime eventDateTime;
+	
 	/**
 	 * The title of the event.
 	 */
+	@Column(name = "event_title",nullable = false,length = 50)
 	private String eventTitle;
+	
 	/**
 	 * The name of the venue where the event will be held.
 	 */
+	@Column(name = "venue_name",nullable = false,length = 50)
 	private String venueName;
+	
 	/**
 	 * The number of people who can be seated at each table for the event.
 	 */
+	@Column(name = "table_size")
 	private int tableSize;
+	
 	/**
 	 * The maximum number of seats which can be left empty at a table for the event.
 	 */
+	@Column(name = "max_empty_seats")
 	private int maxEmptySeats;
 
+	@OneToMany(cascade = CascadeType.ALL, 
+	        mappedBy = "event", orphanRemoval = true)
 	private List<Guest> guestList;
 	
+	@ManyToOne(optional=false)
+	@JoinColumn(name="user_id",referencedColumnName="user_id")
 	private User primaryPlanner;
 	
+	@ManyToOne(optional=false)
+	@JoinColumn(name="client_id",referencedColumnName="client_id")
 	private Client client;
 	
 	/**
