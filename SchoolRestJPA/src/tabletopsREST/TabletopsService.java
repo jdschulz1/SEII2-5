@@ -286,33 +286,33 @@ public class TabletopsService {
 //				  messages.add(new Message("op002","Fail Operation",""));
 //				  return messages;
 //		   }
-//		 @DELETE
-//		   @Path("/clients/{id}")
-//		   @Produces(MediaType.APPLICATION_JSON)
-//		   public ArrayList<Message> deleteClient(@PathParam("id") String id, @Context final HttpServletResponse response){
-//			  Client client = system.findClientByIdNumber(id);
-//			  if (client == null) {
-//				  response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-//				    try {
-//				        response.flushBuffer();
-//				    }catch(Exception e){}
-//					messages.add(new Message("op002","Fail Operation",""));
-//					return messages;
-//			  }
-//			    EntityTransaction userTransaction = EM.getEM().getTransaction();
-//			    userTransaction.begin();
-//		      Boolean result = client.delete();
-//		      userTransaction.commit();
-//		      if(result){
-//				  messages.add(new Message("op001","Success Operation",""));
-//				  return messages;
-//		      }
-//		      else {
-//				  messages.add(new Message("op002","Fail Operation",""));
-//				  return messages;
-//		      }
-//		   }
-//
+		 @DELETE
+		   @Path("/clients/{id}")
+		   @Produces(MediaType.APPLICATION_JSON)
+		   public ArrayList<Message> deleteClient(@PathParam("id") String id, @Context final HttpServletResponse response){
+			  Client client = system.findClientByIdNumber(id);
+			  if (client == null) {
+				  response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+				    try {
+				        response.flushBuffer();
+				    }catch(Exception e){}
+					messages.add(new Message("op002","Fail Operation",""));
+					return messages;
+			  }
+			    EntityTransaction userTransaction = EM.getEM().getTransaction();
+			    userTransaction.begin();
+		      Boolean result = client.delete();
+		      userTransaction.commit();
+		      if(result){
+				  messages.add(new Message("op001","Success Operation",""));
+				  return messages;
+		      }
+		      else {
+				  messages.add(new Message("op002","Fail Operation",""));
+				  return messages;
+		      }
+		   }
+
 ////		   @OPTIONS
 ////		   @Path("/clients")
 ////		   @Produces(MediaType.APPLICATION_JSON)

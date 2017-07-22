@@ -89,5 +89,10 @@ public class Client implements Serializable {
 	public Client findClientByID(int id) {
 		  return ClientDAO.findClientById(id);
 	}
+	
+	public Boolean delete() {
+		ClientDAO.removeClient(this);
+		return true;
+	}
 
 }
