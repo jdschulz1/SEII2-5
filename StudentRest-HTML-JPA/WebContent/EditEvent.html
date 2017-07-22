@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tabletops</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.css" rel="stylesheet" media="screen">
+    <link href="css/Site.css" rel="stylesheet" media="screen">
+     <script type="text/javascript">
+		$(document).ready(function() {
+			$('#nav-container').load('nav.html');
+		});
+	</script>
+  </head>
+  <body>
+  <div id="nav-container">
+
+  </div>
+    <div class="container">
+	<div class="row">
+	 <h2>Edit Event</h2>
+	</div>
+	<div class="row">
+	<div class="pull-right">
+		<button class="btn btn-info btn-sm">Seating Arrangement</button>
+	</div>
+	</div>
+		<div class="row">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">Event Info</h3>
+				</div>
+				<div class="panel-body">
+
+					<div class="row">
+						<div class="col-sm-12 col-md-12 col-lg-12">
+							<form class="form-horizontal">
+								<fieldset>
+									<div class="form-group">
+										<label for="inputEventTitle" class="col-lg-2 control-label">
+											Event Title
+										</label>
+										<div class="col-lg-10">
+											<input type="text" class="form-control" id="inputTitle"
+												placeholder="Event Title">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="inputVenueName" class="col-lg-2 control-label">
+											Venue Name
+										</label>
+										<div class="col-lg-10">
+											<input type="text" class="form-control" id="inputVenueName"
+												placeholder="Venue Name">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="inputEventDate" class="col-lg-2 control-label">Event
+											Date/Time</label>
+										<div class="col-lg-10">
+											<input type="datetime" class="form-control"
+												id="inputEventDate" placeholder="Event Date/Time">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="inputClientName" class="col-lg-2 control-label">Client
+											Name</label>
+										<div class="col-lg-10">
+											<select class="form-control" id="select">
+												<option>Albus Dumbledore</option>
+												<option>Harry Potter</option>
+												<option>Hedwig</option>
+												<option>Severus Snape</option>
+											</select>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label for="inputPrimaryPlanner"
+											class="col-lg-2 control-label">Primary Planner</label>
+										<div class="col-lg-10">
+											<select class="form-control" id="select">
+												<option>Mary Christmas</option>
+												<option>Sally Sassalot</option>
+												<option>Wendy Whiner</option>
+												<option>Patty Positive</option>
+											</select>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label for="inputTableSize" class="col-lg-2 control-label">Table
+											Size</label>
+										<div class="col-lg-10">
+											<input type="text" class="form-control" id="inputTableSize"
+												placeholder="Table Size">
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label for="inputTableEmptySpots"
+											class="col-lg-2 control-label">Max Empty Seats</label>
+										<div class="col-lg-10">
+											<input type="text" class="form-control"
+												id="inputTableEmptySpots" placeholder="Max Empty Seats">
+										</div>
+									</div>
+							<div class="btn-group pull-right">
+										<div class="col-md-12 col-lg-12 ">
+											<button type="submit" class="btn btn-primary">Submit</button>
+											<button type="reset" class="btn btn-default">Cancel</button>
+										</div>
+								</div>
+								</fieldset>
+
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		
+		
+		
+		<div class="row">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">Guests</h3>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<a href="#" class="btn btn-xs btn-primary pull-right"><i class="glyphicon glyphicon-plus"></i>New Guest</a>
+						<div class="form-inline">
+							<div class="input-group input-group-sm">
+								<input type="text" class="form-control"
+									placeholder="Import from file">
+								<div class="input-group-btn">
+									<label class="btn btn-default btn-sm btn-file"> Browse
+										<input type="file" style="display: none;">
+									</label>
+								</div>
+							</div>
+							<button class="btn btn-sm btn-success">Import</button>
+						</div>
+					</div>
+						<hr>
+					<div class="row">
+						<table class="table table-striped table-hover ">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>Relationship to Client</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+
+									<td>Bob Barker</td>
+									<td>5th cousin thrice removed</td>
+									 <td><a href="#">Edit</a>&nbsp;<a href="#">Delete</a></td>
+								</tr>
+								<tr>
+
+									<td>Peter Piper</td>
+									<td>Great Great Great Great Great Uncle</td>
+									 <td><a href="#">Edit</a>&nbsp;<a href="#">Delete</a></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	
+	</div><!-- /.container -->
+	
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>

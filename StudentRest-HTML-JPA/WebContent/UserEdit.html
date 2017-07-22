@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tabletops</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.css" rel="stylesheet" media="screen">
+    <link href="css/Site.css" rel="stylesheet" media="screen">
+     <script type="text/javascript">
+		$(document).ready(function() {
+			$('#nav-container').load('nav.html');
+		});
+	</script>
+  </head>
+  <body>
+    <div id="nav-container">
+
+  	</div>
+
+    <div class="container">
+
+
+		<div class="row">
+			<h1>Edit User</h1>
+		</div>
+		<div class="row">
+<form class="form-horizontal">
+  <fieldset>
+   
+    <div class="form-group">
+      <label for="inputName" class="col-lg-2 control-label">Name</label>
+      <div class="col-lg-10">
+        <input type="text" class="form-control" id="inputName" placeholder="Name">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputUsername" class="col-lg-2 control-label">Username</label>
+      <div class="col-lg-10">
+        <input type="text" class="form-control" id="inputUsername" placeholder="Username">
+      </div>
+    </div>
+     <div class="form-group">
+      <label for="inputPassword" class="col-lg-2 control-label">Password</label>
+      <div class="col-lg-10">
+        <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+      </div>
+    </div>
+       <div class="form-group">
+      <label for="inputVerifyPassword" class="col-lg-2 control-label">Verify Password</label>
+      <div class="col-lg-10">
+        <input type="password" class="form-control" id="inputVerifyPassword" placeholder="Verify Password">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputRole" class="col-lg-2 control-label">Role</label>
+      <div class="col-lg-10">
+        <input type="text" class="form-control" id="inputRole" placeholder="Role">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputEmail" class="col-lg-2 control-label">Email</label>
+      <div class="col-lg-10">
+        <input type="text" class="form-control" id="inputEmail" placeholder="Role">
+      </div>
+    </div>
+        <div class="form-group pull-right">
+      <div class="col-lg-10 col-lg-offset-2">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="reset" class="btn btn-default">Cancel</button>
+        
+      </div>
+    </div>
+</fieldset>
+
+</form>
+	</div>
+	</div><!-- /.container -->
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>
