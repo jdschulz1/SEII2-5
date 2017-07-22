@@ -1,7 +1,7 @@
 package tabletopsPD;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+//import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -20,7 +20,7 @@ import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import tabletopsDAO.LocalDateTimeConverter;
+//import tabletopsDAO.LocalDateTimeConverter;
 
 /**
  * Events are records containing all information related to an event, including guest list and seating assignment information.
@@ -43,14 +43,14 @@ public class Event implements Serializable {
 		return eventId;
 	}
 
-	/**
-	 * Date and time that the event will take place.
-	 */
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "order_date_time", columnDefinition = "TIMESTAMP")
-	@Convert(converter = LocalDateTimeConverter.class)
-	private LocalDateTime eventDateTime;
-	
+//	/**
+//	 * Date and time that the event will take place.
+//	 */
+//	@Temporal(TemporalType.TIMESTAMP)
+//	@Column(name = "event_date_time", columnDefinition = "TIMESTAMP")
+//	@Convert(converter = LocalDateTimeConverter.class)
+//	private LocalDateTime eventDateTime;
+//	
 	/**
 	 * The title of the event.
 	 */
@@ -83,13 +83,20 @@ public class Event implements Serializable {
 	        mappedBy = "event", orphanRemoval = true)
 	private List<Guest> guestList;
 	
-	@ManyToOne(optional=false)
 	@JoinColumn(name="user_id",referencedColumnName="user_id")
 	private User primaryPlanner;
 	
 	@ManyToOne(optional=false)
+	@JoinColumn(name="user",referencedColumnName="user_id")
+	private User user;
+	
+	@ManyToOne(optional=false)
 	@JoinColumn(name="client_id",referencedColumnName="client_id")
 	private Client client;
+	
+	@ManyToOne(optional=false)
+	@JoinColumn(name="system",referencedColumnName="system_id")
+	private tabletopsPD.System system;
 	
 	/**
 	 * This operation executes the genetic algorithm to attempt to find the best SeatingArrangement for the Event.
@@ -115,14 +122,14 @@ public class Event implements Serializable {
 		throw new UnsupportedOperationException();
 	}
 
-	public LocalDateTime getEventDateTime() {
-		return eventDateTime;
-	}
+//	public LocalDateTime getEventDateTime() {
+//		return eventDateTime;
+//	}
 
-	@XmlElement
-	public void setEventDateTime(LocalDateTime eventDateTime) {
-		this.eventDateTime = eventDateTime;
-	}
+//	@XmlElement
+//	public void setEventDateTime(LocalDateTime eventDateTime) {
+//		this.eventDateTime = eventDateTime;
+//	}
 
 	public String getEventTitle() {
 		return eventTitle;

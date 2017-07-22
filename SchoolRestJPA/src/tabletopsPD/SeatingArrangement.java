@@ -40,7 +40,7 @@ public class SeatingArrangement implements Serializable{
 	private BigDecimal overallFitnessRating;
 	
 	@OneToMany(cascade = CascadeType.ALL, 
-	        mappedBy = "seating_arrangement", orphanRemoval = true)
+	        mappedBy = "seatingArrangement", orphanRemoval = true)
 	private List<Table> tables;
 	
 	@OneToOne

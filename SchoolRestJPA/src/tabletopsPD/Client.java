@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -44,6 +46,10 @@ public class Client implements Serializable {
 	 */
 	@Column(name = "email",nullable = true)
 	private String email;
+	
+	@ManyToOne(optional=false)
+	@JoinColumn(name="system",referencedColumnName="system_id")
+	private tabletopsPD.System system;
 	
 	public String getName() {
 		return name;

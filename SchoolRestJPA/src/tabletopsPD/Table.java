@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -43,6 +45,10 @@ public class Table implements Serializable{
 	@OneToMany(cascade = CascadeType.ALL, 
 	        mappedBy = "table", orphanRemoval = true)
 	private List<Guest> guests;
+	
+	@ManyToOne(optional=false)
+	@JoinColumn(name="seating_arrangement",referencedColumnName="seating_arrangement_id")
+	private SeatingArrangement seatingArrangement;
 
 	/**
 	 * An operation that calculates the fitness of the current instance of Table, based on the number of empty seats and the satisfaction of the guests with who they are seated with (determined by their black and white lists).

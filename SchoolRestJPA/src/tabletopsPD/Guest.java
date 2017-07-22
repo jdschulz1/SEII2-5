@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -44,14 +46,22 @@ public class Guest implements Serializable{
 	 */
 	@Column(name = "client_relationship",nullable = false,length = 140)
 	private String clientRelationship;
-
-	@OneToMany(cascade = CascadeType.ALL, 
-	        mappedBy = "guest", orphanRemoval = true)
-	private List<Guest> guestWhiteList;
 	
-	@OneToMany(cascade = CascadeType.ALL, 
-	        mappedBy = "guest", orphanRemoval = true)
-	private List<Guest> guestBlackList;
+	@ManyToOne(optional=false)
+	@JoinColumn(name="event",referencedColumnName="event_id")
+	private Event event;
+	
+	@ManyToOne(optional=false)
+	@JoinColumn(name="table",referencedColumnName="table_id")
+	private Table table;
+
+//	@OneToMany(cascade = CascadeType.ALL, 
+//	        mappedBy = "guest", orphanRemoval = true)
+//	private List<Guest> guestWhiteList;
+//	
+//	@OneToMany(cascade = CascadeType.ALL, 
+//	        mappedBy = "guest", orphanRemoval = true)
+//	private List<Guest> guestBlackList;
 	
 	/**
 	 * A method for adding to the Black List of Guests for the current Guest.
@@ -112,22 +122,22 @@ public class Guest implements Serializable{
 		this.clientRelationship = clientRelationship;
 	}
 
-	public List<Guest> getGuestWhiteList() {
-		return guestWhiteList;
-	}
-
-	@XmlElement
-	public void setGuestWhiteList(List<Guest> guestWhiteList) {
-		this.guestWhiteList = guestWhiteList;
-	}
-
-	public List<Guest> getGuestBlackList() {
-		return guestBlackList;
-	}
-
-	@XmlElement
-	public void setGuestBlackList(List<Guest> guestBlackList) {
-		this.guestBlackList = guestBlackList;
-	}
+//	public List<Guest> getGuestWhiteList() {
+//		return guestWhiteList;
+//	}
+//
+//	@XmlElement
+//	public void setGuestWhiteList(List<Guest> guestWhiteList) {
+//		this.guestWhiteList = guestWhiteList;
+//	}
+//
+//	public List<Guest> getGuestBlackList() {
+//		return guestBlackList;
+//	}
+//
+//	@XmlElement
+//	public void setGuestBlackList(List<Guest> guestBlackList) {
+//		this.guestBlackList = guestBlackList;
+//	}
 
 }

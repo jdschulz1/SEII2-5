@@ -6,6 +6,11 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -21,6 +26,11 @@ public class User implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	@Id //signifies the primary key
+	@Column(name = "user_id", nullable = false)
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long userId;
 	
 	/**
 	 * The legal name of the user.
@@ -55,6 +65,10 @@ public class User implements Serializable{
 	@OneToMany(cascade = CascadeType.ALL, 
 	        mappedBy = "user", orphanRemoval = true)
 	private List<Event> events;
+	
+	@ManyToOne(optional=false)
+	@JoinColumn(name="system",referencedColumnName="system_id")
+	private tabletopsPD.System system;
 
 	/**
 	 * Checks the password to the one stored for a user and if valid returns true.
