@@ -10,7 +10,7 @@
     <script type="text/javascript">
 		$(document).ready(function() {
 			$('#nav-container').load('nav.html');
-			$('#clients').addClass('active');
+			$('#clientsNav').addClass('active');
 			loadClientsTable();
 		});
 </script>
@@ -30,13 +30,13 @@ function loadClientsTable(){
 	       
 	         $('#clientsTable').html("");
 	         var tableRow;
-				        
-	         $.each(resp, function(i,student){
+  
+	         $.each(resp, function(i, client){
 	        		
 	        	    tableRow = 
 	        	        "<tr>"
-	        	            +"<td>" + student.firstName + " " + student.lastName + "</td>"	        	  
-							+"<td><a href=\"javascript:editClient(" + student.idNumber + ")\">Edit</a>&nbsp;<a href=\"javascript:deleteClient(" + student.idNumber + ")\">Delete</a></td>"
+	        	            +"<td>" + client.name + "</td>"	        	  
+							+"<td><a href=\"javascript:editClient(" + client.clientID + ")\">Edit</a>&nbsp;<a href=\"javascript:deleteClient(" + client.clientID + ")\">Delete</a></td>"
 	        	        +"</tr>";
 	        	       
 	        	$('#clientsTable').append(tableRow);
@@ -50,7 +50,7 @@ function loadClientsTable(){
 }
 
 function editClient(id){
-	
+	alert("client id" + id);
 }
 
 function deleteClient(id){
@@ -90,5 +90,8 @@ function deleteClient(id){
 
 <!--     <script src="http://code.jquery.com/jquery.js"></script> -->
     <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    $('#clientsNav').addClass('active');
+    </script>
  </body>
 </html>
