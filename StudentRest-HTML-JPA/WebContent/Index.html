@@ -15,10 +15,17 @@
 	<script type="text/javascript">
 	
 	$(document).ready(function() {
-		$.ajax({ 
+		loadMyEvents();
+	});
+	</script>
+</head>
+  <body>
+  <script type="text/javascript">
+  function loadMyEvents(){
+	  $.ajax({ 
 		   type: "GET",  
 	       url: "/SchoolRestJPA/rest/studentservice/students",  
-	       dataType: "jsonp",  
+	       dataType: "json",  
 	       success: function(resp){  
 	         // we have the response  
 	         
@@ -32,7 +39,7 @@
 	        	            +"<td>" + student.firstName + student.lastName + "</td>"
 	        	            +"<td>07/15/2017 13:00</td>"+ 
 							+"<td>Funeral Home</td>"+
-							"<td><a href=\"#\">Edit</a>&nbsp;<a href=\"#\">Delete</a></td>"
+							"<td><a href=\"editEvent()\">Edit</a>&nbsp;<a href=\"#\">Delete</a></td>"
 	        	        +"</tr>";
 	        	       
 	        	$('#eventTable').append(tableRow);
@@ -42,10 +49,16 @@
 	         alert('Error: ' + e);  
 	       }  
 		});
-	});
-	</script>
-</head>
-  <body>
+  }
+  
+  function editEvent(){
+	  alert("hello");
+  }
+  
+  function deleteEvent(){
+	  
+  }
+  </script>
   <div id="nav-container">
 
   </div>
