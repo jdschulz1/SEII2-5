@@ -4,8 +4,7 @@ import java.util.List;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
-import schoolDAO.EM;
-import schoolPD.Student;
+import tabletopsDAO.EM;
 import tabletopsPD.Client;
 import tabletopsPD.Event;
 import tabletopsPD.User;
