@@ -24,9 +24,9 @@
 	         
 	         $('#eventTable').html("");
 	         var tableRow;
-				alert(resp);		        
+				        
 	         $.each(resp, function(i,student){
-	        	  alert(student.firstName);
+	        	
 	        	    tableRow = 
 	        	        "<tr>"
 	        	            +"<td>" + student.firstName + student.lastName + "</td>"
@@ -34,7 +34,7 @@
 							+"<td>Funeral Home</td>"+
 							"<td><a href=\"#\">Edit</a>&nbsp;<a href=\"#\">Delete</a></td>"
 	        	        +"</tr>";
-	        	        alert(student.firstName); 
+	        	       
 	        	$('#eventTable').append(tableRow);
 	         });
 	       },  
