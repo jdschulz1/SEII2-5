@@ -1,33 +1,59 @@
 package tabletopsPD;
 
+import java.io.Serializable;
 import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * A general user of the software system.
  */
-public class User {
+@XmlRootElement(name = "user")
+@Entity(name = "user")
+public class User implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	/**
 	 * The legal name of the user.
 	 */
+	@Column(name = "name",nullable = false,length = 20)
 	private String name;
+	
 	/**
 	 * User name for authentication to the system.
 	 */
+	@Column(name = "user_name",nullable = false,length = 20)
 	private String userName;
+	
 	/**
 	 * Password for authentication to the system.
 	 */
+	@Column(name = "password",nullable = false,length = 20)
 	private String password;
+	
 	/**
 	 * Role for the user of the system that determines permissions on the system. ?
 	 */
+	@Column(name = "role",nullable = false,length = 20)
 	private String role;
+	
 	/**
 	 * Email address for the User.
 	 */
+	@Column(name = "email",nullable = false,length = 20)
 	private String email;
 	
+	@OneToMany(cascade = CascadeType.ALL, 
+	        mappedBy = "user", orphanRemoval = true)
 	private List<Event> events;
 
 	/**
@@ -43,6 +69,7 @@ public class User {
 	 * @param old_pass The old password the User wishes to change.
 	 * @param new_pass The new password the User wishes to change to.
 	 */
+	@XmlElement
 	public boolean setPassword(String old_pass, String new_pass) {
 		// TODO - implement User.setPassword
 		throw new UnsupportedOperationException();
@@ -52,6 +79,7 @@ public class User {
 		return name;
 	}
 
+	@XmlElement
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -60,6 +88,7 @@ public class User {
 		return userName;
 	}
 
+	@XmlElement
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
@@ -68,6 +97,7 @@ public class User {
 		return password;
 	}
 
+	@XmlElement
 	public void setPassword(String password) {
 		this.password = password;
 	}
@@ -76,6 +106,7 @@ public class User {
 		return role;
 	}
 
+	@XmlElement
 	public void setRole(String role) {
 		this.role = role;
 	}
@@ -84,6 +115,7 @@ public class User {
 		return email;
 	}
 
+	@XmlElement
 	public void setEmail(String email) {
 		this.email = email;
 	}
@@ -92,6 +124,7 @@ public class User {
 		return events;
 	}
 
+	@XmlElement
 	public void setEvents(List<Event> events) {
 		this.events = events;
 	}

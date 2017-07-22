@@ -12,11 +12,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import tabletopsDAO.LocalDateTimeConverter;
@@ -70,6 +71,10 @@ public class Event implements Serializable {
 	@Column(name = "max_empty_seats")
 	private int maxEmptySeats;
 
+	@OneToOne(mappedBy = "event",
+	        cascade = CascadeType.ALL, orphanRemoval = true)
+	private SeatingArrangement seatingArrangement;
+	
 	@OneToMany(cascade = CascadeType.ALL, 
 	        mappedBy = "event", orphanRemoval = true)
 	private List<Guest> guestList;
@@ -110,6 +115,7 @@ public class Event implements Serializable {
 		return eventDateTime;
 	}
 
+	@XmlElement
 	public void setEventDateTime(LocalDateTime eventDateTime) {
 		this.eventDateTime = eventDateTime;
 	}
@@ -118,6 +124,7 @@ public class Event implements Serializable {
 		return eventTitle;
 	}
 
+	@XmlElement
 	public void setEventTitle(String eventTitle) {
 		this.eventTitle = eventTitle;
 	}
@@ -126,6 +133,7 @@ public class Event implements Serializable {
 		return venueName;
 	}
 
+	@XmlElement
 	public void setVenueName(String venueName) {
 		this.venueName = venueName;
 	}
@@ -134,6 +142,7 @@ public class Event implements Serializable {
 		return tableSize;
 	}
 
+	@XmlElement
 	public void setTableSize(int tableSize) {
 		this.tableSize = tableSize;
 	}
@@ -142,6 +151,7 @@ public class Event implements Serializable {
 		return maxEmptySeats;
 	}
 
+	@XmlElement
 	public void setMaxEmptySeats(int maxEmptySeats) {
 		this.maxEmptySeats = maxEmptySeats;
 	}
@@ -150,6 +160,7 @@ public class Event implements Serializable {
 		return guestList;
 	}
 
+	@XmlElement
 	public void setGuestList(List<Guest> guestList) {
 		this.guestList = guestList;
 	}
@@ -158,6 +169,7 @@ public class Event implements Serializable {
 		return primaryPlanner;
 	}
 
+	@XmlElement
 	public void setPrimaryPlanner(User primaryPlanner) {
 		this.primaryPlanner = primaryPlanner;
 	}
@@ -166,6 +178,7 @@ public class Event implements Serializable {
 		return client;
 	}
 
+	@XmlElement
 	public void setClient(Client client) {
 		this.client = client;
 	}

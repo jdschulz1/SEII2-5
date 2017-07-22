@@ -1,24 +1,56 @@
 package tabletopsPD;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Guest {
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement(name = "guest")
+@Entity(name = "guest")
+public class Guest implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	@Id //signifies the primary key
+	@Column(name = "guest_id", nullable = false)
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long guestId;
+	
 	/**
 	 * The number that identifies a Guest.
 	 */
+	@Column(name = "guest_number")
 	private int guestNumber;
+	
 	/**
 	 * The name of the Guest attending the Event.
 	 */
+	@Column(name = "name",nullable = false,length = 20)
 	private String name;
+	
 	/**
 	 * The special notes about the relationship between the Guest and the Client requesting the Event.
 	 */
+	@Column(name = "client_relationship",nullable = false,length = 140)
 	private String clientRelationship;
 
+	@OneToMany(cascade = CascadeType.ALL, 
+	        mappedBy = "guest", orphanRemoval = true)
 	private List<Guest> guestWhiteList;
 	
+	@OneToMany(cascade = CascadeType.ALL, 
+	        mappedBy = "guest", orphanRemoval = true)
 	private List<Guest> guestBlackList;
 	
 	/**
@@ -57,6 +89,7 @@ public class Guest {
 		return guestNumber;
 	}
 
+	@XmlElement
 	public void setGuestNumber(int guestNumber) {
 		this.guestNumber = guestNumber;
 	}
@@ -65,6 +98,7 @@ public class Guest {
 		return name;
 	}
 
+	@XmlElement
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -73,6 +107,7 @@ public class Guest {
 		return clientRelationship;
 	}
 
+	@XmlElement
 	public void setClientRelationship(String clientRelationship) {
 		this.clientRelationship = clientRelationship;
 	}
@@ -81,6 +116,7 @@ public class Guest {
 		return guestWhiteList;
 	}
 
+	@XmlElement
 	public void setGuestWhiteList(List<Guest> guestWhiteList) {
 		this.guestWhiteList = guestWhiteList;
 	}
@@ -89,6 +125,7 @@ public class Guest {
 		return guestBlackList;
 	}
 
+	@XmlElement
 	public void setGuestBlackList(List<Guest> guestBlackList) {
 		this.guestBlackList = guestBlackList;
 	}
