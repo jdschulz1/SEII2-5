@@ -38,7 +38,7 @@ public class ClientDAO {
     
     public static Client findClientByIdNumber(String idNumber)
     {
-      String qString = "SELECT client FROM client client  WHERE client.idNumber ="+idNumber;
+      String qString = "SELECT client FROM client client  WHERE client.clientId ="+idNumber;
       Query query = EM.getEM().createQuery(qString);
       Client client = (Client)query.getSingleResult();
       return client;
