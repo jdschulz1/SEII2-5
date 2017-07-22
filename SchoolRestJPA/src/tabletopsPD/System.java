@@ -90,7 +90,7 @@ public class System implements Serializable{
 	
 	public List<Event> getAllEvents(int page, int perPage) {
 		
-		List eventList= EventDAO.getAllEvents(this, page,  perPage);
+		List eventList= EventDAO.getAllEvents(page,  perPage);
 		return eventList;
 	}
 	
