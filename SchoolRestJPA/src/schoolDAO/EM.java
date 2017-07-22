@@ -6,33 +6,33 @@ import javax.persistence.Persistence;
 
 public class EM {
       
-      static EntityManagerFactory entityManagerFactory;
-      static EntityManager em;
+//      static EntityManagerFactory entityManagerFactory;
+//      static EntityManager em;
       
-      private static void initEM()
-      {
-      entityManagerFactory =  Persistence.createEntityManagerFactory("School");
-        em = entityManagerFactory.createEntityManager();
-        
-      }
-      
-      public static EntityManager getEM()
-      {
-        if (em==null)
-        { 
-          initEM();
-        
-        }
-        return em;
-      }
-      
-      public static void close()
-      {
-        em.close();
-          entityManagerFactory.close();
-      }
-      
-      private EM() {}
+//      private static void initEM()
+//      {
+//    	  entityManagerFactory =  Persistence.createEntityManagerFactory("School");
+//    	  em = entityManagerFactory.createEntityManager();
+//        
+//      }
+//      
+//      public static EntityManager getEM()
+//      {
+//        if (em==null)
+//        { 
+//          initEM();
+//        
+//        }
+//        return em;
+//      }
+//      
+//      public static void close()
+//      {
+//        em.close();
+//          entityManagerFactory.close();
+//      }
+//      
+//      private EM() {}
 
     }
 

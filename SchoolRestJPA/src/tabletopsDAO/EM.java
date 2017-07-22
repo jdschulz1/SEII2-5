@@ -11,8 +11,8 @@ public class EM {
       
       private static void initEM()
       {
-      entityManagerFactory =  Persistence.createEntityManagerFactory("team5tt");
-        em = entityManagerFactory.createEntityManager();
+    	  entityManagerFactory =  Persistence.createEntityManagerFactory("team5tt");
+    	  em = entityManagerFactory.createEntityManager();
         
       }
       
