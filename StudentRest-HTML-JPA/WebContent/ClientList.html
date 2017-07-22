@@ -23,7 +23,7 @@
 function loadClientsTable(){
 	 $.ajax({ 
 		   type: "GET",  
-	       url: "/SchoolRestJPA/rest/tabletopservices/",  
+	       url: "/SchoolRestJPA/rest/tabletopservices/clients",  
 	       dataType: "json",  
 	       success: function(resp){  
 	         // we have the response  
@@ -42,9 +42,10 @@ function loadClientsTable(){
 	        	$('#clientsTable').append(tableRow);
 	         });
 	       },  
-	       error: function(e){  
-	         alert('Error: ' + e);  
-	       }  
+	       error: function (jqXHR, exception) {
+	    	    
+	    	    alert(jqXHR.responseText);
+	    	  }  
 		});
 }
 

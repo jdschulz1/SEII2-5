@@ -4,13 +4,13 @@
    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
    http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
    id="WebApp_ID" version="3.0">
-   <display-name>School Management</display-name>
+   <display-name>SchoolRestJPA</display-name>
    <servlet>
       <servlet-name>Jersey RESTful Application</servlet-name>
       <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
          <init-param>
             <param-name>jersey.config.server.provider.packages</param-name>
-            <param-value>schoolREST</param-value>
+            <param-value>tabletopsREST</param-value>
          </init-param>
 
       </servlet>
