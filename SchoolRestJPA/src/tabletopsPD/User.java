@@ -63,7 +63,7 @@ public class User implements Serializable{
 	private String email;
 	
 	@OneToMany(cascade = CascadeType.ALL, 
-	        mappedBy = "user", orphanRemoval = true)
+	        mappedBy = "primaryPlanner", orphanRemoval = true)
 	private List<Event> events;
 	
 	@ManyToOne(optional=false)
