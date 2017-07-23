@@ -1,6 +1,7 @@
 package tabletopsPD;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import schoolDAO.StudentDAO;
 import schoolPD.Student;
+import schoolUT.Message;
 import tabletopsDAO.ClientDAO;
 
 /**
@@ -88,6 +90,41 @@ public class Client implements Serializable {
 	
 	public Client findClientByID(int id) {
 		  return ClientDAO.findClientById(id);
+	}
+	
+	public ArrayList<Message> validate() {
+		ArrayList<Message> messages= new ArrayList<Message>();
+		Message message;
+		if (getClientID() == 0){
+			message = new Message ("Client000","ClientId must have a value","clientId");
+			messages.add(message);
+		}
+		if (getName() == null || getName().length() ==0){
+			message = new Message ("Client001","Name must have a value","name");
+			messages.add(message);
+		}
+		if (getPhoneNumber() == null || getPhoneNumber().length() ==0){
+			message = new Message ("Client002","Phone number must have a value","phoneNumber");
+			messages.add(message);
+		}
+		if (getEmail() == null || getEmail().length() ==0){
+			message = new Message ("Client003","Email must have a value","email");
+			messages.add(message);
+		}
+		
+		if (messages.size() == 0 ) 
+			return null;
+		else 
+			return messages;
+		
+	}
+	
+	public Boolean update(Client client) {
+	    setName(client.getName());
+	    setPhoneNumber(client.getPhoneNumber());
+	    setEmail(client.getEmail());
+
+	    return true;
 	}
 	
 	public Boolean delete() {

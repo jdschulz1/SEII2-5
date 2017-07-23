@@ -196,96 +196,96 @@ public class TabletopsService {
 		public Client getClient(@PathParam("id") String id){
 	      return system.findClientByIdNumber(id);
 		}
-//		
-//		@POST
-//		   @Path("/clients")
-//		   @Produces(MediaType.APPLICATION_JSON)
-//		   @Consumes(MediaType.APPLICATION_JSON)
-//		   public ArrayList<Message> addClient(Client client,@Context final HttpServletResponse response) throws IOException{
-//
-//			  if (client == null) {
-//
-//				  response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
-//				  try {
-//				        response.flushBuffer();
-//				  }catch(Exception e){}
-//				  messages.add(new Message("op002","Fail Operation",""));
-//				  return messages;
-//			  }
-//			  else  {
-//				  
-//				  ArrayList<Message> errMessages = client.validate();
-//				  if (errMessages != null) {
-//					  
-//					  response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
-//					  try {
-//						  response.flushBuffer();
-//					  }	
-//					  catch(Exception e){
-//						  }
-//					  return errMessages;
-//				  }
-//				  EntityTransaction userTransaction = EM.getEM().getTransaction();
-//				  userTransaction.begin();
-//				  Boolean result = system.addEvent(client);
-//				  userTransaction.commit();
-//				  if(result){
-//					  messages.add(new Message("op001","Success Operation",""));
-//					  return messages;
-//				  }
-//				  response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
-//				  try {
-//					  response.flushBuffer();
-//				  }	
-//				  catch(Exception e){
-//					  }
-//				  messages.add(new Message("op002","Fail Operation",""));
-//				  return messages;
-//			  }
-//		}
-//		@PUT
-//		   @Path("/clients/{id}")
-//		   @Produces(MediaType.APPLICATION_JSON)
-//		   @Consumes(MediaType.APPLICATION_JSON)
-//		   public ArrayList<Message> updatedClient(Client client,@PathParam("id") String id, @Context final HttpServletResponse response) throws IOException{
-//			   Client oldClient = system.findClientByIdNumber(id);
-//			   if (oldClient == null)
-//				  {
-//			   		  response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
-//			   		  try {
-//				        response.flushBuffer();
-//			   		  }catch(Exception e){}
-//					  messages.add(new Message("op002","Fail Operation",""));
-//					  return messages;
-//				  }
-//			  else
-//				  {
-//					  ArrayList<Message> errMessages = client.validate();
-//					  if (errMessages != null) {
-//						  response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
-//						  try {
-//							  response.flushBuffer();
-//						  }	
-//						  catch(Exception e){
-//							  }
-//						  return errMessages;
-//					  }
-//				  }
-//	     EntityTransaction userTransaction = EM.getEM().getTransaction();
-//	     userTransaction.begin();
-//		      Boolean result = oldClient.update(client);
-//		      userTransaction.commit();
-//		      if(result){
-//				  messages.add(new Message("op001","Success Operation",""));
-//				  return messages;
-//		      }
-//		      response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
-//			    try {
-//			        response.flushBuffer();
-//			    }catch(Exception e){}
-//				  messages.add(new Message("op002","Fail Operation",""));
-//				  return messages;
-//		   }
+		
+		@POST
+	   @Path("/clients")
+	   @Produces(MediaType.APPLICATION_JSON)
+	   @Consumes(MediaType.APPLICATION_JSON)
+	   public ArrayList<Message> addClient(Client client,@Context final HttpServletResponse response) throws IOException{
+
+		  if (client == null) {
+
+			  response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
+			  try {
+			        response.flushBuffer();
+			  }catch(Exception e){}
+			  messages.add(new Message("op002","Fail Operation",""));
+			  return messages;
+		  }
+		  else  {
+			  
+			  ArrayList<Message> errMessages = client.validate();
+			  if (errMessages != null) {
+				  
+				  response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+				  try {
+					  response.flushBuffer();
+				  }	
+				  catch(Exception e){
+					  }
+				  return errMessages;
+			  }
+			  EntityTransaction userTransaction = EM.getEM().getTransaction();
+			  userTransaction.begin();
+			  Boolean result = system.addClient(client);
+			  userTransaction.commit();
+			  if(result){
+				  messages.add(new Message("op001","Success Operation",""));
+				  return messages;
+			  }
+			  response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
+			  try {
+				  response.flushBuffer();
+			  }	
+			  catch(Exception e){
+				  }
+			  messages.add(new Message("op002","Fail Operation",""));
+			  return messages;
+		  }
+		}
+		@PUT
+		   @Path("/clients/{id}")
+		   @Produces(MediaType.APPLICATION_JSON)
+		   @Consumes(MediaType.APPLICATION_JSON)
+		   public ArrayList<Message> updatedClient(Client client,@PathParam("id") String id, @Context final HttpServletResponse response) throws IOException{
+			   Client oldClient = system.findClientByIdNumber(id);
+			   if (oldClient == null)
+				  {
+			   		  response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
+			   		  try {
+				        response.flushBuffer();
+			   		  }catch(Exception e){}
+					  messages.add(new Message("op002","Fail Operation",""));
+					  return messages;
+				  }
+			  else
+				  {
+					  ArrayList<Message> errMessages = client.validate();
+					  if (errMessages != null) {
+						  response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+						  try {
+							  response.flushBuffer();
+						  }	
+						  catch(Exception e){
+							  }
+						  return errMessages;
+					  }
+				  }
+	     EntityTransaction userTransaction = EM.getEM().getTransaction();
+	     userTransaction.begin();
+		      Boolean result = oldClient.update(client);
+		      userTransaction.commit();
+		      if(result){
+				  messages.add(new Message("op001","Success Operation",""));
+				  return messages;
+		      }
+		      response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
+			    try {
+			        response.flushBuffer();
+			    }catch(Exception e){}
+				  messages.add(new Message("op002","Fail Operation",""));
+				  return messages;
+		   }
 		 @DELETE
 		   @Path("/clients/{id}")
 		   @Produces(MediaType.APPLICATION_JSON)

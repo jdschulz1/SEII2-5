@@ -70,6 +70,13 @@ public class System implements Serializable{
 	public void setClients(List<Client> clients) {
 		this.clients = clients;
 	}
+	
+	public Boolean addClient(Client client) {
+		//TODO: Double check this line
+		this.clients.add(client);
+		ClientDAO.addClient(client);
+		return true;
+	}
 
 	public List<Event> getEvents() {
 		return events;
