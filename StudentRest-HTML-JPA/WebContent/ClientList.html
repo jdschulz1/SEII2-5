@@ -50,11 +50,30 @@ function loadClientsTable(){
 }
 
 function editClient(id){
-	alert("client id" + id);
+	localStorage.client = id;
+	document.location.href = "/StudentRest-HTML-JPA/WebContent/EditClient.html", true;  
+// 	var clientUrl = "/SchoolRestJPA/rest/tabletopservices/clients/" + id;
+
+// 	$.ajax({
+// 		type: 'GET',
+// 		url: clientUrl,  
+// 	    dataType: "json", 
+//         success: function (data) {
+        
+//         	localStorage.theClient = data;
+//         	document.location.href = "/StudentRest-HTML-JPA/WebContent/EditClient.html", true;          
+//         },
+//         error: function (jqXHR, exception) {
+    	    
+//     	    alert("Client Error" + jqXHR.responseText);
+//     	  }  
+//     });
+	
 }
 
 function deleteClient(id){
 	//call to delete client service
+	
 	//reload clientsTable after delete
 	loadClientsTable();
 }
