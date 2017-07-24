@@ -15,6 +15,9 @@ import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import tabletopsDAO.ClientDAO;
+import tabletopsDAO.UserDAO;
+
 /**
  * A general user of the software system.
  */
@@ -141,6 +144,10 @@ public class User implements Serializable{
 	@XmlElement
 	public void setEvents(List<Event> events) {
 		this.events = events;
+	}
+	
+	public User findUserByID(int id) {
+		  return UserDAO.findUserById(id);
 	}
 
 }

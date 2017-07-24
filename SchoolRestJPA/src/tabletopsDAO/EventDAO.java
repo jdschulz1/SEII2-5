@@ -5,8 +5,6 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import tabletopsDAO.EM;
-import schoolPD.School;
-import schoolPD.Student;
 import tabletopsPD.Event;
 import tabletopsPD.Guest;
 

@@ -13,8 +13,6 @@ import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import schoolDAO.StudentDAO;
-import schoolPD.Student;
 import schoolUT.Message;
 import tabletopsDAO.ClientDAO;
 

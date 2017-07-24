@@ -34,19 +34,18 @@ public class UserDAO {
     
     public static User findUserByIdNumber(String idNumber)
     {
-      String qString = "SELECT user FROM user user  WHERE user.idNumber ="+idNumber;
+      String qString = "SELECT user FROM user user WHERE user.userId ="+idNumber;
       Query query = EM.getEM().createQuery(qString);
       User user = (User)query.getSingleResult();
       return user;
     }
 
-    public static List<User> getAllUsersForEvent(Event event,int page, int pageSize)
+    public static List<User> getAllUsers(int page, int pageSize)
     {
       TypedQuery<User> query = EM.getEM().createQuery("SELECT user FROM user user", User.class);
       return query.setFirstResult(page * pageSize)
               .setMaxResults(pageSize)
               .getResultList();
-
     }
     
     public static void removeUser(User user)

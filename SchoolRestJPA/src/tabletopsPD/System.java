@@ -17,6 +17,7 @@ import schoolDAO.StudentDAO;
 import schoolPD.Student;
 import tabletopsDAO.ClientDAO;
 import tabletopsDAO.EventDAO;
+import tabletopsDAO.UserDAO;
 
 /**
  * The object representing the system and overall company information for ACME Couriers.
@@ -98,7 +99,7 @@ public class System implements Serializable{
 	
 	public List<Event> getAllEvents(int page, int perPage) {
 		
-		List eventList= EventDAO.getAllEvents(page,  perPage);
+		List<Event> eventList= EventDAO.getAllEvents(page,  perPage);
 		return eventList;
 	}
 	
@@ -107,13 +108,20 @@ public class System implements Serializable{
 	}
 	
 	public List<Client> getAllClients(int page, int perPage) {
-		
-		List clientList= ClientDAO.getAllClients(page,  perPage);
+		List<Client> clientList= ClientDAO.getAllClients(page,  perPage);
 		return clientList;
 	}
 	
 	public Client findClientByIdNumber(String idNumber) {
 	    return ClientDAO.findClientByIdNumber(idNumber); 
 	}
-
+	
+	public List<User> getAllUsers(int page, int perPage) {
+		List<User> userList= UserDAO.getAllUsers(page,  perPage);
+		return userList;
+	}
+	
+	public User findUserByIdNumber(String idNumber) {
+	    return UserDAO.findUserByIdNumber(idNumber); 
+	}
 }

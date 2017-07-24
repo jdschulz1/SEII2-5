@@ -595,23 +595,23 @@ public class TabletopsService {
 //				      }
 //				   }
 //			 
-//			 //User REST Services
-//				@GET
-//				@Path("/users")
-//				@Produces(MediaType.APPLICATION_JSON)
-//				public List<Guest> getUsers(
-//				    @DefaultValue("0") @QueryParam("page") String page,
-//				    @DefaultValue("10") @QueryParam("per_page") String perPage){
-//						EM.getEM().refresh(user);
-//						return system.getAllUsers(Integer.parseInt(page),Integer.parseInt(perPage));
-//				}	
-//				
-//				@GET
-//				@Path("/users/{id}")
-//				@Produces(MediaType.APPLICATION_JSON)
-//				public User getUser(@PathParam("id") String id){
-//			      return system.findUserByIdNumber(id);
-//				}
+			//User REST Services
+		 	@GET
+		 	@Path("/users")
+			@Produces(MediaType.APPLICATION_JSON)
+			public List<User> getUsers(
+			    @DefaultValue("0") @QueryParam("page") String page,
+			    @DefaultValue("10") @QueryParam("per_page") String perPage){
+					EM.getEM().refresh(system);
+					return system.getAllUsers(Integer.parseInt(page),Integer.parseInt(perPage));
+		 	}	
+				
+			@GET
+			@Path("/users/{id}")
+			@Produces(MediaType.APPLICATION_JSON)
+			public User getUser(@PathParam("id") String id){
+				return system.findUserByIdNumber(id);
+			}
 //				
 //				@POST
 //				   @Path("/users")
