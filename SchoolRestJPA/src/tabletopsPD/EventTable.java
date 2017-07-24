@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "table")
 @Entity(name = "table")
-public class Table implements Serializable{
+public class EventTable implements Serializable{
 
 	/**
 	 * 
@@ -54,16 +54,23 @@ public class Table implements Serializable{
 	 * An operation that calculates the fitness of the current instance of Table, based on the number of empty seats and the satisfaction of the guests with who they are seated with (determined by their black and white lists).
 	 */
 	public void calculateFitness() {
-		// TODO - implement Table.calculateFitness
-		throw new UnsupportedOperationException();
+		BigDecimal fitness, perGuest = BigDecimal.valueOf(100).divide(BigDecimal.valueOf(this.guests.size()));
+		
+		for (Guest g : this.guests){
+			BigDecimal total = BigDecimal.ZERO;
+			
+//			for(Guest g2 : this.guests){
+//				if(!g.equals(g2) && g.getGuestBlackList().contains(g2))
+//			}
+		}
 	}
 
-	public int getTableNum() {
+	public int getEventTableNum() {
 		return tableNum;
 	}
 
 	@XmlElement
-	public void setTableNum(int tableNum) {
+	public void setEventTableNum(int tableNum) {
 		this.tableNum = tableNum;
 	}
 

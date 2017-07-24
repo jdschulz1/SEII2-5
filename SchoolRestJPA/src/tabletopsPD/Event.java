@@ -150,12 +150,12 @@ public class Event implements Serializable {
 		this.venueName = venueName;
 	}
 
-	public int getTableSize() {
+	public int getEventTableSize() {
 		return tableSize;
 	}
 
 	@XmlElement
-	public void setTableSize(int tableSize) {
+	public void setEventTableSize(int tableSize) {
 		this.tableSize = tableSize;
 	}
 
