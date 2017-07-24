@@ -20,6 +20,9 @@ import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import tabletopsDAO.ClientDAO;
+import tabletopsDAO.EventDAO;
+
 //import tabletopsDAO.LocalDateTimeConverter;
 
 /**
@@ -191,4 +194,8 @@ public class Event implements Serializable {
 		this.client = client;
 	}
 
+	public Boolean delete() {
+		EventDAO.removeEvent(this);
+		return true;
+	}
 }

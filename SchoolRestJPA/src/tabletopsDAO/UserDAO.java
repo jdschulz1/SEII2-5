@@ -5,6 +5,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import tabletopsPD.User;
+import tabletopsPD.Client;
 import tabletopsPD.Event;
 
 public class UserDAO { 

@@ -154,4 +154,8 @@ public class User implements Serializable{
 		  return UserDAO.findUserById(id);
 	}
 
+	public Boolean delete() {
+		UserDAO.removeUser(this);
+		return true;
+	}
 }

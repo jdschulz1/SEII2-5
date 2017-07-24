@@ -145,40 +145,33 @@ public class TabletopsService {
 //			  messages.add(new Message("op002","Fail Operation",""));
 //			  return messages;
 //	   }
-//	 @DELETE
-//	   @Path("/events/{id}")
-//	   @Produces(MediaType.APPLICATION_JSON)
-//	   public ArrayList<Message> deleteEvent(@PathParam("id") String id, @Context final HttpServletResponse response){
-//		  Event event = system.findEventByIdNumber(id);
-//		  if (event == null) {
-//			  response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-//			    try {
-//			        response.flushBuffer();
-//			    }catch(Exception e){}
-//				messages.add(new Message("op002","Fail Operation",""));
-//				return messages;
-//		  }
-//		    EntityTransaction userTransaction = EM.getEM().getTransaction();
-//		    userTransaction.begin();
-//	      Boolean result = event.delete();
-//	      userTransaction.commit();
-//	      if(result){
-//			  messages.add(new Message("op001","Success Operation",""));
-//			  return messages;
-//	      }
-//	      else {
-//			  messages.add(new Message("op002","Fail Operation",""));
-//			  return messages;
-//	      }
-//	   }
-//
-//	   @OPTIONS
-//	   @Path("/events")
-//	   @Produces(MediaType.APPLICATION_JSON)
-//	   public String getSupportedOperations(){
-//	      return "{ {'POST' : { 'description' : 'add an event'}} {'GET' : {'description' : 'get an event'}}}";
-//	   }
-//	   
+	 @DELETE
+	   @Path("/events/{id}")
+	   @Produces(MediaType.APPLICATION_JSON)
+	   public ArrayList<Message> deleteEvent(@PathParam("id") String id, @Context final HttpServletResponse response){
+		  Event event = company.findEventByIdNumber(id);
+		  if (event == null) {
+			  response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			    try {
+			        response.flushBuffer();
+			    }catch(Exception e){}
+				messages.add(new Message("op002","Fail Operation",""));
+				return messages;
+		  }
+		    EntityTransaction userTransaction = EM.getEM().getTransaction();
+		    userTransaction.begin();
+	      Boolean result = event.delete();
+	      userTransaction.commit();
+	      if(result){
+			  messages.add(new Message("op001","Success Operation",""));
+			  return messages;
+	      }
+	      else {
+			  messages.add(new Message("op002","Fail Operation",""));
+			  return messages;
+	      }
+	   }
+	 
 	   	//Client REST Services
 		@GET
 		@Path("/clients")
@@ -702,30 +695,30 @@ public class TabletopsService {
 //						  messages.add(new Message("op002","Fail Operation",""));
 //						  return messages;
 //				   }
-//				 @DELETE
-//				   @Path("/users/{id}")
-//				   @Produces(MediaType.APPLICATION_JSON)
-//				   public ArrayList<Message> deleteUser(@PathParam("id") String id, @Context final HttpServletResponse response){
-//					 User user = company.findUserByIdNumber(id);
-//					  if (user == null) {
-//						  response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-//						    try {
-//						        response.flushBuffer();
-//						    }catch(Exception e){}
-//							messages.add(new Message("op002","Fail Operation",""));
-//							return messages;
-//					  }
-//					    EntityTransaction userTransaction = EM.getEM().getTransaction();
-//					    userTransaction.begin();
-//				      Boolean result = user.delete();
-//				      userTransaction.commit();
-//				      if(result){
-//						  messages.add(new Message("op001","Success Operation",""));
-//						  return messages;
-//				      }
-//				      else {
-//						  messages.add(new Message("op002","Fail Operation",""));
-//						  return messages;
-//				      }
-//				   }
+				 @DELETE
+				   @Path("/users/{id}")
+				   @Produces(MediaType.APPLICATION_JSON)
+				   public ArrayList<Message> deleteUser(@PathParam("id") String id, @Context final HttpServletResponse response){
+					 User user = company.findUserByIdNumber(id);
+					  if (user == null) {
+						  response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+						    try {
+						        response.flushBuffer();
+						    }catch(Exception e){}
+							messages.add(new Message("op002","Fail Operation",""));
+							return messages;
+					  }
+					    EntityTransaction userTransaction = EM.getEM().getTransaction();
+					    userTransaction.begin();
+				      Boolean result = user.delete();
+				      userTransaction.commit();
+				      if(result){
+						  messages.add(new Message("op001","Success Operation",""));
+						  return messages;
+				      }
+				      else {
+						  messages.add(new Message("op002","Fail Operation",""));
+						  return messages;
+				      }
+				   }
 }
