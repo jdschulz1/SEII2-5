@@ -7,16 +7,16 @@ import tabletopsPD.EventTable;
 
 public class EventTableDAO { 
 
-    public static void saveEventTable(EventTable table) {
-      EM.getEM().persist(table);
+    public static void saveEventTable(EventTable eventTable) {
+      EM.getEM().persist(eventTable);
     }
-    public static void addEventTable(EventTable table) {
-      EM.getEM().persist(table);
+    public static void addEventTable(EventTable eventTable) {
+      EM.getEM().persist(eventTable);
     }
 
     public static List<EventTable> listEventTable()
     {
-      TypedQuery<EventTable> query = EM.getEM().createQuery("SELECT table FROM event_table event_table", EventTable.class);
+      TypedQuery<EventTable> query = EM.getEM().createQuery("SELECT event_table FROM event_table event_table", EventTable.class);
       return query.getResultList();
     }
 
