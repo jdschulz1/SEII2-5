@@ -16,22 +16,22 @@ public class EventTableDAO {
 
     public static List<EventTable> listEventTable()
     {
-      TypedQuery<EventTable> query = EM.getEM().createQuery("SELECT table FROM table table", EventTable.class);
+      TypedQuery<EventTable> query = EM.getEM().createQuery("SELECT table FROM event_table event_table", EventTable.class);
       return query.getResultList();
     }
 
     public static EventTable findEventTableById(int id)
     {
-      EventTable table = EM.getEM().find(EventTable.class, new Integer(id));
-      return table;
+      EventTable eventTable = EM.getEM().find(EventTable.class, new Integer(id));
+      return eventTable;
     }
 
     /**
-     * @param table
+     * @param eventTable
      */
-    public static void removeEventTable(EventTable table)
+    public static void removeEventTable(EventTable eventTable)
     {
-      EM.getEM().remove(table);
+      EM.getEM().remove(eventTable);
     }
   }
 

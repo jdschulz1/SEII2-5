@@ -52,8 +52,8 @@ public class Guest implements Serializable{
 	private Event event;
 	
 	@ManyToOne(optional=false)
-	@JoinColumn(name="table",referencedColumnName="table_id")
-	private EventTable table;
+	@JoinColumn(name="event_table",referencedColumnName="event_table_id")
+	private EventTable eventTable;
 
 	@OneToMany(mappedBy = "wlOwner")
 	private List<Guest> guestWhiteList;

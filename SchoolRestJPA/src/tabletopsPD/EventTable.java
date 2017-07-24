@@ -16,8 +16,8 @@ import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "table")
-@Entity(name = "table")
+@XmlRootElement(name = "event_table")
+@Entity(name = "event_table")
 public class EventTable implements Serializable{
 
 	/**
@@ -26,15 +26,15 @@ public class EventTable implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id //signifies the primary key
-	@Column(name = "table_id", nullable = false)
+	@Column(name = "event_table_id", nullable = false)
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long tableId;
+	private long eventTableId;
 	
 	/**
 	 * The number that identifies the Table at the Event.
 	 */
-	@Column(name = "table_num")
-	private int tableNum;
+	@Column(name = "event_table_num")
+	private int eventTableNum;
 	
 	/**
 	 * The fitness rating for determining the greater fitness rating of the SeatingArrangement containing this instance of Table.
@@ -43,7 +43,7 @@ public class EventTable implements Serializable{
 	private BigDecimal fitnessRating;
 	
 	@OneToMany(cascade = CascadeType.ALL, 
-	        mappedBy = "table", orphanRemoval = true)
+	        mappedBy = "event_table", orphanRemoval = true)
 	private List<Guest> guests;
 	
 	@ManyToOne(optional=false)
@@ -66,12 +66,12 @@ public class EventTable implements Serializable{
 	}
 
 	public int getEventTableNum() {
-		return tableNum;
+		return eventTableNum;
 	}
 
 	@XmlElement
-	public void setEventTableNum(int tableNum) {
-		this.tableNum = tableNum;
+	public void setEventTableNum(int eventTableNum) {
+		this.eventTableNum = eventTableNum;
 	}
 
 	public BigDecimal getFitnessRating() {

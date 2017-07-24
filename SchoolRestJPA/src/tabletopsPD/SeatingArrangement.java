@@ -94,8 +94,8 @@ public class SeatingArrangement implements Serializable{
 	}
 
 	@XmlElement
-	public void setEventTables(List<EventTable> tables) {
-		this.eventTables = tables;
+	public void setEventTables(List<EventTable> eventTables) {
+		this.eventTables = eventTables;
 	}
 
 	public Event getEvent() {

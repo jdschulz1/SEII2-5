@@ -66,8 +66,8 @@ public class Event implements Serializable {
 	/**
 	 * The number of people who can be seated at each table for the event.
 	 */
-	@Column(name = "table_size")
-	private int tableSize;
+	@Column(name = "event_table_size")
+	private int eventTableSize;
 	
 	/**
 	 * The maximum number of seats which can be left empty at a table for the event.
@@ -151,12 +151,12 @@ public class Event implements Serializable {
 	}
 
 	public int getEventTableSize() {
-		return tableSize;
+		return eventTableSize;
 	}
 
 	@XmlElement
-	public void setEventTableSize(int tableSize) {
-		this.tableSize = tableSize;
+	public void setEventTableSize(int eventTableSize) {
+		this.eventTableSize = eventTableSize;
 	}
 
 	public int getMaxEmptySeats() {
