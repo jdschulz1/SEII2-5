@@ -12,8 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import com.owlike.genson.annotation.JsonIgnore;
 
 import tabletopsDAO.ClientDAO;
 import tabletopsDAO.UserDAO;
@@ -65,7 +68,7 @@ public class User implements Serializable{
 	@Column(name = "email",nullable = false,length = 20)
 	private String email;
 	
-	@OneToMany(cascade = CascadeType.ALL, 
+	@OneToMany(cascade = CascadeType.ALL,
 	        mappedBy = "primaryPlanner", orphanRemoval = true)
 	private List<Event> events;
 	
@@ -137,6 +140,7 @@ public class User implements Serializable{
 		this.email = email;
 	}
 
+	@JsonIgnore
 	public List<Event> getEvents() {
 		return events;
 	}

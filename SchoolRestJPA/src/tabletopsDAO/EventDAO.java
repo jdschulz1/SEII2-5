@@ -33,7 +33,7 @@ public class EventDAO {
 
     public static Event findEventByIdNumber(String idNumber)
     {
-      String qString = "SELECT event FROM event event  WHERE event.idNumber ="+idNumber;
+      String qString = "SELECT event FROM event event WHERE event.eventId ="+idNumber;
       Query query = EM.getEM().createQuery(qString);
       Event event = (Event)query.getSingleResult();
       return event;

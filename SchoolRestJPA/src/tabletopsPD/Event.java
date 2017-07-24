@@ -87,10 +87,6 @@ public class Event implements Serializable {
 	@JoinColumn(name="user",referencedColumnName="user_id")
 	private User primaryPlanner;
 	
-//	@ManyToOne(optional=false)
-//	@JoinColumn(name="user",referencedColumnName="user_id")
-//	private User user;
-	
 	@ManyToOne(optional=false)
 	@JoinColumn(name="client_id",referencedColumnName="client_id")
 	private Client client;
