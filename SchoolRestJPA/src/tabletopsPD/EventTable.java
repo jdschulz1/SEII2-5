@@ -43,7 +43,7 @@ public class EventTable implements Serializable{
 	private BigDecimal fitnessRating;
 	
 	@OneToMany(cascade = CascadeType.ALL, 
-	        mappedBy = "event_table", orphanRemoval = true)
+	        mappedBy = "eventTable", orphanRemoval = true)
 	private List<Guest> guests;
 	
 	@ManyToOne(optional=false)
