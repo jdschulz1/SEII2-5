@@ -6,21 +6,22 @@ import javax.persistence.TypedQuery;
 
 import tabletopsDAO.EM;
 import tabletopsPD.Client;
+import tabletopsPD.Company;
 import tabletopsPD.Event;
 import tabletopsPD.User;
 
-public class SystemDAO { 
+public class CompanyDAO { 
 
-    public static void saveSystem(tabletopsPD.System system) {
-      EM.getEM().persist(system);
+    public static void saveSystem(Company company) {
+      EM.getEM().persist(company);
     }
-    public static void addSystem(tabletopsPD.System system) {
-      EM.getEM().persist(system);
+    public static void addSystem(Company company) {
+      EM.getEM().persist(company);
     }
 
-    public static List<tabletopsPD.System> listSystem()
+    public static List<Company> listCompany()
     {
-      TypedQuery<tabletopsPD.System> query = EM.getEM().createQuery("SELECT system FROM system system", tabletopsPD.System.class);
+      TypedQuery<Company> query = EM.getEM().createQuery("SELECT company FROM company company", Company.class);
       return query.getResultList();
     }
 

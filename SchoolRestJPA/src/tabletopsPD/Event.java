@@ -66,8 +66,8 @@ public class Event implements Serializable {
 	/**
 	 * The number of people who can be seated at each table for the event.
 	 */
-	@Column(name = "table_size")
-	private int tableSize;
+	@Column(name = "event_table_size")
+	private int eventTableSize;
 	
 	/**
 	 * The maximum number of seats which can be left empty at a table for the event.
@@ -87,17 +87,13 @@ public class Event implements Serializable {
 	@JoinColumn(name="user",referencedColumnName="user_id")
 	private User primaryPlanner;
 	
-//	@ManyToOne(optional=false)
-//	@JoinColumn(name="user",referencedColumnName="user_id")
-//	private User user;
-	
 	@ManyToOne(optional=false)
 	@JoinColumn(name="client_id",referencedColumnName="client_id")
 	private Client client;
 	
 	@ManyToOne(optional=false)
-	@JoinColumn(name="system",referencedColumnName="system_id")
-	private tabletopsPD.System system;
+	@JoinColumn(name="company",referencedColumnName="company_id")
+	private Company company;
 	
 	/**
 	 * This operation executes the genetic algorithm to attempt to find the best SeatingArrangement for the Event.
@@ -150,13 +146,13 @@ public class Event implements Serializable {
 		this.venueName = venueName;
 	}
 
-	public int getTableSize() {
-		return tableSize;
+	public int getEventTableSize() {
+		return eventTableSize;
 	}
 
 	@XmlElement
-	public void setTableSize(int tableSize) {
-		this.tableSize = tableSize;
+	public void setEventTableSize(int eventTableSize) {
+		this.eventTableSize = eventTableSize;
 	}
 
 	public int getMaxEmptySeats() {

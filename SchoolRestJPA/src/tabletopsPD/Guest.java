@@ -52,16 +52,20 @@ public class Guest implements Serializable{
 	private Event event;
 	
 	@ManyToOne(optional=false)
-	@JoinColumn(name="table",referencedColumnName="table_id")
-	private Table table;
+	@JoinColumn(name="event_table",referencedColumnName="event_table_id")
+	private EventTable eventTable;
 
-//	@OneToMany(cascade = CascadeType.ALL, 
-//	        mappedBy = "guest", orphanRemoval = true)
-//	private List<Guest> guestWhiteList;
-//	
-//	@OneToMany(cascade = CascadeType.ALL, 
-//	        mappedBy = "guest", orphanRemoval = true)
-//	private List<Guest> guestBlackList;
+	@OneToMany(mappedBy = "wlOwner")
+	private List<Guest> guestWhiteList;
+	
+	@ManyToOne
+	private Guest wlOwner;
+	
+	@OneToMany(mappedBy = "blOwner")
+	private List<Guest> guestBlackList;
+	
+	@ManyToOne
+	private Guest blOwner;
 	
 	/**
 	 * A method for adding to the Black List of Guests for the current Guest.
@@ -122,22 +126,22 @@ public class Guest implements Serializable{
 		this.clientRelationship = clientRelationship;
 	}
 
-//	public List<Guest> getGuestWhiteList() {
-//		return guestWhiteList;
-//	}
-//
-//	@XmlElement
-//	public void setGuestWhiteList(List<Guest> guestWhiteList) {
-//		this.guestWhiteList = guestWhiteList;
-//	}
-//
-//	public List<Guest> getGuestBlackList() {
-//		return guestBlackList;
-//	}
-//
-//	@XmlElement
-//	public void setGuestBlackList(List<Guest> guestBlackList) {
-//		this.guestBlackList = guestBlackList;
-//	}
+	public List<Guest> getGuestWhiteList() {
+		return guestWhiteList;
+	}
+
+	@XmlElement
+	public void setGuestWhiteList(List<Guest> guestWhiteList) {
+		this.guestWhiteList = guestWhiteList;
+	}
+
+	public List<Guest> getGuestBlackList() {
+		return guestBlackList;
+	}
+
+	@XmlElement
+	public void setGuestBlackList(List<Guest> guestBlackList) {
+		this.guestBlackList = guestBlackList;
+	}
 
 }

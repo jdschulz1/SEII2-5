@@ -12,8 +12,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import com.owlike.genson.annotation.JsonIgnore;
+
+import tabletopsDAO.ClientDAO;
+import tabletopsDAO.UserDAO;
 
 /**
  * A general user of the software system.
@@ -62,13 +68,13 @@ public class User implements Serializable{
 	@Column(name = "email",nullable = false,length = 20)
 	private String email;
 	
-	@OneToMany(cascade = CascadeType.ALL, 
+	@OneToMany(cascade = CascadeType.ALL,
 	        mappedBy = "primaryPlanner", orphanRemoval = true)
 	private List<Event> events;
 	
 	@ManyToOne(optional=false)
-	@JoinColumn(name="system",referencedColumnName="system_id")
-	private tabletopsPD.System system;
+	@JoinColumn(name="company",referencedColumnName="company_id")
+	private tabletopsPD.Company company;
 
 	/**
 	 * Checks the password to the one stored for a user and if valid returns true.
@@ -134,6 +140,7 @@ public class User implements Serializable{
 		this.email = email;
 	}
 
+	@JsonIgnore
 	public List<Event> getEvents() {
 		return events;
 	}
@@ -141,6 +148,10 @@ public class User implements Serializable{
 	@XmlElement
 	public void setEvents(List<Event> events) {
 		this.events = events;
+	}
+	
+	public User findUserByID(int id) {
+		  return UserDAO.findUserById(id);
 	}
 
 }

@@ -41,7 +41,7 @@ public class SeatingArrangement implements Serializable{
 	
 	@OneToMany(cascade = CascadeType.ALL, 
 	        mappedBy = "seatingArrangement", orphanRemoval = true)
-	private List<Table> tables;
+	private List<EventTable> eventTables;
 	
 	@OneToOne
 	@JoinColumn(name = "event_id")
@@ -89,13 +89,13 @@ public class SeatingArrangement implements Serializable{
 		this.overallFitnessRating = overallFitnessRating;
 	}
 
-	public List<Table> getTables() {
-		return tables;
+	public List<EventTable> getEventTables() {
+		return eventTables;
 	}
 
 	@XmlElement
-	public void setTables(List<Table> tables) {
-		this.tables = tables;
+	public void setEventTables(List<EventTable> eventTables) {
+		this.eventTables = eventTables;
 	}
 
 	public Event getEvent() {

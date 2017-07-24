@@ -16,9 +16,9 @@ import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "table")
-@Entity(name = "table")
-public class Table implements Serializable{
+@XmlRootElement(name = "event_table")
+@Entity(name = "event_table")
+public class EventTable implements Serializable{
 
 	/**
 	 * 
@@ -26,15 +26,15 @@ public class Table implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id //signifies the primary key
-	@Column(name = "table_id", nullable = false)
+	@Column(name = "event_table_id", nullable = false)
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long tableId;
+	private long eventTableId;
 	
 	/**
 	 * The number that identifies the Table at the Event.
 	 */
-	@Column(name = "table_num")
-	private int tableNum;
+	@Column(name = "event_table_num")
+	private int eventTableNum;
 	
 	/**
 	 * The fitness rating for determining the greater fitness rating of the SeatingArrangement containing this instance of Table.
@@ -43,7 +43,7 @@ public class Table implements Serializable{
 	private BigDecimal fitnessRating;
 	
 	@OneToMany(cascade = CascadeType.ALL, 
-	        mappedBy = "table", orphanRemoval = true)
+	        mappedBy = "eventTable", orphanRemoval = true)
 	private List<Guest> guests;
 	
 	@ManyToOne(optional=false)
@@ -54,17 +54,24 @@ public class Table implements Serializable{
 	 * An operation that calculates the fitness of the current instance of Table, based on the number of empty seats and the satisfaction of the guests with who they are seated with (determined by their black and white lists).
 	 */
 	public void calculateFitness() {
-		// TODO - implement Table.calculateFitness
-		throw new UnsupportedOperationException();
+		BigDecimal fitness, perGuest = BigDecimal.valueOf(100).divide(BigDecimal.valueOf(this.guests.size()));
+		
+		for (Guest g : this.guests){
+			BigDecimal total = BigDecimal.ZERO;
+			
+//			for(Guest g2 : this.guests){
+//				if(!g.equals(g2) && g.getGuestBlackList().contains(g2))
+//			}
+		}
 	}
 
-	public int getTableNum() {
-		return tableNum;
+	public int getEventTableNum() {
+		return eventTableNum;
 	}
 
 	@XmlElement
-	public void setTableNum(int tableNum) {
-		this.tableNum = tableNum;
+	public void setEventTableNum(int eventTableNum) {
+		this.eventTableNum = eventTableNum;
 	}
 
 	public BigDecimal getFitnessRating() {

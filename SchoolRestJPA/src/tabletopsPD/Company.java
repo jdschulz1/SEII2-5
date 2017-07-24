@@ -13,17 +13,16 @@ import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import schoolDAO.StudentDAO;
-import schoolPD.Student;
 import tabletopsDAO.ClientDAO;
 import tabletopsDAO.EventDAO;
+import tabletopsDAO.UserDAO;
 
 /**
  * The object representing the system and overall company information for ACME Couriers.
  */
-@XmlRootElement(name = "system")
-@Entity(name = "system")
-public class System implements Serializable{
+@XmlRootElement(name = "company")
+@Entity(name = "company")
+public class Company implements Serializable{
 
 	/**
 	 * 
@@ -31,9 +30,9 @@ public class System implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id //signifies the primary key
-	@Column(name = "system_id", nullable = false)
+	@Column(name = "company_id", nullable = false)
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long systemId;
+	private long companyId;
 	
 	/**
 	 * The name of the Company.
@@ -42,15 +41,15 @@ public class System implements Serializable{
 	private String companyName;
 	
 	@OneToMany(cascade = CascadeType.ALL, 
-	        mappedBy = "system", orphanRemoval = true)
+	        mappedBy = "company", orphanRemoval = true)
 	private List<Client> clients;
 	
 	@OneToMany(cascade = CascadeType.ALL, 
-	        mappedBy = "system", orphanRemoval = true)
+	        mappedBy = "company", orphanRemoval = true)
 	private List<Event> events;
 	
 	@OneToMany(cascade = CascadeType.ALL, 
-	        mappedBy = "system", orphanRemoval = true)
+	        mappedBy = "company", orphanRemoval = true)
 	private List<User> users;
 
 	public String getCompanyName() {
@@ -98,7 +97,7 @@ public class System implements Serializable{
 	
 	public List<Event> getAllEvents(int page, int perPage) {
 		
-		List eventList= EventDAO.getAllEvents(page,  perPage);
+		List<Event> eventList= EventDAO.getAllEvents(page,  perPage);
 		return eventList;
 	}
 	
@@ -107,13 +106,20 @@ public class System implements Serializable{
 	}
 	
 	public List<Client> getAllClients(int page, int perPage) {
-		
-		List clientList= ClientDAO.getAllClients(page,  perPage);
+		List<Client> clientList= ClientDAO.getAllClients(page,  perPage);
 		return clientList;
 	}
 	
 	public Client findClientByIdNumber(String idNumber) {
 	    return ClientDAO.findClientByIdNumber(idNumber); 
 	}
-
+	
+	public List<User> getAllUsers(int page, int perPage) {
+		List<User> userList= UserDAO.getAllUsers(page,  perPage);
+		return userList;
+	}
+	
+	public User findUserByIdNumber(String idNumber) {
+	    return UserDAO.findUserByIdNumber(idNumber); 
+	}
 }

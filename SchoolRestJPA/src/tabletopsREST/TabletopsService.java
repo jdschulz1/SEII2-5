@@ -20,7 +20,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import tabletopsPD.System;
+import tabletopsPD.Company;
 import tabletopsPD.Client;
 import tabletopsPD.Event;
 import tabletopsPD.Guest;
@@ -29,13 +29,13 @@ import tabletopsPD.User;
 import tabletopsDAO.EM;
 import schoolUT.Log;
 import schoolUT.Message;
-import tabletopsDAO.SystemDAO;
+import tabletopsDAO.CompanyDAO;
 
 @Path("/tabletopservices")
 public class TabletopsService {
 
 	ArrayList<Message> messages = new ArrayList<Message>();
-	tabletopsPD.System system = (tabletopsPD.System) (SystemDAO.listSystem().get(0));
+	Company company = (Company) (CompanyDAO.listCompany().get(0));
 	Log log = new Log();
 	
 	//Events REST Services
@@ -45,15 +45,15 @@ public class TabletopsService {
 	public List<Event> getEvents(
 	    @DefaultValue("0") @QueryParam("page") String page,
 	    @DefaultValue("10") @QueryParam("per_page") String perPage){
-			EM.getEM().refresh(system);
-			return system.getAllEvents(Integer.parseInt(page),Integer.parseInt(perPage));
+			EM.getEM().refresh(company);
+			return company.getAllEvents(Integer.parseInt(page),Integer.parseInt(perPage));
 	}	
 	
 	@GET
 	@Path("/events/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Event getEvent(@PathParam("id") String id){
-      return system.findEventByIdNumber(id);
+      return company.findEventByIdNumber(id);
 	}
 	
 //	@POST
@@ -186,15 +186,15 @@ public class TabletopsService {
 		public List<Client> getClients(
 		    @DefaultValue("0") @QueryParam("page") String page,
 		    @DefaultValue("10") @QueryParam("per_page") String perPage){
-				EM.getEM().refresh(system);
-				return system.getAllClients(Integer.parseInt(page),Integer.parseInt(perPage));
+				EM.getEM().refresh(company);
+				return company.getAllClients(Integer.parseInt(page),Integer.parseInt(perPage));
 		}	
 		
 		@GET
 		@Path("/clients/{id}")
 		@Produces(MediaType.APPLICATION_JSON)
 		public Client getClient(@PathParam("id") String id){
-	      return system.findClientByIdNumber(id);
+	      return company.findClientByIdNumber(id);
 		}
 		
 		@POST
@@ -227,7 +227,7 @@ public class TabletopsService {
 			  }
 			  EntityTransaction userTransaction = EM.getEM().getTransaction();
 			  userTransaction.begin();
-			  Boolean result = system.addClient(client);
+			  Boolean result = company.addClient(client);
 			  userTransaction.commit();
 			  if(result){
 				  messages.add(new Message("op001","Success Operation",""));
@@ -248,7 +248,7 @@ public class TabletopsService {
 		   @Produces(MediaType.APPLICATION_JSON)
 		   @Consumes(MediaType.APPLICATION_JSON)
 		   public ArrayList<Message> updatedClient(Client client,@PathParam("id") String id, @Context final HttpServletResponse response) throws IOException{
-			   Client oldClient = system.findClientByIdNumber(id);
+			   Client oldClient = company.findClientByIdNumber(id);
 			   if (oldClient == null)
 				  {
 			   		  response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
@@ -290,7 +290,7 @@ public class TabletopsService {
 		   @Path("/clients/{id}")
 		   @Produces(MediaType.APPLICATION_JSON)
 		   public ArrayList<Message> deleteClient(@PathParam("id") String id, @Context final HttpServletResponse response){
-			  Client client = system.findClientByIdNumber(id);
+			  Client client = company.findClientByIdNumber(id);
 			  if (client == null) {
 				  response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 				    try {
@@ -476,7 +476,7 @@ public class TabletopsService {
 //				@Path("/seatingarrangements/{id}")
 //				@Produces(MediaType.APPLICATION_JSON)
 //				public SeatingArrangement getSeatingArrangement(@PathParam("id") String id){
-//			      return system.findSeatingArrangementByIdNumber(id);
+//			      return company.findSeatingArrangementByIdNumber(id);
 //				}
 //				
 //				@POST
@@ -509,7 +509,7 @@ public class TabletopsService {
 //						  }
 //						  EntityTransaction userTransaction = EM.getEM().getTransaction();
 //						  userTransaction.begin();
-//						  Boolean result = system.addGuest(sa);
+//						  Boolean result = company.addGuest(sa);
 //						  userTransaction.commit();
 //						  if(result){
 //							  messages.add(new Message("op001","Success Operation",""));
@@ -530,7 +530,7 @@ public class TabletopsService {
 //				   @Produces(MediaType.APPLICATION_JSON)
 //				   @Consumes(MediaType.APPLICATION_JSON)
 //				   public ArrayList<Message> updatedSeatingArrangement(SeatingArrangement sa,@PathParam("id") String id, @Context final HttpServletResponse response) throws IOException{
-//					   SeatingArrangement oldSeatingArrangement = system.findSeatingArrangementByIdNumber(id);
+//					   SeatingArrangement oldSeatingArrangement = company.findSeatingArrangementByIdNumber(id);
 //					   if (oldSeatingArrangement == null)
 //						  {
 //					   		  response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
@@ -572,7 +572,7 @@ public class TabletopsService {
 //				   @Path("/seatingarrangements/{id}")
 //				   @Produces(MediaType.APPLICATION_JSON)
 //				   public ArrayList<Message> deleteSeatingArrangement(@PathParam("id") String id, @Context final HttpServletResponse response){
-//					 SeatingArrangement sa = system.findSeatingArrangementByIdNumber(id);
+//					 SeatingArrangement sa = company.findSeatingArrangementByIdNumber(id);
 //					  if (sa == null) {
 //						  response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 //						    try {
@@ -595,23 +595,23 @@ public class TabletopsService {
 //				      }
 //				   }
 //			 
-//			 //User REST Services
-//				@GET
-//				@Path("/users")
-//				@Produces(MediaType.APPLICATION_JSON)
-//				public List<Guest> getUsers(
-//				    @DefaultValue("0") @QueryParam("page") String page,
-//				    @DefaultValue("10") @QueryParam("per_page") String perPage){
-//						EM.getEM().refresh(user);
-//						return system.getAllUsers(Integer.parseInt(page),Integer.parseInt(perPage));
-//				}	
-//				
-//				@GET
-//				@Path("/users/{id}")
-//				@Produces(MediaType.APPLICATION_JSON)
-//				public User getUser(@PathParam("id") String id){
-//			      return system.findUserByIdNumber(id);
-//				}
+			//User REST Services
+		 	@GET
+		 	@Path("/users")
+			@Produces(MediaType.APPLICATION_JSON)
+			public List<User> getUsers(
+			    @DefaultValue("0") @QueryParam("page") String page,
+			    @DefaultValue("10") @QueryParam("per_page") String perPage){
+					EM.getEM().refresh(company);
+					return company.getAllUsers(Integer.parseInt(page),Integer.parseInt(perPage));
+		 	}	
+				
+			@GET
+			@Path("/users/{id}")
+			@Produces(MediaType.APPLICATION_JSON)
+			public User getUser(@PathParam("id") String id){
+				return company.findUserByIdNumber(id);
+			}
 //				
 //				@POST
 //				   @Path("/users")
@@ -643,7 +643,7 @@ public class TabletopsService {
 //						  }
 //						  EntityTransaction userTransaction = EM.getEM().getTransaction();
 //						  userTransaction.begin();
-//						  Boolean result = system.addUser(user);
+//						  Boolean result = company.addUser(user);
 //						  userTransaction.commit();
 //						  if(result){
 //							  messages.add(new Message("op001","Success Operation",""));
@@ -664,7 +664,7 @@ public class TabletopsService {
 //				   @Produces(MediaType.APPLICATION_JSON)
 //				   @Consumes(MediaType.APPLICATION_JSON)
 //				   public ArrayList<Message> updatedUser(User user,@PathParam("id") String id, @Context final HttpServletResponse response) throws IOException{
-//					   User oldUser = system.findUserByIdNumber(id);
+//					   User oldUser = company.findUserByIdNumber(id);
 //					   if (oldUser == null)
 //						  {
 //					   		  response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
@@ -706,7 +706,7 @@ public class TabletopsService {
 //				   @Path("/users/{id}")
 //				   @Produces(MediaType.APPLICATION_JSON)
 //				   public ArrayList<Message> deleteUser(@PathParam("id") String id, @Context final HttpServletResponse response){
-//					 User user = system.findUserByIdNumber(id);
+//					 User user = company.findUserByIdNumber(id);
 //					  if (user == null) {
 //						  response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 //						    try {

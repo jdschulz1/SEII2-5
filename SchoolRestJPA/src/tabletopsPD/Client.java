@@ -13,8 +13,6 @@ import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import schoolDAO.StudentDAO;
-import schoolPD.Student;
 import schoolUT.Message;
 import tabletopsDAO.ClientDAO;
 
@@ -50,8 +48,8 @@ public class Client implements Serializable {
 	private String email;
 	
 	@ManyToOne(optional=false)
-	@JoinColumn(name="system",referencedColumnName="system_id")
-	private tabletopsPD.System system;
+	@JoinColumn(name="company",referencedColumnName="company_id")
+	private Company company;
 	
 	public int getClientID() {
 		return clientId;
