@@ -96,8 +96,8 @@ public class Event implements Serializable {
 	private Client client;
 	
 	@ManyToOne(optional=false)
-	@JoinColumn(name="system",referencedColumnName="system_id")
-	private tabletopsPD.System system;
+	@JoinColumn(name="company",referencedColumnName="company_id")
+	private Company company;
 	
 	/**
 	 * This operation executes the genetic algorithm to attempt to find the best SeatingArrangement for the Event.

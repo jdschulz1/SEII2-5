@@ -70,8 +70,8 @@ public class User implements Serializable{
 	private List<Event> events;
 	
 	@ManyToOne(optional=false)
-	@JoinColumn(name="system",referencedColumnName="system_id")
-	private tabletopsPD.System system;
+	@JoinColumn(name="company",referencedColumnName="company_id")
+	private tabletopsPD.Company company;
 
 	/**
 	 * Checks the password to the one stored for a user and if valid returns true.

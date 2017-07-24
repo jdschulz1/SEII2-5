@@ -13,8 +13,6 @@ import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import schoolDAO.StudentDAO;
-import schoolPD.Student;
 import tabletopsDAO.ClientDAO;
 import tabletopsDAO.EventDAO;
 import tabletopsDAO.UserDAO;
@@ -22,9 +20,9 @@ import tabletopsDAO.UserDAO;
 /**
  * The object representing the system and overall company information for ACME Couriers.
  */
-@XmlRootElement(name = "system")
-@Entity(name = "system")
-public class System implements Serializable{
+@XmlRootElement(name = "company")
+@Entity(name = "company")
+public class Company implements Serializable{
 
 	/**
 	 * 
@@ -32,9 +30,9 @@ public class System implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id //signifies the primary key
-	@Column(name = "system_id", nullable = false)
+	@Column(name = "company_id", nullable = false)
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long systemId;
+	private long companyId;
 	
 	/**
 	 * The name of the Company.
@@ -43,15 +41,15 @@ public class System implements Serializable{
 	private String companyName;
 	
 	@OneToMany(cascade = CascadeType.ALL, 
-	        mappedBy = "system", orphanRemoval = true)
+	        mappedBy = "company", orphanRemoval = true)
 	private List<Client> clients;
 	
 	@OneToMany(cascade = CascadeType.ALL, 
-	        mappedBy = "system", orphanRemoval = true)
+	        mappedBy = "company", orphanRemoval = true)
 	private List<Event> events;
 	
 	@OneToMany(cascade = CascadeType.ALL, 
-	        mappedBy = "system", orphanRemoval = true)
+	        mappedBy = "company", orphanRemoval = true)
 	private List<User> users;
 
 	public String getCompanyName() {

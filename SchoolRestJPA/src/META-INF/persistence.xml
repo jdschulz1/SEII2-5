@@ -9,8 +9,8 @@
          <class>tabletopsPD.Event</class>
          <class>tabletopsPD.Guest</class>
          <class>tabletopsPD.SeatingArrangement</class>
-         <class>tabletopsPD.System</class>
-         <class>tabletopsPD.Table</class>
+         <class>tabletopsPD.Company</class>
+         <class>tabletopsPD.EventTable</class>
          <class>tabletopsPD.User</class>
 
         <properties>
