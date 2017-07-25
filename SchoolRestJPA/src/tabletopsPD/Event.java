@@ -1,6 +1,7 @@
 package tabletopsPD;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 //import java.time.LocalDateTime;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import schoolUT.Message;
 import tabletopsDAO.ClientDAO;
 import tabletopsDAO.EventDAO;
 
@@ -40,9 +42,9 @@ public class Event implements Serializable {
 	@Id //signifies the primary key
 	@Column(name = "event_id", nullable = false)
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long eventId;
+	private int eventId;
 	
-	public long getEventId() {
+	public int getEventId() {
 		return eventId;
 	}
 
@@ -197,5 +199,45 @@ public class Event implements Serializable {
 	public Boolean delete() {
 		EventDAO.removeEvent(this);
 		return true;
+	}
+	
+	public ArrayList<Message> validate() {
+		ArrayList<Message> messages= new ArrayList<Message>();
+		Message message;
+		if (getEventId() == 0){
+			message = new Message ("Event000","EventId must have a value","eventId");
+			messages.add(message);
+		}
+		if (getEventTableSize() == 0){
+			message = new Message ("Event001","Event Table Size must have a value","getEventTableSize");
+			messages.add(message);
+		}
+		if (getEventTitle() == null || getEventTitle().length() ==0){
+			message = new Message ("Event002","Event Title Number must have a value","eventTitle");
+			messages.add(message);
+		}
+		if (getVenueName() == null || getVenueName().length() ==0){
+			message = new Message ("Event003","Venue Name must have a value","venueName");
+			messages.add(message);
+		}
+		if (getMaxEmptySeats() == 0){
+			message = new Message ("Event004","Max Empty Seats must have a value","maxEmptySeats");
+			messages.add(message);
+		}
+		
+		if (messages.size() == 0 ) 
+			return null;
+		else 
+			return messages;
+		
+	}
+	
+	public Boolean update(Event event) {
+	    setEventTableSize(event.getEventTableSize());
+	    setEventTitle(event.getEventTitle());
+	    setVenueName(event.getVenueName());
+	    setMaxEmptySeats(event.getMaxEmptySeats());
+
+	    return true;
 	}
 }

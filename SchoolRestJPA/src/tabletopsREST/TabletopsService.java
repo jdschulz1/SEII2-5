@@ -56,95 +56,95 @@ public class TabletopsService {
       return company.findEventByIdNumber(id);
 	}
 	
-//	@POST
-//	   @Path("/events")
-//	   @Produces(MediaType.APPLICATION_JSON)
-//	   @Consumes(MediaType.APPLICATION_JSON)
-//	   public ArrayList<Message> addEvent(Event event,@Context final HttpServletResponse response) throws IOException{
-//
-//		  if (event == null) {
-//
-//			  response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
-//			  try {
-//			        response.flushBuffer();
-//			  }catch(Exception e){}
-//			  messages.add(new Message("op002","Fail Operation",""));
-//			  return messages;
-//		  }
-//		  else  {
-//			  
-//			  ArrayList<Message> errMessages = event.validate();
-//			  if (errMessages != null) {
-//				  
-//				  response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
-//				  try {
-//					  response.flushBuffer();
-//				  }	
-//				  catch(Exception e){
-//					  }
-//				  return errMessages;
-//			  }
-//			  EntityTransaction userTransaction = EM.getEM().getTransaction();
-//		    userTransaction.begin();
-//			  Boolean result = system.addEvent(event);
-//			  userTransaction.commit();
-//			  if(result){
-//				  messages.add(new Message("op001","Success Operation",""));
-//				  return messages;
-//			  }
-//			  response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
-//			  try {
-//				  response.flushBuffer();
-//			  }	
-//			  catch(Exception e){
-//				  }
-//			  messages.add(new Message("op002","Fail Operation",""));
-//			  return messages;
-//		  }
-//	}
-//	@PUT
-//	   @Path("/events/{id}")
-//	   @Produces(MediaType.APPLICATION_JSON)
-//	   @Consumes(MediaType.APPLICATION_JSON)
-//	   public ArrayList<Message> updatedEvent(Event event,@PathParam("id") String id, @Context final HttpServletResponse response) throws IOException{
-//		   Event oldEvent = system.findEventByIdNumber(id);
-//		   if (oldEvent == null)
-//			  {
-//		   		  response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
-//		   		  try {
-//			        response.flushBuffer();
-//		   		  }catch(Exception e){}
-//				  messages.add(new Message("op002","Fail Operation",""));
-//				  return messages;
-//			  }
-//		  else
-//			  {
-//				  ArrayList<Message> errMessages = event.validate();
-//				  if (errMessages != null) {
-//					  response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
-//					  try {
-//						  response.flushBuffer();
-//					  }	
-//					  catch(Exception e){
-//						  }
-//					  return errMessages;
-//				  }
-//			  }
-//     EntityTransaction userTransaction = EM.getEM().getTransaction();
-//     userTransaction.begin();
-//	      Boolean result = oldEvent.update(event);
-//	      userTransaction.commit();
-//	      if(result){
-//			  messages.add(new Message("op001","Success Operation",""));
-//			  return messages;
-//	      }
-//	      response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
-//		    try {
-//		        response.flushBuffer();
-//		    }catch(Exception e){}
-//			  messages.add(new Message("op002","Fail Operation",""));
-//			  return messages;
-//	   }
+	@POST
+	   @Path("/events")
+	   @Produces(MediaType.APPLICATION_JSON)
+	   @Consumes(MediaType.APPLICATION_JSON)
+	   public ArrayList<Message> addEvent(Event event,@Context final HttpServletResponse response) throws IOException{
+
+		  if (event == null) {
+
+			  response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
+			  try {
+			        response.flushBuffer();
+			  }catch(Exception e){}
+			  messages.add(new Message("op002","Fail Operation",""));
+			  return messages;
+		  }
+		  else  {
+			  
+			  ArrayList<Message> errMessages = event.validate();
+			  if (errMessages != null) {
+				  
+				  response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+				  try {
+					  response.flushBuffer();
+				  }	
+				  catch(Exception e){
+					  }
+				  return errMessages;
+			  }
+			  EntityTransaction userTransaction = EM.getEM().getTransaction();
+		    userTransaction.begin();
+			  Boolean result = company.addEvent(event);
+			  userTransaction.commit();
+			  if(result){
+				  messages.add(new Message("op001","Success Operation",""));
+				  return messages;
+			  }
+			  response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
+			  try {
+				  response.flushBuffer();
+			  }	
+			  catch(Exception e){
+				  }
+			  messages.add(new Message("op002","Fail Operation",""));
+			  return messages;
+		  }
+	}
+	@PUT
+	   @Path("/events/{id}")
+	   @Produces(MediaType.APPLICATION_JSON)
+	   @Consumes(MediaType.APPLICATION_JSON)
+	   public ArrayList<Message> updatedEvent(Event event,@PathParam("id") String id, @Context final HttpServletResponse response) throws IOException{
+		   Event oldEvent = company.findEventByIdNumber(id);
+		   if (oldEvent == null)
+			  {
+		   		  response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
+		   		  try {
+			        response.flushBuffer();
+		   		  }catch(Exception e){}
+				  messages.add(new Message("op002","Fail Operation",""));
+				  return messages;
+			  }
+		  else
+			  {
+				  ArrayList<Message> errMessages = event.validate();
+				  if (errMessages != null) {
+					  response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+					  try {
+						  response.flushBuffer();
+					  }	
+					  catch(Exception e){
+						  }
+					  return errMessages;
+				  }
+			  }
+     EntityTransaction userTransaction = EM.getEM().getTransaction();
+     userTransaction.begin();
+	      Boolean result = oldEvent.update(event);
+	      userTransaction.commit();
+	      if(result){
+			  messages.add(new Message("op001","Success Operation",""));
+			  return messages;
+	      }
+	      response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
+		    try {
+		        response.flushBuffer();
+		    }catch(Exception e){}
+			  messages.add(new Message("op002","Fail Operation",""));
+			  return messages;
+	   }
 	 @DELETE
 	   @Path("/events/{id}")
 	   @Produces(MediaType.APPLICATION_JSON)
