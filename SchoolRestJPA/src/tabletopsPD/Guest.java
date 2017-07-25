@@ -12,8 +12,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @XmlRootElement(name = "guest")
 @Entity(name = "guest")
@@ -55,22 +57,16 @@ public class Guest implements Serializable{
 	@JoinColumn(name="event_table",referencedColumnName="event_table_id")
 	private EventTable eventTable;
 
-	@OneToMany(mappedBy = "wlOwner")
+	@Transient
 	private List<Guest> guestWhiteList;
 	
-	@ManyToOne
-	private Guest wlOwner;
-	
-	@OneToMany(mappedBy = "blOwner")
+	@Transient
 	private List<Guest> guestBlackList;
-	
-	@ManyToOne
-	private Guest blOwner;
 	
 	/**
 	 * A method for adding to the Black List of Guests for the current Guest.
 	 */
-	public void addToBlackList() {
+	public void addToBlackList(Guest member) {
 		// TODO - implement Guest.addToBlackList
 		throw new UnsupportedOperationException();
 	}
@@ -78,7 +74,7 @@ public class Guest implements Serializable{
 	/**
 	 * A method for adding to the White List of Guests for the current Guest.
 	 */
-	public void addToWhiteList() {
+	public void addToWhiteList(Guest member) {
 		// TODO - implement Guest.addToWhiteList
 		throw new UnsupportedOperationException();
 	}
@@ -86,7 +82,7 @@ public class Guest implements Serializable{
 	/**
 	 * A method for remove from the Black List of Guests for the current Guest.
 	 */
-	public void removeFromBlackList() {
+	public void removeFromBlackList(Guest member) {
 		// TODO - implement Guest.removeFromBlackList
 		throw new UnsupportedOperationException();
 	}
@@ -94,7 +90,7 @@ public class Guest implements Serializable{
 	/**
 	 * A method for removing from the White List of Guests for the current Guest.
 	 */
-	public void removeFromWhiteList() {
+	public void removeFromWhiteList(Guest member) {
 		// TODO - implement Guest.removeFromWhiteList
 		throw new UnsupportedOperationException();
 	}
@@ -130,7 +126,7 @@ public class Guest implements Serializable{
 		return guestWhiteList;
 	}
 
-	@XmlElement
+	@XmlTransient
 	public void setGuestWhiteList(List<Guest> guestWhiteList) {
 		this.guestWhiteList = guestWhiteList;
 	}
@@ -139,7 +135,7 @@ public class Guest implements Serializable{
 		return guestBlackList;
 	}
 
-	@XmlElement
+	@XmlTransient
 	public void setGuestBlackList(List<Guest> guestBlackList) {
 		this.guestBlackList = guestBlackList;
 	}
