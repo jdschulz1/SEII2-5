@@ -10,7 +10,7 @@
     <script type="text/javascript">
 		$(document).ready(function() {
 			$('#nav-container').load('nav.html');
-			$('#clientsNav').addClass('active');
+			
 			loadClientsTable();
 		});
 </script>
@@ -19,6 +19,9 @@
 
  
 <body>
+<script type="text/javascript">
+$('#clientsNav').addClass('active');
+</script>
 <script type="text/javascript">
 function loadClientsTable(){
 	 $.ajax({ 
@@ -52,30 +55,31 @@ function loadClientsTable(){
 function editClient(id){
 	localStorage.client = id;
 	document.location.href = "/StudentRest-HTML-JPA/WebContent/EditClient.html", true;  
-// 	var clientUrl = "/SchoolRestJPA/rest/tabletopservices/clients/" + id;
-
-// 	$.ajax({
-// 		type: 'GET',
-// 		url: clientUrl,  
-// 	    dataType: "json", 
-//         success: function (data) {
-        
-//         	localStorage.theClient = data;
-//         	document.location.href = "/StudentRest-HTML-JPA/WebContent/EditClient.html", true;          
-//         },
-//         error: function (jqXHR, exception) {
-    	    
-//     	    alert("Client Error" + jqXHR.responseText);
-//     	  }  
-//     });
 	
 }
 
 function deleteClient(id){
+
 	//call to delete client service
-	
+	var url = "/SchoolRestJPA/rest/tabletopservices/clients/" + id;
+	$.ajax({ 
+		   type: "DELETE",  
+	       url: url,  
+	       dataType: "json",  
+	       contentType: "application/json; charset=utf-8",
+	       success: function(resp){  
+	         // we have the response  
+	       
+	         $('#clientsTable').html("");
+	         loadClientsTable();
+	       },  
+	       error: function (jqXHR, exception) {
+	    	    console.log(jqXHR.responseText);
+	   
+	    	  }  
+		});
 	//reload clientsTable after delete
-	loadClientsTable();
+	
 }
 </script>
    <div id="nav-container">

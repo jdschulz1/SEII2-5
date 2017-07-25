@@ -14,6 +14,49 @@
 	</script>
   </head>
   <body>
+  <script type="text/javascript">
+  function loadUsersTable(){
+		 $.ajax({ 
+			   type: "GET",  
+		       url: "/SchoolRestJPA/rest/tabletopservices/clients",  
+		       dataType: "json",  
+		       success: function(resp){  
+		         // we have the response  
+		       
+		         $('#clientsTable').html("");
+		         var tableRow;
+	  
+		         $.each(resp, function(i, client){
+		        		
+		        	    tableRow = 
+		        	        "<tr>"
+		        	            +"<td>" + client.name + "</td>"	        	  
+								+"<td><a href=\"javascript:editClient(" + client.clientID + ")\">Edit</a>&nbsp;<a href=\"javascript:deleteClient(" + client.clientID + ")\">Delete</a></td>"
+		        	        +"</tr>";
+		        	       
+		        	$('#clientsTable').append(tableRow);
+		         });
+		       },  
+		       error: function (jqXHR, exception) {
+		    	    
+		    	    alert(jqXHR.responseText);
+		    	  }  
+			});
+	}
+
+	function editClient(id){
+		localStorage.client = id;
+		document.location.href = "/StudentRest-HTML-JPA/WebContent/EditClient.html", true;  
+		
+	}
+
+	function deleteClient(id){
+		//call to delete client service
+		
+		//reload clientsTable after delete
+		loadClientsTable();
+	}
+  </script>
    <div id="nav-container">
 
   </div>

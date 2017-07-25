@@ -93,10 +93,6 @@ public class Client implements Serializable {
 	public ArrayList<Message> validate() {
 		ArrayList<Message> messages= new ArrayList<Message>();
 		Message message;
-		if (getClientID() == 0){
-			message = new Message ("Client000","ClientId must have a value","clientId");
-			messages.add(message);
-		}
 		if (getName() == null || getName().length() ==0){
 			message = new Message ("Client001","Name must have a value","name");
 			messages.add(message);
