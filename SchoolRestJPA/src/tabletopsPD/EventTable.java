@@ -54,15 +54,34 @@ public class EventTable implements Serializable{
 	 * An operation that calculates the fitness of the current instance of Table, based on the number of empty seats and the satisfaction of the guests with who they are seated with (determined by their black and white lists).
 	 */
 	public void calculateFitness() {
-		BigDecimal fitness, perGuest = BigDecimal.valueOf(100).divide(BigDecimal.valueOf(this.guests.size()));
+		BigDecimal fitness = BigDecimal.ZERO, perGuest = BigDecimal.valueOf(100).divide(BigDecimal.valueOf(this.seatingArrangement.getEvent().getEventTableSize()));
+		int emptySeatsDiffMax = this.seatingArrangement.getEvent().getEventTableSize() - this.guests.size() - this.seatingArrangement.getEvent().getMaxEmptySeats();
 		
 		for (Guest g : this.guests){
 			BigDecimal total = BigDecimal.ZERO;
+			int totalGuestsInBLWL = g.getGuestBlackList().size() + g.getGuestWhiteList().size();
 			
-//			for(Guest g2 : this.guests){
-//				if(!g.equals(g2) && g.getGuestBlackList().contains(g2))
-//			}
+			//decrease fitness score for each black listed guest at the table
+			for(Guest g2 : g.getGuestBlackList()){
+				if(this.guests.contains(g2)){
+					total = total.subtract(perGuest);
+				}
+			}
+			
+			//increase fitness score for each white listed guest at the table
+			for(Guest g3 : g.getGuestWhiteList()){
+				if(this.guests.contains(g3)){
+					total = total.add(perGuest);
+				}
+			}
+			
+			total = total.divide(BigDecimal.valueOf(totalGuestsInBLWL));
+			fitness = fitness.add(total);
 		}
+		
+		//decrease fitness score for each empty chair over the maximum allowed empty chairs at a table
+		//this will give us our EventTable fitness
+		this.fitnessRating = fitness.subtract(BigDecimal.valueOf(emptySeatsDiffMax).multiply(perGuest));
 	}
 
 	public int getEventTableNum() {

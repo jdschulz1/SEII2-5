@@ -74,10 +74,16 @@ public class SeatingArrangement implements Serializable{
 
 	/**
 	 * The operation that calculates the overall fitness of the solution for the SeatingArrangement for the genetic algorithm.
+	 * This should be the average fitness over all of the tables in the Seating Arrangement
 	 */
 	public void calculateOverallFitness() {
-		// TODO - implement SeatingArrangement.calculateOverallFitness
-		throw new UnsupportedOperationException();
+		BigDecimal fitness = BigDecimal.ZERO;
+		
+		for(EventTable et : this.eventTables){
+			fitness.add(et.getFitnessRating());
+		}
+		
+		this.overallFitnessRating = fitness.divide(BigDecimal.valueOf(this.eventTables.size()));
 	}
 
 	public BigDecimal getOverallFitnessRating() {
