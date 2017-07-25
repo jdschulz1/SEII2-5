@@ -12,6 +12,8 @@
          <class>tabletopsPD.Company</class>
          <class>tabletopsPD.EventTable</class>
          <class>tabletopsPD.User</class>
+         <class>tabletopsPD.J_Guest_BL</class>
+         <class>tabletopsPD.J_Guest_WL</class>
          <class>tabletopsDAO.LocalDateTimeConverter</class>
 
         <properties>
