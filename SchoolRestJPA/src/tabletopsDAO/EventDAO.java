@@ -31,6 +31,13 @@ public class EventDAO {
               .setMaxResults(pageSize)
               .getResultList();
     }
+    public static List<Event> getEventsForUser(String idNumber, int page, int pageSize)
+    {
+        TypedQuery<Event> query = EM.getEM().createQuery("SELECT event FROM event event WHERE event.primaryPlanner ="+idNumber, Event.class);
+        return query.setFirstResult(page * pageSize)
+                .setMaxResults(pageSize)
+                .getResultList();
+    }
 
     public static Event findEventByIdNumber(String idNumber)
     {

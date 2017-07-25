@@ -67,7 +67,7 @@ public class SeatingArrangement implements Serializable{
 	 * Produces a child seating arrangement based on two parent seating arrangements.
 	 * @param SeatingArrangement
 	 */
-	public SeatingArrangement crossover(int SeatingArrangement) {
+	public SeatingArrangement crossover(SeatingArrangement seatingArrangement) {
 		// TODO - implement SeatingArrangement.crossover
 		throw new UnsupportedOperationException();
 	}

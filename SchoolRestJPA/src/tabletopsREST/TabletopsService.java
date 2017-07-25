@@ -605,6 +605,17 @@ public class TabletopsService {
 			public User getUser(@PathParam("id") String id){
 				return company.findUserByIdNumber(id);
 			}
+			
+			@GET
+			@Path("/users/{id}/events")
+			@Produces(MediaType.APPLICATION_JSON)
+			public List<Event> getEventsForUser(
+				@PathParam("id") String id,
+			    @DefaultValue("0") @QueryParam("page") String page,
+			    @DefaultValue("10") @QueryParam("per_page") String perPage){
+					EM.getEM().refresh(company);
+					return company.getEventsForUser(id, Integer.parseInt(page),Integer.parseInt(perPage));
+			}
 				
 				@POST
 				   @Path("/users")

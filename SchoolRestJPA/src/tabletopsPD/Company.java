@@ -115,6 +115,12 @@ public class Company implements Serializable{
 		return eventList;
 	}
 	
+	public List<Event> getEventsForUser(String idNumber, int page, int perPage) {
+		
+		List<Event> eventList= EventDAO.getEventsForUser(idNumber, page,  perPage);
+		return eventList;
+	}
+	
 	public Event findEventByIdNumber(String idNumber) {
 	    return EventDAO.findEventByIdNumber(idNumber); 
 	}
