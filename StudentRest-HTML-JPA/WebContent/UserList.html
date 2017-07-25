@@ -10,6 +10,7 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('#nav-container').load('nav.html');
+			loadUsersTable();
 		});
 	</script>
   </head>
@@ -18,43 +19,62 @@
   function loadUsersTable(){
 		 $.ajax({ 
 			   type: "GET",  
-		       url: "/SchoolRestJPA/rest/tabletopservices/clients",  
+		       url: "/SchoolRestJPA/rest/tabletopservices/users",  
 		       dataType: "json",  
 		       success: function(resp){  
 		         // we have the response  
 		       
-		         $('#clientsTable').html("");
+		         $('#usersTable').html("");
 		         var tableRow;
 	  
-		         $.each(resp, function(i, client){
+		         $.each(resp, function(i, user){
 		        		
 		        	    tableRow = 
 		        	        "<tr>"
-		        	            +"<td>" + client.name + "</td>"	        	  
-								+"<td><a href=\"javascript:editClient(" + client.clientID + ")\">Edit</a>&nbsp;<a href=\"javascript:deleteClient(" + client.clientID + ")\">Delete</a></td>"
+		        	            +"<td>" + user.name + "</td>"
+		        	            +"<td>" + user.userName + "</td>"
+		        	            +"<td>" + user.email + "</td>"
+								+"<td><a href=\"javascript:editClient(" + user.userID + ")\">Edit</a>&nbsp;<a href=\"javascript:deleteClient(" + user.clientID + ")\">Delete</a></td>"
 		        	        +"</tr>";
 		        	       
-		        	$('#clientsTable').append(tableRow);
+		        	$('#usersTable').append(tableRow);
 		         });
 		       },  
 		       error: function (jqXHR, exception) {
 		    	    
-		    	    alert(jqXHR.responseText);
+		    	    console.log("Error" + jqXHR.responseText);
+		    	    console.log(exception.responseText);
 		    	  }  
 			});
 	}
 
 	function editClient(id){
-		localStorage.client = id;
-		document.location.href = "/StudentRest-HTML-JPA/WebContent/EditClient.html", true;  
+		localStorage.user = id;
+		document.location.href = "/StudentRest-HTML-JPA/WebContent/UserEdit.html", true;  
 		
 	}
 
 	function deleteClient(id){
+
 		//call to delete client service
+		var url = "/SchoolRestJPA/rest/tabletopservices/users/" + id;
+		$.ajax({ 
+			   type: "DELETE",  
+		       url: url,  
+		       dataType: "json",  
+		       contentType: "application/json; charset=utf-8",
+		       success: function(resp){  
+		         // we have the response  
+		       
+		         
+		         loadUsersTable();
+		       },  
+		       error: function (jqXHR, exception) {
+		    	    console.log(jqXHR.responseText);
+		   
+		    	  }  
+			});
 		
-		//reload clientsTable after delete
-		loadClientsTable();
 	}
   </script>
    <div id="nav-container">
@@ -82,28 +102,8 @@
       
     </tr>
   </thead>
-  <tbody>
-    <tr>
-      
-      <td>Debbie Downer</td>
-      <td>ddowner</td>
-      <td>ddowner@gmail.com</td>
-      <td><a href="#">Edit</a>&nbsp;<a href="#">Delete</a></td>
-   
-    </tr>
-    <tr>
-      
-      <td>Wendy Whiner</td>
-      <td>wwhiner</td>
-      <td>whhiner@gmail.com</td>
-      <td><a href="#">Edit</a>&nbsp;<a href="#">Delete</a></td>
-    </tr>
-    <tr>
-      <td>Sally Sassalot</td>
-      <td>ssassalot</td>
-      <td>ssassalot@gmail.com</td>
-      <td><a href="#">Edit</a>&nbsp;<a href="#">Delete</a></td>
-    </tr>
+  <tbody id="usersTable">
+    
       </tbody>
 </table>
 </div>
