@@ -8,6 +8,7 @@ import tabletopsDAO.EM;
 import tabletopsPD.Client;
 import tabletopsPD.Event;
 import tabletopsPD.Guest;
+import tabletopsPD.User;
 
 public class EventDAO { 
 
@@ -33,7 +34,9 @@ public class EventDAO {
     }
     public static List<Event> getEventsForUser(String idNumber, int page, int pageSize)
     {
-        TypedQuery<Event> query = EM.getEM().createQuery("SELECT event FROM event event WHERE event.primaryPlanner ="+idNumber, Event.class);
+    	User user = UserDAO.findUserByIdNumber(idNumber);
+        TypedQuery<Event> query = EM.getEM().createQuery("SELECT event FROM event event WHERE event.primaryPlanner = :user", Event.class);
+        query.setParameter("user", user);
         return query.setFirstResult(page * pageSize)
                 .setMaxResults(pageSize)
                 .getResultList();
