@@ -15,6 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import tabletopsDAO.ClientDAO;
 import tabletopsDAO.EventDAO;
+import tabletopsDAO.EventTableDAO;
 import tabletopsDAO.UserDAO;
 
 /**
@@ -123,6 +124,16 @@ public class Company implements Serializable{
 	
 	public Event findEventByIdNumber(String idNumber) {
 	    return EventDAO.findEventByIdNumber(idNumber); 
+	}
+	
+	public List<Guest> getGuestsForEvent(String idNumber, int page, int perPage) {
+		List<Guest> guestList= EventDAO.getGuestsForEvent(idNumber, page,  perPage);
+		return guestList;
+	}
+	
+	public List<Guest> getGuestsForTable(String idNumber, int page, int perPage) {
+		List<Guest> guestList= EventTableDAO.getGuestsForTable(idNumber, page,  perPage);
+		return guestList;
 	}
 	
 	public List<Client> getAllClients(int page, int perPage) {

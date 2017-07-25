@@ -42,6 +42,16 @@ public class EventDAO {
                 .getResultList();
     }
 
+    public static List<Guest> getGuestsForEvent(String idNumber, int page, int pageSize)
+    {
+    	Event event = EventDAO.findEventByIdNumber(idNumber);
+    	TypedQuery<Guest> query = EM.getEM().createQuery("SELECT guest FROM guest guest WHERE guest.event = :event", Guest.class);
+        query.setParameter("event", event);
+        return query.setFirstResult(page * pageSize)
+                .setMaxResults(pageSize)
+                .getResultList();
+    }
+    
     public static Event findEventByIdNumber(String idNumber)
     {
       String qString = "SELECT event FROM event event WHERE event.eventId ="+idNumber;

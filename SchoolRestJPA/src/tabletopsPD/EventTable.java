@@ -13,8 +13,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.TypedQuery;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import tabletopsDAO.EM;
+import tabletopsDAO.EventDAO;
 
 @XmlRootElement(name = "event_table")
 @Entity(name = "event_table")
@@ -110,5 +114,4 @@ public class EventTable implements Serializable{
 	public void setGuests(List<Guest> guests) {
 		this.guests = guests;
 	}
-
 }

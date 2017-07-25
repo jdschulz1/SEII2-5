@@ -306,29 +306,41 @@ public class TabletopsService {
 		      }
 		   }
 
-////		   @OPTIONS
-////		   @Path("/clients")
-////		   @Produces(MediaType.APPLICATION_JSON)
-////		   public String getSupportedOperations(){
-////		      return "{ {'POST' : { 'description' : 'add a client'}} {'GET' : {'description' : 'get a client'}}}";
-////		   }
+//		   @OPTIONS
+//		   @Path("/clients")
+//		   @Produces(MediaType.APPLICATION_JSON)
+//		   public String getSupportedOperations(){
+//		      return "{ {'POST' : { 'description' : 'add a client'}} {'GET' : {'description' : 'get a client'}}}";
+//		   }
 //	   
-//		 //Guest REST Services
-//			@GET
-//			@Path("/guests")
-//			@Produces(MediaType.APPLICATION_JSON)
-//			public List<Guest> getGuests(
-//			    @DefaultValue("0") @QueryParam("page") String page,
-//			    @DefaultValue("10") @QueryParam("per_page") String perPage){
-//					EM.getEM().refresh(guest);
-//					return system.getAllGuests(Integer.parseInt(page),Integer.parseInt(perPage));
-//			}	
-//			
+		 //Guest REST Services		
+			@GET
+			@Path("/events/{id}/guests")
+			@Produces(MediaType.APPLICATION_JSON)
+			public List<Guest> getGuestsForEvent(
+				@PathParam("id") String id,
+			    @DefaultValue("0") @QueryParam("page") String page,
+			    @DefaultValue("10") @QueryParam("per_page") String perPage){
+					EM.getEM().refresh(company);
+					return company.getGuestsForEvent(id, Integer.parseInt(page),Integer.parseInt(perPage));
+			}
+			
+			@GET
+			@Path("/table/{id}/guests")
+			@Produces(MediaType.APPLICATION_JSON)
+			public List<Guest> getGuestsForTable(
+				@PathParam("id") String id,
+			    @DefaultValue("0") @QueryParam("page") String page,
+			    @DefaultValue("10") @QueryParam("per_page") String perPage){
+					EM.getEM().refresh(company);
+					return company.getGuestsForTable(id, Integer.parseInt(page),Integer.parseInt(perPage));
+			}
+			
 //			@GET
 //			@Path("/guests/{id}")
 //			@Produces(MediaType.APPLICATION_JSON)
 //			public Guest getGuest(@PathParam("id") String id){
-//		      return system.findGuestByIdNumber(id);
+//		      return company.findGuestByIdNumber(id);
 //			}
 //			
 //			@POST
