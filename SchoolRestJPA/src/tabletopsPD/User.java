@@ -1,6 +1,7 @@
 package tabletopsPD;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -18,6 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.owlike.genson.annotation.JsonIgnore;
 
+import schoolUT.Message;
 import tabletopsDAO.ClientDAO;
 import tabletopsDAO.UserDAO;
 
@@ -36,7 +38,7 @@ public class User implements Serializable{
 	@Id //signifies the primary key
 	@Column(name = "user_id", nullable = false)
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long userId;
+	private int userId;
 	
 	/**
 	 * The legal name of the user.
@@ -95,6 +97,10 @@ public class User implements Serializable{
 		throw new UnsupportedOperationException();
 	}
 
+	public int getUserID() {
+		return userId;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -157,5 +163,50 @@ public class User implements Serializable{
 	public Boolean delete() {
 		UserDAO.removeUser(this);
 		return true;
+	}
+	
+	public ArrayList<Message> validate() {
+		ArrayList<Message> messages= new ArrayList<Message>();
+		Message message;
+		if (getUserID() == 0){
+			message = new Message ("User000","UserId must have a value","userId");
+			messages.add(message);
+		}
+		if (getName() == null || getName().length() ==0){
+			message = new Message ("User001","Name must have a value","name");
+			messages.add(message);
+		}
+		if (getUserName() == null || getUserName().length() ==0){
+			message = new Message ("User002","Username must have a value","username");
+			messages.add(message);
+		}
+		if (getPassword() == null || getPassword().length() ==0){
+			message = new Message ("User003","Password must have a value","password");
+			messages.add(message);
+		}
+		if (getRole() == null || getRole().length() ==0){
+			message = new Message ("User004","Role must have a value","role");
+			messages.add(message);
+		}
+		if (getEmail() == null || getEmail().length() ==0){
+			message = new Message ("User005","Email must have a value","email");
+			messages.add(message);
+		}
+		
+		if (messages.size() == 0 ) 
+			return null;
+		else 
+			return messages;
+		
+	}
+	
+	public Boolean update(User user) {
+	    setName(user.getName());
+	    setUserName(user.getUserName());
+	    setPassword(user.getPassword());
+	    setRole(user.getRole());
+	    setEmail(user.getEmail());
+
+	    return true;
 	}
 }

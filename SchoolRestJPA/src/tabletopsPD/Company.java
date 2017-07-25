@@ -76,6 +76,13 @@ public class Company implements Serializable{
 		ClientDAO.addClient(client);
 		return true;
 	}
+	
+	public Boolean addUser(User user) {
+		//TODO: Double check this line
+		this.users.add(user);
+		UserDAO.addUser(user);
+		return true;
+	}
 
 	public List<Event> getEvents() {
 		return events;
