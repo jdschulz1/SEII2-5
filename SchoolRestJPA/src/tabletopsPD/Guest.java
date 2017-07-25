@@ -57,11 +57,13 @@ public class Guest implements Serializable{
 	@JoinColumn(name="event_table",referencedColumnName="event_table_id")
 	private EventTable eventTable;
 
-	@Transient
-	private List<Guest> guestWhiteList;
+	@OneToMany(cascade = CascadeType.ALL, 
+	        mappedBy = "guest", orphanRemoval = true)
+	private List<J_Guest_WL> guestWhiteList;
 	
-	@Transient
-	private List<Guest> guestBlackList;
+	@OneToMany(cascade = CascadeType.ALL, 
+	        mappedBy = "guest", orphanRemoval = true)
+	private List<J_Guest_BL> guestBlackList;
 	
 	/**
 	 * A method for adding to the Black List of Guests for the current Guest.
@@ -122,21 +124,21 @@ public class Guest implements Serializable{
 		this.clientRelationship = clientRelationship;
 	}
 
-	public List<Guest> getGuestWhiteList() {
+	public List<J_Guest_WL> getGuestWhiteList() {
 		return guestWhiteList;
 	}
 
-	@XmlTransient
-	public void setGuestWhiteList(List<Guest> guestWhiteList) {
+	@XmlElement
+	public void setGuestWhiteList(List<J_Guest_WL> guestWhiteList) {
 		this.guestWhiteList = guestWhiteList;
 	}
 
-	public List<Guest> getGuestBlackList() {
+	public List<J_Guest_BL> getGuestBlackList() {
 		return guestBlackList;
 	}
 
-	@XmlTransient
-	public void setGuestBlackList(List<Guest> guestBlackList) {
+	@XmlElement
+	public void setGuestBlackList(List<J_Guest_BL> guestBlackList) {
 		this.guestBlackList = guestBlackList;
 	}
 

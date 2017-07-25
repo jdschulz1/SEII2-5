@@ -62,15 +62,15 @@ public class EventTable implements Serializable{
 			int totalGuestsInBLWL = g.getGuestBlackList().size() + g.getGuestWhiteList().size();
 			
 			//decrease fitness score for each black listed guest at the table
-			for(Guest g2 : g.getGuestBlackList()){
-				if(this.guests.contains(g2)){
+			for(J_Guest_BL g2 : g.getGuestBlackList()){
+				if(this.guests.contains(g2.getListMember())){
 					total = total.subtract(perGuest);
 				}
 			}
 			
 			//increase fitness score for each white listed guest at the table
-			for(Guest g3 : g.getGuestWhiteList()){
-				if(this.guests.contains(g3)){
+			for(J_Guest_WL g3 : g.getGuestWhiteList()){
+				if(this.guests.contains(g3.getListMember())){
 					total = total.add(perGuest);
 				}
 			}
