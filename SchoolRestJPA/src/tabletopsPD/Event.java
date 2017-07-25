@@ -1,7 +1,8 @@
 package tabletopsPD;
 
 import java.io.Serializable;
-//import java.time.LocalDateTime;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -20,7 +21,9 @@ import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-//import tabletopsDAO.LocalDateTimeConverter;
+import schoolUT.Message;
+import tabletopsDAO.EventDAO;
+import tabletopsDAO.LocalDateTimeConverter;
 
 /**
  * Events are records containing all information related to an event, including guest list and seating assignment information.
@@ -37,20 +40,20 @@ public class Event implements Serializable {
 	@Id //signifies the primary key
 	@Column(name = "event_id", nullable = false)
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long eventId;
+	private int eventId;
 	
-	public long getEventId() {
+	public int getEventId() {
 		return eventId;
 	}
 
 //	/**
 //	 * Date and time that the event will take place.
 //	 */
-//	@Temporal(TemporalType.TIMESTAMP)
-//	@Column(name = "event_date_time", columnDefinition = "TIMESTAMP")
-//	@Convert(converter = LocalDateTimeConverter.class)
-//	private LocalDateTime eventDateTime;
-//	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "event_date_time", columnDefinition = "TIMESTAMP")
+	@Convert(converter = LocalDateTimeConverter.class)
+	private LocalDateTime eventDateTime;
+	
 	/**
 	 * The title of the event.
 	 */
@@ -119,14 +122,14 @@ public class Event implements Serializable {
 		throw new UnsupportedOperationException();
 	}
 
-//	public LocalDateTime getEventDateTime() {
-//		return eventDateTime;
-//	}
+	public LocalDateTime getEventDateTime() {
+		return eventDateTime;
+	}
 
-//	@XmlElement
-//	public void setEventDateTime(LocalDateTime eventDateTime) {
-//		this.eventDateTime = eventDateTime;
-//	}
+	@XmlElement
+	public void setEventDateTime(LocalDateTime eventDateTime) {
+		this.eventDateTime = eventDateTime;
+	}
 
 	public String getEventTitle() {
 		return eventTitle;
@@ -191,4 +194,48 @@ public class Event implements Serializable {
 		this.client = client;
 	}
 
+	public Boolean delete() {
+		EventDAO.removeEvent(this);
+		return true;
+	}
+	
+	public ArrayList<Message> validate() {
+		ArrayList<Message> messages= new ArrayList<Message>();
+		Message message;
+		if (getEventId() == 0){
+			message = new Message ("Event000","EventId must have a value","eventId");
+			messages.add(message);
+		}
+		if (getEventTableSize() == 0){
+			message = new Message ("Event001","Event Table Size must have a value","getEventTableSize");
+			messages.add(message);
+		}
+		if (getEventTitle() == null || getEventTitle().length() ==0){
+			message = new Message ("Event002","Event Title Number must have a value","eventTitle");
+			messages.add(message);
+		}
+		if (getVenueName() == null || getVenueName().length() ==0){
+			message = new Message ("Event003","Venue Name must have a value","venueName");
+			messages.add(message);
+		}
+		if (getMaxEmptySeats() == 0){
+			message = new Message ("Event004","Max Empty Seats must have a value","maxEmptySeats");
+			messages.add(message);
+		}
+		
+		if (messages.size() == 0 ) 
+			return null;
+		else 
+			return messages;
+		
+	}
+	
+	public Boolean update(Event event) {
+	    setEventTableSize(event.getEventTableSize());
+	    setEventTitle(event.getEventTitle());
+	    setVenueName(event.getVenueName());
+	    setMaxEmptySeats(event.getMaxEmptySeats());
+
+	    return true;
+	}
 }

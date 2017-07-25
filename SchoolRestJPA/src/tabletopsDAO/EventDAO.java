@@ -5,6 +5,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import tabletopsDAO.EM;
+import tabletopsPD.Client;
 import tabletopsPD.Event;
 import tabletopsPD.Guest;
 
@@ -51,6 +52,11 @@ public class EventDAO {
     public static void removeGuest(Guest guest)
     {
       EM.getEM().remove(guest);
+    }
+    
+    public static void removeEvent(Event event)
+    {
+      EM.getEM().remove(event);
     }
   }
 
