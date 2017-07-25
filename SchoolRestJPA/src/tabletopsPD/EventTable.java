@@ -54,7 +54,7 @@ public class EventTable implements Serializable{
 	 * An operation that calculates the fitness of the current instance of Table, based on the number of empty seats and the satisfaction of the guests with who they are seated with (determined by their black and white lists).
 	 */
 	public void calculateFitness() {
-		BigDecimal fitness = BigDecimal.ZERO, perGuest = BigDecimal.valueOf(100).divide(BigDecimal.valueOf(this.seatingArrangement.getEvent().getEventTableSize()));
+		BigDecimal fitness = BigDecimal.ZERO, perGuest = BigDecimal.valueOf(100).divide(BigDecimal.valueOf(this.guests.size()));
 		int emptySeatsDiffMax = this.seatingArrangement.getEvent().getEventTableSize() - this.guests.size() - this.seatingArrangement.getEvent().getMaxEmptySeats();
 		
 		for (Guest g : this.guests){
