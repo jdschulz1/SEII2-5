@@ -1,8 +1,8 @@
 package tabletopsPD;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-//import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -22,10 +22,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import schoolUT.Message;
-import tabletopsDAO.ClientDAO;
 import tabletopsDAO.EventDAO;
-
-//import tabletopsDAO.LocalDateTimeConverter;
+import tabletopsDAO.LocalDateTimeConverter;
 
 /**
  * Events are records containing all information related to an event, including guest list and seating assignment information.
@@ -51,11 +49,11 @@ public class Event implements Serializable {
 //	/**
 //	 * Date and time that the event will take place.
 //	 */
-//	@Temporal(TemporalType.TIMESTAMP)
-//	@Column(name = "event_date_time", columnDefinition = "TIMESTAMP")
-//	@Convert(converter = LocalDateTimeConverter.class)
-//	private LocalDateTime eventDateTime;
-//	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "event_date_time", columnDefinition = "TIMESTAMP")
+	@Convert(converter = LocalDateTimeConverter.class)
+	private LocalDateTime eventDateTime;
+	
 	/**
 	 * The title of the event.
 	 */
@@ -124,14 +122,14 @@ public class Event implements Serializable {
 		throw new UnsupportedOperationException();
 	}
 
-//	public LocalDateTime getEventDateTime() {
-//		return eventDateTime;
-//	}
+	public LocalDateTime getEventDateTime() {
+		return eventDateTime;
+	}
 
-//	@XmlElement
-//	public void setEventDateTime(LocalDateTime eventDateTime) {
-//		this.eventDateTime = eventDateTime;
-//	}
+	@XmlElement
+	public void setEventDateTime(LocalDateTime eventDateTime) {
+		this.eventDateTime = eventDateTime;
+	}
 
 	public String getEventTitle() {
 		return eventTitle;
