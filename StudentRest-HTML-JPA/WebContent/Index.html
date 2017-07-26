@@ -13,13 +13,14 @@
     <script type="text/javascript">
 		$(document).ready(function() {
 			$('#nav-container').load('nav.html');
+			
 			loadMyEvents();
 		});
 	</script>
 	
 </head>
   <body>
-  <script type="text/javascript">
+<script type="text/javascript">
   function loadMyEvents(){
 	  $.ajax({ 
 		   type: "GET",  
@@ -95,7 +96,7 @@
  			$("#selectClient").empty();
 	         $("#selectClient").append("<option value='0'>---Select Client---</option>");
 	         $.each(resp, function(i, client){
-	        	 $(#selectClient).append($("<option></option>").val(client.ID).html(value.name));
+	        	 $("#selectClient").append($("<option></option>").val(client.ID).html(client.name));
 	         });
 	       },  
 	       error: function (jqXHR, exception) {
@@ -103,11 +104,13 @@
 	    	    console.log(jqXHR.responseText);
 	    	  }  
 		});
-  }
+  	}
+  
   </script>
   <div id="nav-container">
 
   </div>
+ 
     <div id="#content" class="container">
 		<div class="row">
 			<div class="form-inline">
@@ -163,6 +166,9 @@
     
     </div>
  <script type="text/javascript">
+ 
+ loadClientListDropDown();
+
  	$(".date-input").datepicker();
  </script>
     </body>
