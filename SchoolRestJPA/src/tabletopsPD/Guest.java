@@ -58,11 +58,11 @@ public class Guest implements Serializable{
 	private EventTable eventTable;
 
 	@OneToMany(cascade = CascadeType.ALL, 
-	        mappedBy = "guest", orphanRemoval = true)
+	        mappedBy = "listOwner", orphanRemoval = true)
 	private List<J_Guest_WL> guestWhiteList;
 	
 	@OneToMany(cascade = CascadeType.ALL, 
-	        mappedBy = "guest", orphanRemoval = true)
+	        mappedBy = "listOwner", orphanRemoval = true)
 	private List<J_Guest_BL> guestBlackList;
 	
 	/**
