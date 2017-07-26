@@ -55,13 +55,6 @@ public class Company implements Serializable{
 	        mappedBy = "company", orphanRemoval = true)
 	private List<User> users;
 	
-	@OneToMany(cascade = CascadeType.ALL, 
-	        mappedBy = "company", orphanRemoval = true)
-	private List<Guest> guests;
-	
-	@OneToMany(cascade = CascadeType.ALL, 
-	        mappedBy = "company", orphanRemoval = true)
-	private List<SeatingArrangement> seatingArrangements;
 
 	public String getCompanyName() {
 		return this.companyName;
@@ -102,19 +95,19 @@ public class Company implements Serializable{
 		return true;
 	}
 	
-	public Boolean addGuest(Guest guest) {
-		//TODO: Double check this line
-		this.guests.add(guest);
-		GuestDAO.addGuest(guest);
-		return true;
-	}
+//	public Boolean addGuest(Guest guest) {
+//		//TODO: Double check this line
+//		this.guests.add(guest);
+//		GuestDAO.addGuest(guest);
+//		return true;
+//	}
 	
-	public Boolean addGuestToSeatingArrangement(SeatingArrangement seatingArrangement) {
-		//TODO: Double check this line
-		this.seatingArrangements.add(seatingArrangement);
-		SeatingArrangementDAO.addSeatingArrangement(seatingArrangement);
-		return true;
-	}
+//	public Boolean addGuestToSeatingArrangement(SeatingArrangement seatingArrangement) {
+//		//TODO: Double check this line
+//		this.seatingArrangements.add(seatingArrangement);
+//		SeatingArrangementDAO.addSeatingArrangement(seatingArrangement);
+//		return true;
+//	}
 
 	public List<Event> getEvents() {
 		return events;

@@ -109,17 +109,22 @@ public class Event implements Serializable {
 	/**
 	 * A method for adding to the List of Guests attending the Event.
 	 */
-	public void addToGuestList() {
-		// TODO - implement Event.addToGuestList
-		throw new UnsupportedOperationException();
+	public boolean addToGuestList(Guest guest) {
+		int size = this.guestList.size();
+		this.guestList.add(guest);
+		return this.guestList.size() > size;
 	}
 
 	/**
 	 * A method for removing from the List of Guests attending the Event.
 	 */
-	public void removeFromGuestList() {
-		// TODO - implement Event.removeFromGuestList
-		throw new UnsupportedOperationException();
+	public boolean removeFromGuestList(Guest guest) {
+		int size = this.guestList.size();
+		if(size > 0) {
+			this.guestList.remove(guest);
+			return this.guestList.size() < size;
+		}
+		else return false;
 	}
 
 	public LocalDateTime getEventDateTime() {

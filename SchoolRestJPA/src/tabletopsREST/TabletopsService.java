@@ -344,10 +344,10 @@ public class TabletopsService {
 			}
 			
 			@POST
-			   @Path("/guests")
+			   @Path("/events/{id}/guests")
 			   @Produces(MediaType.APPLICATION_JSON)
 			   @Consumes(MediaType.APPLICATION_JSON)
-			   public ArrayList<Message> addGuest(Guest guest,@Context final HttpServletResponse response) throws IOException{
+			   public ArrayList<Message> addGuest(@PathParam("id") String id, Guest guest,@Context final HttpServletResponse response) throws IOException{
 
 				  if (guest == null) {
 
@@ -373,7 +373,7 @@ public class TabletopsService {
 					  }
 					  EntityTransaction userTransaction = EM.getEM().getTransaction();
 					  userTransaction.begin();
-					  Boolean result = company.addGuest(guest);
+					  Boolean result = company.findEventByIdNumber(id).addToGuestList(guest);
 					  userTransaction.commit();
 					  if(result){
 						  messages.add(new Message("op001","Success Operation",""));
@@ -484,52 +484,52 @@ public class TabletopsService {
 			      return company.findSeatingArrangementByIdNumber(id);
 				}
 				
-				@POST
-				   @Path("/seatingarrangements")
-				   @Produces(MediaType.APPLICATION_JSON)
-				   @Consumes(MediaType.APPLICATION_JSON)
-				   public ArrayList<Message> addSeatingArrangement(SeatingArrangement sa,@Context final HttpServletResponse response) throws IOException{
-
-					  if (sa == null) {
-
-						  response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
-						  try {
-						        response.flushBuffer();
-						  }catch(Exception e){}
-						  messages.add(new Message("op002","Fail Operation",""));
-						  return messages;
-					  }
-					  else  {
-						  
-						  ArrayList<Message> errMessages = sa.validate();
-						  if (errMessages != null) {
-							  
-							  response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
-							  try {
-								  response.flushBuffer();
-							  }	
-							  catch(Exception e){
-								  }
-							  return errMessages;
-						  }
-						  EntityTransaction userTransaction = EM.getEM().getTransaction();
-						  userTransaction.begin();
-						  Boolean result = company.addGuestToSeatingArrangement(sa);
-						  userTransaction.commit();
-						  if(result){
-							  messages.add(new Message("op001","Success Operation",""));
-							  return messages;
-						  }
-						  response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
-						  try {
-							  response.flushBuffer();
-						  }	
-						  catch(Exception e){
-							  }
-						  messages.add(new Message("op002","Fail Operation",""));
-						  return messages;
-					  }
-				}
+//				@POST
+//				   @Path("events/{id}/seatingarrangements")
+//				   @Produces(MediaType.APPLICATION_JSON)
+//				   @Consumes(MediaType.APPLICATION_JSON)
+//				   public ArrayList<Message> addSeatingArrangement(@PathParam("id") String id, SeatingArrangement sa,@Context final HttpServletResponse response) throws IOException{
+//
+//					  if (sa == null) {
+//
+//						  response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
+//						  try {
+//						        response.flushBuffer();
+//						  }catch(Exception e){}
+//						  messages.add(new Message("op002","Fail Operation",""));
+//						  return messages;
+//					  }
+//					  else  {
+//						  
+//						  ArrayList<Message> errMessages = sa.validate();
+//						  if (errMessages != null) {
+//							  
+//							  response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+//							  try {
+//								  response.flushBuffer();
+//							  }	
+//							  catch(Exception e){
+//								  }
+//							  return errMessages;
+//						  }
+//						  EntityTransaction userTransaction = EM.getEM().getTransaction();
+//						  userTransaction.begin();
+//						  Boolean result = company.findEventByIdNumber(id)
+//						  userTransaction.commit();
+//						  if(result){
+//							  messages.add(new Message("op001","Success Operation",""));
+//							  return messages;
+//						  }
+//						  response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
+//						  try {
+//							  response.flushBuffer();
+//						  }	
+//						  catch(Exception e){
+//							  }
+//						  messages.add(new Message("op002","Fail Operation",""));
+//						  return messages;
+//					  }
+//				}
 				@PUT
 				   @Path("/seatingarrangements/{id}")
 				   @Produces(MediaType.APPLICATION_JSON)
