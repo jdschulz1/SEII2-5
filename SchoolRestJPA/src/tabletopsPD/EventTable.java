@@ -35,6 +35,10 @@ public class EventTable implements Serializable{
 		this.guests = new ArrayList<Guest>();
 	}
 	
+	public EventTable() {
+		
+	}
+	
 	@Id //signifies the primary key
 	@Column(name = "event_table_id", nullable = false)
 	@GeneratedValue(strategy = GenerationType.AUTO)
