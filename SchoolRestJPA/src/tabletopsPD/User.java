@@ -168,10 +168,10 @@ public class User implements Serializable{
 	public ArrayList<Message> validate() {
 		ArrayList<Message> messages= new ArrayList<Message>();
 		Message message;
-		if (getUserID() == 0){
-			message = new Message ("User000","UserId must have a value","userId");
-			messages.add(message);
-		}
+		//if (getUserID() == 0){
+		//	message = new Message ("User000","UserId must have a value","userId");
+		//	messages.add(message);
+		//}
 		if (getName() == null || getName().length() ==0){
 			message = new Message ("User001","Name must have a value","name");
 			messages.add(message);
