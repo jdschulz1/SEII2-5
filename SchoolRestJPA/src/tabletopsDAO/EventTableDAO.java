@@ -31,7 +31,7 @@ public class EventTableDAO {
     
     public static EventTable findEventTableByIdNumber(String idNumber)
     {
-      String qString = "SELECT eventTable FROM eventTable eventTable WHERE eventTable.eventTableId ="+idNumber;
+      String qString = "SELECT event_table FROM event_table event_table WHERE event_table.eventTableId ="+idNumber;
       Query query = EM.getEM().createQuery(qString);
       EventTable eventTable = (EventTable)query.getSingleResult();
       return eventTable;
