@@ -2,6 +2,7 @@ package tabletopsPD;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -15,6 +16,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import schoolUT.Message;
+import tabletopsDAO.GuestDAO;
+import tabletopsDAO.SeatingArrangementDAO;
 
 /**
  * The SeatingArrangement is a solution in the genetic algorithm for best seating arrangement for the Event.
@@ -111,6 +116,32 @@ public class SeatingArrangement implements Serializable{
 	@XmlElement
 	public void setEvent(Event event) {
 		this.event = event;
+	}
+	
+	public ArrayList<Message> validate() {
+		ArrayList<Message> messages= new ArrayList<Message>();
+		Message message;
+		if (getOverallFitnessRating() == null){
+			message = new Message ("SeatingArrangement001","Overall Fitness Rating must have a value","overall fitness rating");
+			messages.add(message);
+		}
+		
+		if (messages.size() == 0 ) 
+			return null;
+		else 
+			return messages;
+		
+	}
+	
+	public Boolean update(SeatingArrangement seatingArrangement) {
+	    setOverallFitnessRating(seatingArrangement.getOverallFitnessRating());
+
+	    return true;
+	}
+	
+	public Boolean delete() {
+		SeatingArrangementDAO.removeSeatingArrangement(this);
+		return true;
 	}
 
 }

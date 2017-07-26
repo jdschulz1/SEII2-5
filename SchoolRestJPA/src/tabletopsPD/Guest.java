@@ -1,6 +1,7 @@
 package tabletopsPD;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -16,6 +17,10 @@ import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
+import schoolUT.Message;
+import tabletopsDAO.ClientDAO;
+import tabletopsDAO.GuestDAO;
 
 @XmlRootElement(name = "guest")
 @Entity(name = "guest")
@@ -58,11 +63,11 @@ public class Guest implements Serializable{
 	private EventTable eventTable;
 
 	@OneToMany(cascade = CascadeType.ALL, 
-	        mappedBy = "guest", orphanRemoval = true)
+	        mappedBy = "listOwner", orphanRemoval = true)
 	private List<J_Guest_WL> guestWhiteList;
 	
 	@OneToMany(cascade = CascadeType.ALL, 
-	        mappedBy = "guest", orphanRemoval = true)
+	        mappedBy = "listOwner", orphanRemoval = true)
 	private List<J_Guest_BL> guestBlackList;
 	
 	/**
@@ -140,6 +145,33 @@ public class Guest implements Serializable{
 	@XmlElement
 	public void setGuestBlackList(List<J_Guest_BL> guestBlackList) {
 		this.guestBlackList = guestBlackList;
+	}
+	
+	public ArrayList<Message> validate() {
+		ArrayList<Message> messages= new ArrayList<Message>();
+		Message message;
+		if (getName() == null || getName().length() ==0){
+			message = new Message ("Guest001","Name must have a value","name");
+			messages.add(message);
+		}
+		
+		if (messages.size() == 0 ) 
+			return null;
+		else 
+			return messages;
+		
+	}
+	
+	public Boolean update(Guest guest) {
+	    setName(guest.getName());
+	    setClientRelationship(guest.getClientRelationship());
+
+	    return true;
+	}
+	
+	public Boolean delete() {
+		GuestDAO.removeGuest(this);
+		return true;
 	}
 
 }

@@ -16,6 +16,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import tabletopsDAO.ClientDAO;
 import tabletopsDAO.EventDAO;
 import tabletopsDAO.EventTableDAO;
+import tabletopsDAO.GuestDAO;
+import tabletopsDAO.SeatingArrangementDAO;
 import tabletopsDAO.UserDAO;
 
 /**
@@ -52,6 +54,14 @@ public class Company implements Serializable{
 	@OneToMany(cascade = CascadeType.ALL, 
 	        mappedBy = "company", orphanRemoval = true)
 	private List<User> users;
+	
+	@OneToMany(cascade = CascadeType.ALL, 
+	        mappedBy = "company", orphanRemoval = true)
+	private List<Guest> guests;
+	
+	@OneToMany(cascade = CascadeType.ALL, 
+	        mappedBy = "company", orphanRemoval = true)
+	private List<SeatingArrangement> seatingArrangements;
 
 	public String getCompanyName() {
 		return this.companyName;
@@ -91,6 +101,20 @@ public class Company implements Serializable{
 		EventDAO.addEvent(event);
 		return true;
 	}
+	
+	public Boolean addGuest(Guest guest) {
+		//TODO: Double check this line
+		this.guests.add(guest);
+		GuestDAO.addGuest(guest);
+		return true;
+	}
+	
+	public Boolean addGuestToSeatingArrangement(SeatingArrangement seatingArrangement) {
+		//TODO: Double check this line
+		this.seatingArrangements.add(seatingArrangement);
+		SeatingArrangementDAO.addSeatingArrangement(seatingArrangement);
+		return true;
+	}
 
 	public List<Event> getEvents() {
 		return events;
@@ -116,6 +140,12 @@ public class Company implements Serializable{
 		return eventList;
 	}
 	
+	public List<SeatingArrangement> getAllSeatingArrangements(int page, int perPage) {
+		
+		List<SeatingArrangement> seatingArrangementList= SeatingArrangementDAO.getAllSeatingArrangements(page,  perPage);
+		return seatingArrangementList;
+	}
+	
 	public List<Event> getEventsForUser(String idNumber, int page, int perPage) {
 		
 		List<Event> eventList= EventDAO.getEventsForUser(idNumber, page,  perPage);
@@ -126,6 +156,10 @@ public class Company implements Serializable{
 	    return EventDAO.findEventByIdNumber(idNumber); 
 	}
 	
+	public SeatingArrangement findSeatingArrangementByIdNumber(String idNumber) {
+	    return SeatingArrangementDAO.findSeatingArrangementByIdNumber(idNumber); 
+	}
+	
 	public List<Guest> getGuestsForEvent(String idNumber, int page, int perPage) {
 		List<Guest> guestList= EventDAO.getGuestsForEvent(idNumber, page,  perPage);
 		return guestList;
@@ -134,6 +168,10 @@ public class Company implements Serializable{
 	public List<Guest> getGuestsForTable(String idNumber, int page, int perPage) {
 		List<Guest> guestList= EventTableDAO.getGuestsForTable(idNumber, page,  perPage);
 		return guestList;
+	}
+	
+	public Guest findGuestByIdNumber(String idNumber) {
+	    return GuestDAO.findGuestByIdNumber(idNumber); 
 	}
 	
 	public List<Client> getAllClients(int page, int perPage) {
