@@ -3,15 +3,22 @@
   <head>
     <title>Tabletops</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap -->
-    <link href="css/bootstrap.css" rel="stylesheet" media="screen">
-    <link href="css/Site.css" rel="stylesheet" media="screen">
-     <script type="text/javascript">
-		$(document).ready(function() {
-			$('#nav-container').load('nav.html');
-		});
-	</script>
-  </head>
+<!-- Bootstrap -->
+<link href="css/bootstrap.css" rel="stylesheet" media="screen">
+<link href="css/Site.css" rel="stylesheet" media="screen">
+<link href="css/bootstrap-clockpicker.min.css" rel="styelsheet" media="screen">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="js/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap-clockpicker.min.js"></script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#nav-container').load('nav.html');
+	});
+</script>
+</head>
   <body>
   <div id="nav-container">
 
@@ -58,8 +65,15 @@
 										<label for="inputEventDate" class="col-lg-2 control-label">Event
 											Date/Time</label>
 										<div class="col-lg-10">
-											<input type="datetime" class="form-control"
+											<input type="datetime" class="form-control date-input"
 												id="inputEventDate" placeholder="Event Date/Time">
+												<div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
+    												<input type="text" class="form-control" value="13:14">
+    												<span class="input-group-addon">
+        												<span class="glyphicon glyphicon-time"></span>
+    												</span>
+												</div>
+												
 										</div>
 									</div>
 									<div class="form-group">
@@ -177,7 +191,10 @@
 	
 	</div><!-- /.container -->
 	
-    <script src="http://code.jquery.com/jquery.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+<!--     <script src="http://code.jquery.com/jquery.js"></script> -->
+    <script type="text/javascript">
+			$('.clockpicker').clockpicker();
+			$(".date-input").datepicker();
+	</script>
   </body>
 </html>

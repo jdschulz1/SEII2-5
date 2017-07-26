@@ -53,43 +53,80 @@
   }
   
   function editEvent(id){
-	  
+	  localStorage.event = id;
+		document.location.href = "/StudentRest-HTML-JPA/WebContent/EditEvent.html", true;  
   }
   
   function deleteEvent(id){
-	  
+	  var url = "/SchoolRestJPA/rest/tabletopservices/events/" + id;
+		$.ajax({ 
+			   type: "DELETE",  
+		       url: url,  
+		       dataType: "json",  
+		       contentType: "application/json; charset=utf-8",
+		       success: function(resp){  
+		         // we have the response  
+		       
+		         loadClientsTable();
+		       },  
+		       error: function (jqXHR, exception) {
+		    	    console.log(jqXHR.responseText);
+		   
+		    	  }  
+			});
   }
   
   function search(date, client){
-	  
+	  $(document).ready(function() { 
+		  	$("#editClientForm").submit(function(e){
+		 		var eventDate =  $("#eventDate").val();		
+		 		
+		  	});
+	  });
   }
   
-  function loadClientList(){
-	  
+  function loadClientListDropDown(){
+	  $.ajax({ 
+		   type: "GET",  
+	       url: "/SchoolRestJPA/rest/tabletopservices/clients",  
+	       dataType: "json",  
+	       success: function(resp){  
+	         
+ 			$("#selectClient").empty();
+	         $("#selectClient").append("<option value='0'>---Select Client---</option>");
+	         $.each(resp, function(i, client){
+	        	 $(#selectClient).append($("<option></option>").val(client.ID).html(value.name));
+	         });
+	       },  
+	       error: function (jqXHR, exception) {
+	    	    
+	    	    console.log(jqXHR.responseText);
+	    	  }  
+		});
   }
   </script>
   <div id="nav-container">
 
   </div>
     <div id="#content" class="container">
-<div class="row">
-<div class="form-inline">
-	
-	<div class="pull-right">
-	<input type="datetime" class="form-control input-sm date-input" maxlength="64" placeholder="Event Date" />
+		<div class="row">
+			<div class="form-inline">
+				<form>
+					<div class="pull-right">
+						<input type="datetime" id="eventDate" class="form-control input-sm date-input"	maxlength="64" placeholder="Event Date" /> 
+													
+							<select class="form-control input-sm" id="selectClient">
+							<option>Select Client</option>
+						</select>
 
-	<select class="form-control input-sm" id="selectClient">
-					<option>Select Client</option>
-					<option>Anna Banana</option>
-					<option>Billy Bob</option>									
-	</select>
-	
- 	<button type="submit" class="btn btn-primary btn-sm ">Search</button>
-	</div>
-</div>
+						<button type="submit" id="btnSearch"
+							class="btn btn-primary btn-sm ">Search</button>
+					</div>
+				</form>
+			</div>
 
-</div>
-<hr />
+		</div>
+		<hr />
 		<div class="row">
 			<div class="panel panel-primary">
 				<div class="panel-heading">
@@ -98,7 +135,7 @@
 				<div class="panel-body">
 					<div class="row">
 
-						<a href="EditEvent.html" class="btn btn-xs btn-primary pull-right"><i
+						<a href="javascript:editEvent(0)" class="btn btn-xs btn-primary pull-right"><i
 							class="glyphicon glyphicon-plus"></i>New Event</a>
 				
 					</div>
