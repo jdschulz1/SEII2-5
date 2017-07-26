@@ -35,6 +35,10 @@ public class SeatingArrangement implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 
+	public SeatingArrangement(){
+		this.eventTables = new ArrayList<EventTable>();
+	}
+	
 	public SeatingArrangement(Event e){
 		this.event = e;
 		this.eventTables = new ArrayList<EventTable>();
