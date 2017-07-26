@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -30,10 +31,12 @@ public class J_Guest_BL implements Serializable{
 	
 	@ManyToOne(optional=false)
 	@JoinColumn(name="guest",referencedColumnName="guest_id")
+	@JoinTable(name="guest")
 	private Guest listOwner;
 	
 	@ManyToOne(optional=false)
 	@JoinColumn(name="guest",referencedColumnName="guest_id")
+	@JoinTable(name="guest")
 	private Guest listMember;
 	
 	@JsonIgnore

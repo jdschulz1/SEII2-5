@@ -2,6 +2,7 @@ package tabletopsPD;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -28,6 +29,11 @@ public class EventTable implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	public EventTable(int tableNum){
+		this.eventTableNum = tableNum;
+		this.guests = new ArrayList<Guest>();
+	}
 	
 	@Id //signifies the primary key
 	@Column(name = "event_table_id", nullable = false)
@@ -110,6 +116,14 @@ public class EventTable implements Serializable{
 		return guests;
 	}
 
+	public void addGuest(Guest g){
+		guests.add(g);
+	}
+	
+	public void removeGuest(Guest g){
+		guests.remove(g);
+	}
+	
 	@XmlElement
 	public void setGuests(List<Guest> guests) {
 		this.guests = guests;

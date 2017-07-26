@@ -2,6 +2,8 @@ package tabletopsPD;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +35,11 @@ public class SeatingArrangement implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 
+	public SeatingArrangement(Event e){
+		this.event = e;
+		this.eventTables = new ArrayList<EventTable>();
+	}
+	
 	@Id //signifies the primary key
 	@Column(name = "seating_arrangement_id", nullable = false)
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -55,9 +62,36 @@ public class SeatingArrangement implements Serializable{
 	/**
 	 * Generates a random seating arrangement.
 	 */
-	public SeatingArrangement createArrangement() {
-		// TODO - implement SeatingArrangement.createArrangement
-		throw new UnsupportedOperationException();
+	public static SeatingArrangement createArrangement(Event e) {
+		
+		SeatingArrangement newArrangement = new SeatingArrangement(e);
+		
+		int guestidx;
+		Guest newGuest;
+		
+		try {
+		     SecureRandom number = SecureRandom.getInstanceStrong();
+		     EventTable first = new EventTable(1);
+		     newArrangement.eventTables.add(first);
+		     // Generate guestList.size() integers 0..guestList.size()
+		     for (int i = 0; i < newArrangement.event.getGuestList().size(); i++) {
+		    	 guestidx = number.nextInt(newArrangement.event.getGuestList().size());
+		    	 newGuest = newArrangement.event.getGuestList().get(guestidx);
+		    	 System.out.println(guestidx);
+		    	 if(newArrangement.eventTables.get(newArrangement.eventTables.size()-1).getGuests().size() < newArrangement.event.getEventTableSize()){
+		    		 newArrangement.eventTables.get(newArrangement.eventTables.size()-1).addGuest(newGuest);
+		    	 }
+		    	 else{
+		    		 EventTable newTable = new EventTable(newArrangement.eventTables.size()+1);
+		    		 newTable.addGuest(newGuest);
+		    		 newArrangement.eventTables.add(newTable);
+		    	 }
+		     }
+		     return newArrangement;
+		   } catch (NoSuchAlgorithmException nsae) {
+		     // Forward to handler
+			   return null;
+		   }
 	}
 
 	/**

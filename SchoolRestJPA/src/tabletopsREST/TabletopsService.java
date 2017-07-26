@@ -326,7 +326,7 @@ public class TabletopsService {
 			}
 			
 			@GET
-			@Path("/table/{id}/guests")
+			@Path("/tables/{id}/guests")
 			@Produces(MediaType.APPLICATION_JSON)
 			public List<Guest> getGuestsForTable(
 				@PathParam("id") String id,
