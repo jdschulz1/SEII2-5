@@ -6,13 +6,49 @@
     <!-- Bootstrap -->
     <link href="css/bootstrap.css" rel="stylesheet" media="screen">
     <link href="css/Site.css" rel="stylesheet" media="screen">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script type="text/javascript">
 		$(document).ready(function() {
 			$('#nav-container').load('nav.html');
+			loadUsersTable();
 		});
 	</script>
   </head>
   <body>
+  <script type="text/javascript">
+  function loadUsersTable(){
+		 $.ajax({ 
+			   type: "GET",  
+		       url: "/SchoolRestJPA/rest/tabletopservices/users",  
+		       dataType: "json",  
+		       success: function(resp){  
+		         // we have the response  
+		       
+		         $('#guest_placecard').html("");
+		         var placecard;
+		         placecard='<h2 class="text-center text-primary text-capitalize">Taylor Downer</h2>'
+					+'<h1 class="text-center text-primary">5</h1>'
+					+'<h3 class="text-center text-muted">Brother of Groom</h3>';
+		         $('#guest_placecard').append(placecard);
+		         var tableRow;
+	  
+		         $.each(resp, function(i, user){
+		        		
+       	        	placecard='<div class="thumbnail placecard"><h2 class="text-center text-primary text-capitalize">'+user.name+'</h2>'
+       					+'<h1 class="text-center text-primary">'+user.userName+'</h1>'
+       					+'<h3 class="text-center text-muted">'+user.email+'</h3>'
+       					+'</div>';
+       		         $('#guest_placecards').append(placecard);	
+		         });
+		       },  
+		       error: function (jqXHR, exception) {
+		    	    
+		    	    console.log("Error" + jqXHR.responseText);
+		    	    console.log(exception.responseText);
+		    	  }  
+			});
+	}
+  </script>
     <div id="nav-container">
 
   	</div>
@@ -27,6 +63,7 @@
     </div>
     </div>
     <hr/>
+    <!-- 
     <div class="row">
 		<div class="col-sm-4 col-md-4 col-lg-4">
 		<div class="thumbnail placecard">
@@ -49,10 +86,9 @@
 					<h3 class="text-center text-muted">Sister of Groom</h3>
 		</div>
 		</div>
+		-->
+		<div id="guest_placecards"></div>
 </div>
-
-
-
 
 	</div><!-- /.container -->
     <script src="http://code.jquery.com/jquery.js"></script>

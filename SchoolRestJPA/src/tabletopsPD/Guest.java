@@ -18,6 +18,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.owlike.genson.annotation.JsonIgnore;
+
 import schoolUT.Message;
 import tabletopsDAO.ClientDAO;
 import tabletopsDAO.GuestDAO;
@@ -129,6 +131,7 @@ public class Guest implements Serializable{
 		this.clientRelationship = clientRelationship;
 	}
 
+	@JsonIgnore
 	public List<J_Guest_WL> getGuestWhiteList() {
 		return guestWhiteList;
 	}
@@ -138,6 +141,7 @@ public class Guest implements Serializable{
 		this.guestWhiteList = guestWhiteList;
 	}
 
+	@JsonIgnore
 	public List<J_Guest_BL> getGuestBlackList() {
 		return guestBlackList;
 	}
