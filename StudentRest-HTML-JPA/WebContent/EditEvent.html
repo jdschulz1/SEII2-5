@@ -6,7 +6,7 @@
 <!-- Bootstrap -->
 <link href="css/bootstrap.css" rel="stylesheet" media="screen">
 <link href="css/Site.css" rel="stylesheet" media="screen">
-<link href="css/bootstrap-clockpicker.min.css" rel="styelsheet" media="screen">
+<link href="css/bootstrap-clockpicker.css" rel="styelsheet" >
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 <script src="js/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
@@ -16,10 +16,126 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('#nav-container').load('nav.html');
+		loadEventFromLocalStorage();
 	});
 </script>
 </head>
   <body>
+    <script type="text/javascript">
+  function loadEventFromLocalStorage(){
+	  var id = localStorage.event;
+		if(id > 0){
+			var clientUrl = "/SchoolRestJPA/rest/tabletopservices/events/" + id;
+			
+		 	$.ajax({
+		 		type: 'GET',
+		 		url: clientUrl,  
+		 	    dataType: "json", 
+		         success: function (data) {
+		        	 //alert("success");
+		        	 
+		        	 console.log(data.eventDateTime.year);
+		        	$("#inputEventID").val(id);
+		        	$("#inputTitle").val(data.eventTitle);
+ 		         	
+ 		         	$("#inputRole").val(data.role);
+ 		         	$("#inputVenueName").val(data.venueName);
+ 		         	$("#inputEventDate").val(data.eventDateTime.monthValue+"/"+data.eventDateTime.dayOfMonth+"/"+data.eventDateTime.year);
+ 		         	$("#inputEventTime").val(data.eventDateTime.hour + ":" +data.eventDateTime.minute);
+ 		         	$("#inputTableEmptySpots").val(data.eventTableSize);
+ 		         	//$("#inputPrimaryPlanner").val(data.primaryPlanner.name);
+// 		         	$("#inputVerifyPassword").val(data.password);
+// 		         	$("#inputEmail").val(data.email);
+		         },
+		         error: function (jqXHR, exception) {
+		    	    
+		     	    alert("Load Client Error" + jqXHR.responseText);
+		     	  }  
+		     });
+		}
+  }
+  $(document).ready(function() { 
+  	$("#editUserForm").submit(function(e){
+	  e.preventDefault();
+	  // Get form
+      	var data = {};
+    	var Form = this;
+		
+    	//Gathering the Data
+    	//and removing undefined keys(buttons)
+    	$.each(this.elements, function(i, v){
+            var input = $(v);
+        	data[input.attr("name")] = input.val();
+        	
+        	delete data["undefined"];
+    	});
+		
+      $("#btnSubmit").prop("disabled", true);
+      
+      
+	  var userID = $("#inputUserID").val();
+	
+	  if(userID > 0){
+		  console.log(JSON.stringify(data));
+		  var url =  "/SchoolRestJPA/rest/tabletopservices/users/" + userID;	  
+			$.ajax({
+	          type: "PUT",
+	          url: url,
+	          contentType: "application/json; charset=utf-8",
+	          dataType:"json",
+	          data: JSON.stringify(data),          
+	          cache: false,
+	          context : Form,
+	          success: function (data) {             
+	              $("#btnSubmit").prop("disabled", false);
+	          },
+	          error: function (e) {
+	              console.log("ERROR : ", e.responseText);
+	              $("#btnSubmit").prop("disabled", false);
+	          }
+	      });
+	  }else{ //new client
+		 console.log("WHYYY???");
+		  var url =  "/SchoolRestJPA/rest/tabletopservices/users/";	  
+			$.ajax({
+	          type: "POST",
+	          url: url,
+	          contentType: "application/json; charset=utf-8",
+	          dataType:"json",
+	          data: JSON.stringify(data),          
+	          cache: false,
+	          context : Form,
+	          success: function (data) {             
+	              $("#btnSubmit").prop("disabled", false);
+	          },
+	          error: function (e) {
+	              console.log("ERROR : ", e.responseText);
+	              $("#btnSubmit").prop("disabled", false);
+	          }
+	      });
+	  }
+	  
+	  
+  	});
+  });
+  
+  function loadPlanners(){
+// 	  $("select").change(function(){
+// 		    alert($(this).find(":selected").data("value").age);
+// 		});
+
+  }
+  
+  function loadClients(){
+	  
+  }
+  
+  
+  </script>
+<!--   <select> -->
+<!--     <option data-value='{"name":"rajiv","age":"40"}'>a</option> -->
+<!--     <option data-value='{"name":"mithun","age":"22"}'>f</option> -->
+<!-- </select> -->
   <div id="nav-container">
 
   </div>
@@ -43,13 +159,13 @@
 						<div class="col-sm-12 col-md-12 col-lg-12">
 							<form class="form-horizontal">
 								<fieldset>
+									<input type="hidden" id="#inputEventID" name="eventId" val="" >
 									<div class="form-group">
 										<label for="inputEventTitle" class="col-lg-2 control-label">
 											Event Title
 										</label>
 										<div class="col-lg-10">
-											<input type="text" class="form-control" id="inputTitle"
-												placeholder="Event Title">
+											<input type="text" class="form-control" id="inputTitle" name="eventTitle"	placeholder="Event Title">
 										</div>
 									</div>
 									<div class="form-group">
@@ -57,7 +173,7 @@
 											Venue Name
 										</label>
 										<div class="col-lg-10">
-											<input type="text" class="form-control" id="inputVenueName"
+											<input type="text" class="form-control" id="inputVenueName" name="venueName"
 												placeholder="Venue Name">
 										</div>
 									</div>
@@ -65,22 +181,20 @@
 										<label for="inputEventDate" class="col-lg-2 control-label">Event
 											Date/Time</label>
 										<div class="col-lg-10">
-											<input type="datetime" class="form-control date-input"
-												id="inputEventDate" placeholder="Event Date/Time">
+											<input type="datetime" class="form-control date-input" id="inputEventDate" name="EventDate" placeholder="Event Date/Time">
 												<div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
-    												<input type="text" class="form-control" value="13:14">
+    												<input type="text" class="form-control" id="inputEventTime" name="inputEventTime" value="13:14">
     												<span class="input-group-addon">
         												<span class="glyphicon glyphicon-time"></span>
     												</span>
-												</div>
-												
+												</div>	
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="inputClientName" class="col-lg-2 control-label">Client
+										<label for="selectClientName" class="col-lg-2 control-label">Client
 											Name</label>
 										<div class="col-lg-10">
-											<select class="form-control" id="select">
+											<select class="form-control" id="selectClientName" name="EventTime">
 												<option>Albus Dumbledore</option>
 												<option>Harry Potter</option>
 												<option>Hedwig</option>
@@ -90,10 +204,10 @@
 									</div>
 									
 									<div class="form-group">
-										<label for="inputPrimaryPlanner"
+										<label for="selectPrimaryPlanner"
 											class="col-lg-2 control-label">Primary Planner</label>
 										<div class="col-lg-10">
-											<select class="form-control" id="select">
+											<select class="form-control" id="selectPrimaryPlanner" name="primaryPlanner">
 												<option>Mary Christmas</option>
 												<option>Sally Sassalot</option>
 												<option>Wendy Whiner</option>
