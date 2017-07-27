@@ -121,6 +121,20 @@ public class Guest implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+//	public EventTable getEventTable() {
+//		return eventTable;
+//	}
+//
+//	@JsonIgnore
+//	public void setEventTable(EventTable eventTable) {
+//		this.eventTable = eventTable;
+//	}
+	
+	@XmlElement(name = "eventTableNumber")
+    public String getEventTableNumber() {
+        return "" + this.eventTable.getEventTableNum();
+    }
 
 	public String getClientRelationship() {
 		return clientRelationship;

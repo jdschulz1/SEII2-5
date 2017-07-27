@@ -17,28 +17,37 @@
   <body>
   <script type="text/javascript">
   function loadUsersTable(){
+	  var id = localStorage.eventId;
+		if(id > 0){
+			var guestsUrl = "/SchoolRestJPA/rest/tabletopservices/events/" + id + "/guests",
+	  
 		 $.ajax({ 
 			   type: "GET",  
-		       url: "/SchoolRestJPA/rest/tabletopservices/users",  
+		       url: guestsUrl,  
 		       dataType: "json",  
 		       success: function(resp){  
 		         // we have the response  
 		       
 		         $('#guest_placecard').html("");
 		         var placecard;
-		         placecard='<h2 class="text-center text-primary text-capitalize">Taylor Downer</h2>'
-					+'<h1 class="text-center text-primary">5</h1>'
-					+'<h3 class="text-center text-muted">Brother of Groom</h3>';
-		         $('#guest_placecard').append(placecard);
-		         var tableRow;
-	  
-		         $.each(resp, function(i, user){
-		        		
-       	        	placecard='<div class="thumbnail placecard"><h2 class="text-center text-primary text-capitalize">'+user.name+'</h2>'
-       					+'<h1 class="text-center text-primary">'+user.userName+'</h1>'
-       					+'<h3 class="text-center text-muted">'+user.email+'</h3>'
-       					+'</div>';
+		         var col = 0;
+		         $.each(resp, function(i, guest){
+		        	
+		        	if (col == 0) {
+		        		$('#guest_placecards').append('<div class="row">');
+		        	}
+       	        	placecard='<div class="col-sm-4 col-md-4 col-lg-4">'
+       	        		+ '<div class="thumbnail placecard"><h2 class="text-center text-primary text-capitalize">'+guest.name+'</h2>'
+       					+'<h1 class="text-center text-primary">'+guest.eventTableNumber+'</h1>'
+       					+'<h3 class="text-center text-muted">'+guest.clientRelationship+'</h3>'
+       					+'</div></div>';
        		         $('#guest_placecards').append(placecard);	
+       		         col = col + 1;
+       		         if(col == 3)
+    		         {
+      		        	$('#guest_placecards').append('</div>');
+      		        	col = 0;
+     		         }
 		         });
 		       },  
 		       error: function (jqXHR, exception) {
@@ -49,46 +58,18 @@
 			});
 	}
   </script>
-    <div id="nav-container">
-
-  	</div>
+    <div id="nav-container"></div>
 
     <div class="container">
-    <div class="row">
-    <div class="col-sm-12 col-md-12 col-lg-12">
-    	
-    	<span><h1>Placecards</h1>
-    	
-    	<button class="btn btn-info">Print</button></span>
-    </div>
-    </div>
-    <hr/>
-    <!-- 
-    <div class="row">
-		<div class="col-sm-4 col-md-4 col-lg-4">
-		<div class="thumbnail placecard">
-				<h2 class="text-center text-primary text-capitalize">John Doe</h2>
-					<h1 class="text-center text-primary">2</h1>
-					<h3 class="text-center text-muted">Luke's Father</h3>
-		</div>
-		</div>
-		<div class="col-sm-4 col-md-4 col-lg-4">
-		<div class="thumbnail placecard">
-				<h2 class="text-center text-primary text-capitalize">Sally Sassalot</h2>
-					<h1 class="text-center text-primary">2</h1>
-					<h3 class="text-center text-muted">Sister of Bride</h3>
-		</div>
-		</div>
-		<div class="col-sm-4 col-md-4 col-lg-4">
-		<div class="thumbnail placecard">
-				<h2 class="text-center text-primary text-capitalize">Debbie Downer</h2>
-					<h1 class="text-center text-primary">2</h1>
-					<h3 class="text-center text-muted">Sister of Groom</h3>
-		</div>
-		</div>
-		-->
+    	<div class="row">
+    		<div class="col-sm-12 col-md-12 col-lg-12">
+    			<span><h1>Placecards</h1>
+    			<button class="btn btn-info">Print</button></span>
+   			 </div>
+    	</div>
+    	<hr/>
 		<div id="guest_placecards"></div>
-</div>
+	</div>
 
 	</div><!-- /.container -->
     <script src="http://code.jquery.com/jquery.js"></script>
