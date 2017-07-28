@@ -80,7 +80,7 @@ public class SeatingArrangement implements Serializable{
 		     // Generate guestList.size() integers 0..guestList.size()
 		     for (int i = 0; i < newArrangement.event.getGuestList().size(); i++) {
 		    	 guestidx = number.nextInt(newArrangement.event.getGuestList().size());
-		    	 newGuest = newArrangement.event.getGuestList().get(guestidx);
+		    	 newGuest = newArrangement.event.getGuestList().get(guestidx).guestCopy();
 		    	 System.out.println(guestidx);
 		    	 if(newArrangement.eventTables.get(newArrangement.eventTables.size()-1).getGuests().size() < newArrangement.event.getEventTableSize()){
 		    		 newArrangement.eventTables.get(newArrangement.eventTables.size()-1).addGuest(newGuest);
@@ -91,6 +91,7 @@ public class SeatingArrangement implements Serializable{
 		    		 newArrangement.eventTables.add(newTable);
 		    	 }
 		     }
+		     newArrangement.calculateOverallFitness();
 		     return newArrangement;
 		   } catch (NoSuchAlgorithmException nsae) {
 		     // Forward to handler
@@ -129,23 +130,50 @@ public class SeatingArrangement implements Serializable{
 	public SeatingArrangement crossover(SeatingArrangement seatingArrangement) {
 		// TODO - implement SeatingArrangement.crossover
 		/*
-		 * Swap 50% of the guests from the passed seatingArrangement with their equivalent position
+		 * Swap guests with a fitness below 50% from the passed seatingArrangement with their equivalent position
 		 * on this seatingArrangement and repair by moving the displaced guest to where the incoming
 		 * guest's counterpart on this seatingArrangement is.  The candidates on this seatingArrangement 
 		 * for swap are the lowest fitness guests.
 		 * 
 		 * ideas for implementation:
-		 * 1. find the bottom 50% guests
+		 * 
+		 * Pre-condition:  SeatingArrangment needs to have an overallFitness
+		 * 
+		 * 1. find the bottom 50% guests based on fitness
 		 * 2. for each guest do the following
 		 * 		a. save the table number where the passed version of the guest resides
 		 * 		b. pick the lowest fitness guest at this table, then save and remove them from the table
 		 * 		c. add the guest(original) to this table and remove the guest(original) from their original table
 		 * 		d. add the guest(displaced) to the original guest's original table
 		 * */
+		try {
+			SeatingArrangement origSA = (SeatingArrangement) this.clone();
 		
-		
-		
-		throw new UnsupportedOperationException();
+			List<Guest> bottom50 = new ArrayList<Guest>();
+			
+			for(EventTable et : this.getEventTables()){
+				for(Guest g : et.getGuests()){
+					if(g.getGuestFitness().compareTo(BigDecimal.valueOf(50))==1){
+						bottom50.add(g);
+					}
+				}
+			}
+			
+			for(EventTable et : seatingArrangement.getEventTables()){
+				for(Guest g : et.getGuests()){
+					for(Guest g2 : bottom50){
+						if(g.getName() == g2.getName())
+							this.mutate(g2, g.getEventTableNumber());
+					}
+				}
+			}
+			
+			return origSA.getOverallFitnessRating().compareTo(this.getOverallFitnessRating()) == -1 ? origSA : this;
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+			return this;
+		}
 	}
 
 	/**

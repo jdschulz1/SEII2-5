@@ -34,6 +34,26 @@ public class Guest implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	public Guest(){
+		
+	}
+	
+	public Guest(int guestNumber, String name, String clientRelationship){
+		this.guestNumber = guestNumber;
+		this.name = name;
+		this.clientRelationship = clientRelationship;
+	}
+	
+	public Guest guestCopy(){
+		try {
+			return (Guest) this.clone();
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	@Id //signifies the primary key
 	@Column(name = "guest_id", nullable = false)
 	@GeneratedValue(strategy = GenerationType.AUTO)
