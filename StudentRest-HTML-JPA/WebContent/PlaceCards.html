@@ -20,14 +20,14 @@
   function loadUsersTable(){
 	  var id = localStorage.eventId;
 		if(id > 0){
-			var guestsUrl = "/SchoolRestJPA/rest/tabletopservices/events/" + id + "/guests",
+			var guestsUrl = "/SchoolRestJPA/rest/tabletopservices/events/" + id + "/guests";
 	  
 		 $.ajax({ 
 			   type: "GET",  
 		       url: guestsUrl,  
 		       dataType: "json",  
 		       success: function(resp){  
-		         // we have the response  
+		         // we have the response
 		       
 		         $('#guest_placecard').html("");
 		         var placecard;
@@ -38,14 +38,14 @@
 		        		$('#guest_placecards').append('<div class="row">');
 		        	}
        	        	placecard='<div class="col-sm-4 col-md-4 col-lg-4">'
-       	        		+ '<div class="thumbnail placecard"><h2 class="text-center text-primary text-capitalize">'+guest.name+'</h2>'
+       	        		+ '<div class="thumbnail placecard">'
+       	        		+ '<h2 class="text-center text-primary text-capitalize">'+guest.name+'</h2>'
        					+'<h1 class="text-center text-primary">'+guest.eventTableNumber+'</h1>'
        					+'<h3 class="text-center text-muted">'+guest.clientRelationship+'</h3>'
        					+'</div></div>';
        		         $('#guest_placecards').append(placecard);	
        		         col = col + 1;
-       		         if(col == 3)
-    		         {
+       		         if(col == 3){
       		        	$('#guest_placecards').append('</div>');
       		        	col = 0;
      		         }
@@ -57,14 +57,12 @@
 		    	    console.log(exception.responseText);
 		    	  }  
 			});
+		}
 	}
   </script>
     <div id="nav-container"></div>
-
-  	</div>
-	<div id="tables-nav">
-	
-	</div>
+    <h1>Seating Arrangement</h1>
+	<div id="tables-nav"></div>
     <div class="container">
     	<div class="row">
     		<div class="col-sm-12 col-md-12 col-lg-12">
@@ -75,8 +73,6 @@
     	<hr/>
 		<div id="guest_placecards"></div>
 	</div>
-
-	</div><!-- /.container -->
     <script src="http://code.jquery.com/jquery.js"></script>
     <script src="js/bootstrap.min.js"></script>
   </body>
