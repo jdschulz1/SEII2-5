@@ -6,17 +6,20 @@
 <!-- Bootstrap -->
 <link href="css/bootstrap.css" rel="stylesheet" media="screen">
 <link href="css/Site.css" rel="stylesheet" media="screen">
-<link href="css/bootstrap-clockpicker.css" rel="styelsheet" >
+<link href="css/bootstrap-clockpicker.min.css" rel="stylesheet" >
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-<script src="js/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/bootstrap-clockpicker.min.js"></script>
+<script src="js/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
 
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('#nav-container').load('nav.html');
+		loadPlanners();
+		loadClients();
 		loadEventFromLocalStorage();
+		
 	});
 </script>
 </head>
@@ -43,7 +46,7 @@
  		         	$("#inputEventDate").val(data.eventDateTime.monthValue+"/"+data.eventDateTime.dayOfMonth+"/"+data.eventDateTime.year);
  		         	$("#inputEventTime").val(data.eventDateTime.hour + ":" +data.eventDateTime.minute);
  		         	$("#inputTableEmptySpots").val(data.eventTableSize);
- 		         	//$("#inputPrimaryPlanner").val(data.primaryPlanner.name);
+ 		         	$("#inputPrimaryPlanner").val(data.primaryPlanner.name);
 // 		         	$("#inputVerifyPassword").val(data.password);
 // 		         	$("#inputEmail").val(data.email);
 		         },
@@ -95,7 +98,7 @@
 	          }
 	      });
 	  }else{ //new client
-		 console.log("WHYYY???");
+		 
 		  var url =  "/SchoolRestJPA/rest/tabletopservices/users/";	  
 			$.ajax({
 	          type: "POST",
@@ -118,16 +121,59 @@
 	  
   	});
   });
-  
+  function seatingArrangement(){
+		localStorage.eventId = localStorage.event;
+		document.location.href = "/StudentRest-HTML-JPA/WebContent/PlaceCards.html", true;  
+		
+	}
   function loadPlanners(){
+	  
 // 	  $("select").change(function(){
 // 		    alert($(this).find(":selected").data("value").age);
 // 		});
-
+		var Url = "/SchoolRestJPA/rest/tabletopservices/users/"
+	  $.ajax({
+	 		type: 'GET',
+	 		url: Url,  
+	 	    dataType: "json", 
+	         success: function (data) {
+	        	 //alert("success");
+	        	 
+	        	 $("#selectPrimaryPlanner").empty();
+		         $("#selectPrimaryPlanner").append("<option value='0'>---Select Primary Planner---</option>");
+		         $.each(data, function(i, user){
+		        	 $("#selectPrimaryPlanner").append($("<option data-value=" + JSON.stringify(user) +" ></option>").val(user.userID).html(user.name));
+		         });
+	        	
+	         },
+	         error: function (jqXHR, exception) {
+	    	    
+	     	    alert("Load Client Error" + jqXHR.responseText);
+	     	  }  
+	     });
   }
   
   function loadClients(){
-	  
+		var Url = "/SchoolRestJPA/rest/tabletopservices/clients/"
+			  $.ajax({
+			 		type: 'GET',
+			 		url: Url,  
+			 	    dataType: "json", 
+			         success: function (data) {
+			        	 //alert("success");
+			        	 
+			        	 $("#selectClientName").empty();
+				         $("#selectClientName").append("<option value='0'>---Select Client---</option>");
+				         $.each(data, function(i, client){
+				        	 $("#selectClientName").append($("<option data-value=" + JSON.stringify(client) +" ></option>").val(client.clientID).html(client.name));
+				         });
+			        	
+			         },
+			         error: function (jqXHR, exception) {
+			    	    
+			     	    alert("Load Client Error" + jqXHR.responseText);
+			     	  }  
+			     });
   }
   
   
@@ -145,7 +191,7 @@
 	</div>
 	<div class="row">
 	<div class="pull-right">
-		<button class="btn btn-info btn-sm">Seating Arrangement</button>
+		<a href="javascript:seatingArrangement()" class="btn btn-info btn-sm">Seating Arrangement</a>
 	</div>
 	</div>
 		<div class="row">
@@ -182,7 +228,7 @@
 											Date/Time</label>
 										<div class="col-lg-10">
 											<input type="datetime" class="form-control date-input" id="inputEventDate" name="EventDate" placeholder="Event Date/Time">
-												<div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
+												<div class="input-group clockpicker" data-autoclose="true">
     												<input type="text" class="form-control" id="inputEventTime" name="inputEventTime" value="13:14">
     												<span class="input-group-addon">
         												<span class="glyphicon glyphicon-time"></span>
