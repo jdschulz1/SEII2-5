@@ -101,9 +101,25 @@ public class SeatingArrangement implements Serializable{
 	/**
 	 * Performs a random change to the seating arrangement (i.e. swapping 2 guests between tables).
 	 */
-	public void mutate() {
-		// TODO - implement SeatingArrangement.mutate
-		throw new UnsupportedOperationException();
+	public void mutate(Guest orig, String moveTableNum) {
+		EventTable moveTable = this.eventTables.get(Integer.parseInt(moveTableNum)), 
+				origTable = this.eventTables.get(Integer.parseInt(orig.getEventTableNumber()));
+		Guest displaced = moveTable.getGuests().get(0);
+		
+		BigDecimal leastFit = displaced.getGuestFitness();
+		
+		for (Guest g : moveTable.getGuests()){
+			if(g.getGuestFitness().compareTo(leastFit) == 1){
+				displaced = g;
+				leastFit = displaced.getGuestFitness();
+				break;
+			}
+		}
+		
+		moveTable.removeGuest(displaced);
+		origTable.removeGuest(orig);
+		moveTable.addGuest(orig);
+		origTable.addGuest(displaced);
 	}
 
 	/**
@@ -112,6 +128,23 @@ public class SeatingArrangement implements Serializable{
 	 */
 	public SeatingArrangement crossover(SeatingArrangement seatingArrangement) {
 		// TODO - implement SeatingArrangement.crossover
+		/*
+		 * Swap 50% of the guests from the passed seatingArrangement with their equivalent position
+		 * on this seatingArrangement and repair by moving the displaced guest to where the incoming
+		 * guest's counterpart on this seatingArrangement is.  The candidates on this seatingArrangement 
+		 * for swap are the lowest fitness guests.
+		 * 
+		 * ideas for implementation:
+		 * 1. find the bottom 50% guests
+		 * 2. for each guest do the following
+		 * 		a. save the table number where the passed version of the guest resides
+		 * 		b. pick the lowest fitness guest at this table, then save and remove them from the table
+		 * 		c. add the guest(original) to this table and remove the guest(original) from their original table
+		 * 		d. add the guest(displaced) to the original guest's original table
+		 * */
+		
+		
+		
 		throw new UnsupportedOperationException();
 	}
 

@@ -1,6 +1,7 @@
 package tabletopsPD;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,6 +73,17 @@ public class Guest implements Serializable{
 	        mappedBy = "listOwner", orphanRemoval = true)
 	private List<J_Guest_BL> guestBlackList;
 	
+	@Transient
+	private BigDecimal guestFitness;
+	
+	public BigDecimal getGuestFitness() {
+		return guestFitness;
+	}
+
+	public void setGuestFitness(BigDecimal guestFitness) {
+		this.guestFitness = guestFitness;
+	}
+
 	/**
 	 * A method for adding to the Black List of Guests for the current Guest.
 	 */
@@ -135,6 +147,11 @@ public class Guest implements Serializable{
     public String getEventTableNumber() {
         return "" + this.eventTable.getEventTableNum();
     }
+	
+	
+	public void setEventTable(EventTable table) {
+		this.eventTable = table;
+	}
 
 	public String getClientRelationship() {
 		return clientRelationship;

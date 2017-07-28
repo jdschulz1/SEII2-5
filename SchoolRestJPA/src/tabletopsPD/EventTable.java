@@ -121,6 +121,7 @@ public class EventTable implements Serializable{
 	}
 
 	public void addGuest(Guest g){
+		g.setEventTable(this);
 		guests.add(g);
 	}
 	
