@@ -90,6 +90,7 @@ public class EventTable implements Serializable{
 			}
 			
 			total = total.divide(BigDecimal.valueOf(totalGuestsInBLWL));
+			g.setGuestFitness(total);
 			fitness = fitness.add(total);
 		}
 		
