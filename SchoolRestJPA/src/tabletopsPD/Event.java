@@ -102,7 +102,7 @@ public class Event implements Serializable {
 	/**
 	 * This operation executes the genetic algorithm to attempt to find the best SeatingArrangement for the Event.
 	 */
-	public boolean calculateSeatingArrangement() {
+	public boolean calculateSeatingArrangement(BigDecimal threshold) {
 		// TODO - implement Event.calculateSeatingArrangement
 		/*
 		 * Start with a generated population of 100 SeatingArrangements
@@ -132,7 +132,7 @@ public class Event implements Serializable {
 			population.add(temp);
 		}
 		
-		while(currentMostFit.getOverallFitnessRating().compareTo(BigDecimal.valueOf(90)) == 1){
+		while(currentMostFit.getOverallFitnessRating().compareTo(threshold) == 1){
 			for(int i = 0; i < population.size(); i++){
 				parent = population.get(i); 
 				for(int j = 1; j < population.size(); j++){
