@@ -1,6 +1,7 @@
 package tabletopsPD;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -103,7 +104,53 @@ public class Event implements Serializable {
 	 */
 	public boolean calculateSeatingArrangement() {
 		// TODO - implement Event.calculateSeatingArrangement
-		throw new UnsupportedOperationException();
+		/*
+		 * Start with a generated population of 100 SeatingArrangements
+		 * while there isn't a solution above the fitness threshold 
+		 * (or maybe after a certain number of generations?),crossover each 
+		 * SeatingArrangement with every other SeatingArrangement 
+		 * in the population.
+		 * 
+		 * Set the best fitness(or one of the best if tied) to the Event's 
+		 * seatingArrangment.
+		 * */
+		List<SeatingArrangement> population = new ArrayList<SeatingArrangement>();
+		SeatingArrangement temp, currentMostFit = this.seatingArrangement != null ? this.seatingArrangement : new SeatingArrangement(), parent, child;
+		
+		if(this.seatingArrangement != null) population.add(this.seatingArrangement);
+		
+		for(int i = 0; i < 100; i++){
+			temp = SeatingArrangement.createArrangement(this);
+			
+			if(currentMostFit.getOverallFitnessRating() == null){
+				currentMostFit = temp;
+			}
+			else if (currentMostFit.getOverallFitnessRating().compareTo(temp.getOverallFitnessRating()) == 1){
+				currentMostFit = temp;
+			}
+			
+			population.add(temp);
+		}
+		
+		while(currentMostFit.getOverallFitnessRating().compareTo(BigDecimal.valueOf(90)) == 1){
+			for(int i = 0; i < population.size(); i++){
+				parent = population.get(i); 
+				for(int j = 1; j < population.size(); j++){
+					parent = population.get(i).crossover(population.get(j));
+					population.add(parent);
+					temp = parent;
+					if(currentMostFit.getOverallFitnessRating().compareTo(temp.getOverallFitnessRating()) == 1)
+						currentMostFit = temp;
+				}
+			}
+		}
+		
+		if(currentMostFit.getOverallFitnessRating() != null){
+			this.seatingArrangement = currentMostFit;
+			return true;
+		}
+		else return false;
+			
 	}
 
 	/**

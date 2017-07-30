@@ -168,6 +168,7 @@ public class SeatingArrangement implements Serializable{
 				}
 			}
 			
+			this.calculateOverallFitness();
 			return origSA.getOverallFitnessRating().compareTo(this.getOverallFitnessRating()) == -1 ? origSA : this;
 		} catch (CloneNotSupportedException e) {
 			// TODO Auto-generated catch block
