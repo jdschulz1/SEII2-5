@@ -16,14 +16,14 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('#nav-container').load('nav.html');
-		loadPlanners();
-		loadClients();
+		
 		loadEventFromLocalStorage();
 		
 	});
 </script>
 </head>
   <body>
+ 
     <script type="text/javascript">
   function loadEventFromLocalStorage(){
 	  var id = localStorage.event;
@@ -37,7 +37,7 @@
 		         success: function (data) {
 		        	 //alert("success");
 		        	 
-		        	 console.log(data.eventDateTime.year);
+		        	
 		        	$("#inputEventID").val(id);
 		        	$("#inputTitle").val(data.eventTitle);
  		         	
@@ -45,10 +45,15 @@
  		         	$("#inputVenueName").val(data.venueName);
  		         	$("#inputEventDate").val(data.eventDateTime.monthValue+"/"+data.eventDateTime.dayOfMonth+"/"+data.eventDateTime.year);
  		         	$("#inputEventTime").val(data.eventDateTime.hour + ":" +data.eventDateTime.minute);
- 		         	$("#inputTableEmptySpots").val(data.eventTableSize);
- 		         	$("#inputPrimaryPlanner").val(data.primaryPlanner.name);
-// 		         	$("#inputVerifyPassword").val(data.password);
-// 		         	$("#inputEmail").val(data.email);
+ 		         	$("#inputTableEmptySpots").val(data.maxEmptySeats);
+ 		         	console.log(data.primaryPlanner.userID);
+ 		         	console.log(data.primaryPlanner.name);
+ 		         	$("#selectPrimaryPlanner").val(1).change();
+ 		         	$("#inputTableSize").val(data.eventTableSize);
+ 		         	if(data.client != null){
+ 		         		$("#selectClientName").val(data.client.clientID);	
+ 		         	}
+ 		         	
 		         },
 		         error: function (jqXHR, exception) {
 		    	    
@@ -126,7 +131,7 @@
 		document.location.href = "/StudentRest-HTML-JPA/WebContent/PlaceCards.html", true;  
 		
 	}
-  function loadPlanners(){
+function loadPlanners(){
 	  
 // 	  $("select").change(function(){
 // 		    alert($(this).find(":selected").data("value").age);
@@ -151,6 +156,7 @@
 	     	    alert("Load Client Error" + jqXHR.responseText);
 	     	  }  
 	     });
+  		console.log("loading planners");
   }
   
   function loadClients(){
@@ -177,6 +183,10 @@
   }
   
   
+  </script>
+   <script type="text/javascript">
+  loadPlanners();
+	loadClients();
   </script>
 <!--   <select> -->
 <!--     <option data-value='{"name":"rajiv","age":"40"}'>a</option> -->
@@ -253,7 +263,7 @@
 										<label for="selectPrimaryPlanner"
 											class="col-lg-2 control-label">Primary Planner</label>
 										<div class="col-lg-10">
-											<select class="form-control" id="selectPrimaryPlanner" name="primaryPlanner">
+											<select class="form-control" id="selectPrimaryPlanner" name="primaryPlanner" >
 												<option>Mary Christmas</option>
 												<option>Sally Sassalot</option>
 												<option>Wendy Whiner</option>
