@@ -10,6 +10,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.MatrixParam;
 import javax.ws.rs.OPTIONS;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -43,10 +44,23 @@ public class TabletopsService {
 	@Path("/events")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Event> getEvents(
+		@MatrixParam("client") String idNumber,
+		@MatrixParam("date") String date,
 	    @DefaultValue("0") @QueryParam("page") String page,
 	    @DefaultValue("10") @QueryParam("per_page") String perPage){
 			EM.getEM().refresh(company);
-			return company.getAllEvents(Integer.parseInt(page),Integer.parseInt(perPage));
+			if(idNumber != null && date != null) {
+				return company.getEventsForClientAndDate(idNumber, date, Integer.parseInt(page),Integer.parseInt(perPage));
+			}
+			else if(idNumber != null && date == null) {
+				return company.getEventsForClient(idNumber, Integer.parseInt(page),Integer.parseInt(perPage));
+			}
+			else if(idNumber == null && date != null) {
+				return company.getEventsForDate(date, Integer.parseInt(page),Integer.parseInt(perPage));
+			}
+			else {
+				return company.getAllEvents(Integer.parseInt(page),Integer.parseInt(perPage));
+			}
 	}	
 	
 	@GET
