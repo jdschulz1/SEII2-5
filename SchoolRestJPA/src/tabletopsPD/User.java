@@ -76,7 +76,21 @@ public class User implements Serializable{
 	
 	@ManyToOne(optional=false)
 	@JoinColumn(name="company",referencedColumnName="company_id")
-	private tabletopsPD.Company company;
+	private Company company;
+
+	/**
+	 * @return the company
+	 */
+	public Company getCompany() {
+		return company;
+	}
+
+	/**
+	 * @param company the company to set
+	 */
+	public void setCompany(Company company) {
+		this.company = company;
+	}
 
 	/**
 	 * Checks the password to the one stored for a user and if valid returns true.

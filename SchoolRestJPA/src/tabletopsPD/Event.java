@@ -56,6 +56,20 @@ public class Event implements Serializable {
 	private LocalDateTime eventDateTime;
 	
 	/**
+	 * @return the company
+	 */
+	public Company getCompany() {
+		return company;
+	}
+
+	/**
+	 * @param company the company to set
+	 */
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+
+	/**
 	 * The title of the event.
 	 */
 	@Column(name = "event_title",nullable = false,length = 50)

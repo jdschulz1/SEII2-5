@@ -85,6 +85,7 @@ public class Company implements Serializable{
 	public Boolean addUser(User user) {
 		//TODO: Double check this line
 		this.users.add(user);
+		user.setCompany(this);
 		UserDAO.addUser(user);
 		return true;
 	}
@@ -92,6 +93,7 @@ public class Company implements Serializable{
 	public Boolean addEvent(Event event) {
 		//TODO: Double check this line
 		this.events.add(event);
+		event.setCompany(this);
 		EventDAO.addEvent(event);
 		return true;
 	}
