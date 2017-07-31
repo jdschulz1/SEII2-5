@@ -69,12 +69,13 @@ function deleteClient(id){
 	       contentType: "application/json; charset=utf-8",
 	       success: function(resp){  
 	         // we have the response  
-	       
+	       	 alert("Deleted Client");
 	         $('#clientsTable').html("");
 	         loadClientsTable();
 	       },  
 	       error: function (jqXHR, exception) {
-	    	    console.log(jqXHR.responseText);
+	    	   alert("Error Deleting Client"); 
+	    	   console.log(jqXHR.responseText);
 	   
 	    	  }  
 		});
