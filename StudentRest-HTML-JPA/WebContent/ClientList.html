@@ -47,7 +47,8 @@ function loadClientsTable(){
 	       },  
 	       error: function (jqXHR, exception) {
 	    	    
-	    	    alert(jqXHR.responseText);
+	    	    alert("Error Loading Clients");
+	    	    console.log(jqXHR.responseText);
 	    	  }  
 		});
 }
