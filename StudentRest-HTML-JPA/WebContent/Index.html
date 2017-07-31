@@ -59,6 +59,10 @@
   }
   
   function deleteEvent(id){
+	  var txt;
+		var r = confirm("Are you sure you want to delete the Event?");
+		if (r == true) {
+			txt = "Deleting Event!";
 	  var url = "/SchoolRestJPA/rest/tabletopservices/events/" + id;
 		$.ajax({ 
 			   type: "DELETE",  
@@ -76,6 +80,9 @@
 		   
 		    	  }  
 			});
+		} else {
+		    txt = "You pressed Cancel!";
+		}
   }
   
   function search(date, client){
