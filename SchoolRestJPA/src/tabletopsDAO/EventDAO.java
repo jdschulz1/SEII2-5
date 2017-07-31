@@ -1,4 +1,10 @@
 package tabletopsDAO;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -37,6 +43,52 @@ public class EventDAO {
     	User user = UserDAO.findUserByIdNumber(idNumber);
         TypedQuery<Event> query = EM.getEM().createQuery("SELECT event FROM event event WHERE event.primaryPlanner = :user", Event.class);
         query.setParameter("user", user);
+        return query.setFirstResult(page * pageSize)
+                .setMaxResults(pageSize)
+                .getResultList();
+    }
+    
+    public static List<Event> getEventsForClient(String idNumber, int page, int pageSize)
+    {
+    	Client client = ClientDAO.findClientByIdNumber(idNumber);
+        TypedQuery<Event> query = EM.getEM().createQuery("SELECT event FROM event event WHERE event.client = :client", Event.class);
+        query.setParameter("client", client);
+        return query.setFirstResult(page * pageSize)
+                .setMaxResults(pageSize)
+                .getResultList();
+    }
+    
+    public static List<Event> getEventsForDate(String datestr, int page, int pageSize)
+    {
+    	//User user = UserDAO.findUserByIdNumber(idNumber);
+    	//Date date = new SimpleDateFormat("yyyy-MM-dd").parse(datestr);
+    	//String newdate = date.toString();
+    	//Date date = formatter.format(datestr);
+    	//Date date1=new SimpleDateFormat("yyyy-MM-dd").parse(datestr);
+    	LocalDateTime date = LocalDateTime.parse(datestr);
+    	LocalDateTime startDate = LocalDateTime.of(date.toLocalDate(), LocalTime.MIN);
+		LocalDateTime endDate = LocalDateTime.of(date.toLocalDate(), LocalTime.MAX);
+//    	LocalDateTime endDate = date.MAX;
+//    	LocalDateTime startDate = date.MIN;
+        TypedQuery<Event> query = EM.getEM().createQuery("SELECT event FROM event event WHERE event.eventDateTime >= :startDate AND event.eventDateTime < :endDate", Event.class);
+        query.setParameter("startDate", startDate);
+        query.setParameter("endDate", endDate);
+        return query.setFirstResult(page * pageSize)
+                .setMaxResults(pageSize)
+                .getResultList();
+    }
+    
+    public static List<Event> getEventsForClientAndDate(String idNumber, String datestr, int page, int pageSize)
+    {
+    	Client client = ClientDAO.findClientByIdNumber(idNumber);
+    	
+    	LocalDateTime date = LocalDateTime.parse(datestr);
+    	LocalDateTime startDate = LocalDateTime.of(date.toLocalDate(), LocalTime.MIN);
+		LocalDateTime endDate = LocalDateTime.of(date.toLocalDate(), LocalTime.MAX);
+        TypedQuery<Event> query = EM.getEM().createQuery("SELECT event FROM event event WHERE event.client = :client AND event.eventDateTime >= :startDate AND event.eventDateTime < :endDate", Event.class);
+        query.setParameter("client", client);
+        query.setParameter("startDate", startDate);
+        query.setParameter("endDate", endDate);
         return query.setFirstResult(page * pageSize)
                 .setMaxResults(pageSize)
                 .getResultList();
