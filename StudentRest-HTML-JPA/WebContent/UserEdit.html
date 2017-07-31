@@ -38,12 +38,15 @@
 		         },
 		         error: function (jqXHR, exception) {
 		    	    
-		     	    alert("Load Client Error" + jqXHR.responseText);
+		     	    alert("Load User Error" + jqXHR.responseText);
 		     	  }  
 		     });
 		}
   }
   $(document).ready(function() { 
+	$("#btnCancel").click(function(e){
+		document.location.href = "/StudentRest-HTML-JPA/WebContent/UserList.html", true;
+	});  
   	$("#editUserForm").submit(function(e){
 	  e.preventDefault();
 	  // Get form
@@ -75,11 +78,18 @@
 	          data: JSON.stringify(data),          
 	          cache: false,
 	          context : Form,
-	          success: function (data) {             
+	          success: function (data) {
+	        	  $('#successMessages').fadeIn().html(data);
+	        	  setTimeout(function() {
+						$('#successMessages').fadeOut("slow");
+					}, 2000 );
+	        	  alert("User Data Saved");
+	        	  document.location.href = "/StudentRest-HTML-JPA/WebContent/UserList.html", true; 
 	              $("#btnSubmit").prop("disabled", false);
 	          },
 	          error: function (e) {
 	              console.log("ERROR : ", e.responseText);
+	              alert("There was an error saving the user.");
 	              $("#btnSubmit").prop("disabled", false);
 	          }
 	      });
@@ -161,7 +171,7 @@
         <div class="form-group pull-right">
       <div class="col-lg-10 col-lg-offset-2">
         <button id="btnSubmit" type="submit" class="btn btn-primary">Submit</button>
-        <button type="reset" class="btn btn-default">Cancel</button>
+        <button type="reset" id="btnCancel" class="btn btn-default">Cancel</button>
         
       </div>
     </div>

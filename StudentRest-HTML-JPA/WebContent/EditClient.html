@@ -45,6 +45,9 @@
 		}
   }
   $(document).ready(function() { 
+	  $("#btnCancel").click(function(e){
+			document.location.href = "/StudentRest-HTML-JPA/WebContent/ClientList.html", true;
+		}); 
   	$("#editClientForm").submit(function(e){
 	  e.preventDefault();
 	  // Get form
@@ -76,8 +79,11 @@
 	          context : Form,
 	          success: function (data) {             
 	              $("#btnSubmit").prop("disabled", false);
+	              alert("Client Data Saved");
+	        	  document.location.href = "/StudentRest-HTML-JPA/WebContent/ClientList.html", true;
 	          },
 	          error: function (e) {
+	        	  alert("Error Saving Client Data");
 	              console.log("ERROR : ", e.responseText);
 	              $("#btnSubmit").prop("disabled", false);
 	          }
@@ -94,9 +100,12 @@
 	          context : Form,
 	          success: function (data) {             
 	              $("#btnSubmit").prop("disabled", false);
+	              alert("Client Data Saved");
+	        	  document.location.href = "/StudentRest-HTML-JPA/WebContent/ClientList.html", true;
 	          },
 	          error: function (e) {
-	              console.log("ERROR : ", e.responseText);
+	        	  alert("Error Saving Client Data");
+	        	  console.log("ERROR : ", e.responseText);
 	              $("#btnSubmit").prop("disabled", false);
 	          }
 	      });
@@ -141,7 +150,7 @@
         <div class="form-group pull-right">
       	<div class="col-lg-10 col-lg-offset-2">
         <button type="submit" id="btnSubmit" class="btn btn-primary">Submit</button>
-        <button type="reset" class="btn btn-default">Cancel</button>     
+        <button type="reset" id="btnCancel" class="btn btn-default">Cancel</button>     
       </div>
     </div>
 </fieldset>
