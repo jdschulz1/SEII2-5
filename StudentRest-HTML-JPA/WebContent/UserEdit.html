@@ -104,10 +104,14 @@
 	          data: JSON.stringify(data),          
 	          cache: false,
 	          context : Form,
-	          success: function (data) {             
+	          success: function (data) { 
+	        	  alert("User Data Saved");
+	        	  document.location.href = "/StudentRest-HTML-JPA/WebContent/UserList.html", true; 
 	              $("#btnSubmit").prop("disabled", false);
 	          },
 	          error: function (e) {
+	        	  console.log("ERROR : ", e.responseText);
+	              alert("There was an error saving the user.");
 	              console.log("ERROR : ", e.responseText);
 	              $("#btnSubmit").prop("disabled", false);
 	          }
