@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.owlike.genson.annotation.JsonIgnore;
+
 import schoolUT.Message;
 import tabletopsDAO.ClientDAO;
 
@@ -54,6 +56,7 @@ public class Client implements Serializable {
 	/**
 	 * @return the company
 	 */
+	@JsonIgnore
 	public Company getCompany() {
 		return company;
 	}

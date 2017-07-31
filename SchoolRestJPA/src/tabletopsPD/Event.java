@@ -22,6 +22,8 @@ import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.owlike.genson.annotation.JsonIgnore;
+
 import schoolUT.Message;
 import tabletopsDAO.EventDAO;
 import tabletopsDAO.LocalDateTimeConverter;
@@ -58,6 +60,7 @@ public class Event implements Serializable {
 	/**
 	 * @return the company
 	 */
+	@JsonIgnore
 	public Company getCompany() {
 		return company;
 	}

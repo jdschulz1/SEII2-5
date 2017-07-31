@@ -79,8 +79,17 @@ public class User implements Serializable{
 	private Company company;
 
 	/**
+	 * Checks the password to the one stored for a user and if valid returns true.
+	 */
+	public boolean checkPassword() {
+		// TODO - implement User.checkPassword
+		throw new UnsupportedOperationException();
+	}
+
+	/**
 	 * @return the company
 	 */
+	@JsonIgnore
 	public Company getCompany() {
 		return company;
 	}
@@ -90,14 +99,6 @@ public class User implements Serializable{
 	 */
 	public void setCompany(Company company) {
 		this.company = company;
-	}
-
-	/**
-	 * Checks the password to the one stored for a user and if valid returns true.
-	 */
-	public boolean checkPassword() {
-		// TODO - implement User.checkPassword
-		throw new UnsupportedOperationException();
 	}
 
 	/**
