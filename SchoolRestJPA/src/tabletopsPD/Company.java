@@ -13,6 +13,8 @@ import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.owlike.genson.annotation.JsonIgnore;
+
 import tabletopsDAO.ClientDAO;
 import tabletopsDAO.EventDAO;
 import tabletopsDAO.EventTableDAO;
@@ -65,6 +67,7 @@ public class Company implements Serializable{
 		this.companyName = companyName;
 	}
 
+	@JsonIgnore
 	public List<Client> getClients() {
 		return clients;
 	}
@@ -85,6 +88,7 @@ public class Company implements Serializable{
 	public Boolean addUser(User user) {
 		//TODO: Double check this line
 		this.users.add(user);
+		user.setCompany(this);
 		UserDAO.addUser(user);
 		return true;
 	}
@@ -92,6 +96,7 @@ public class Company implements Serializable{
 	public Boolean addEvent(Event event) {
 		//TODO: Double check this line
 		this.events.add(event);
+		event.setCompany(this);
 		EventDAO.addEvent(event);
 		return true;
 	}
@@ -110,6 +115,7 @@ public class Company implements Serializable{
 //		return true;
 //	}
 
+	@JsonIgnore
 	public List<Event> getEvents() {
 		return events;
 	}
@@ -119,6 +125,7 @@ public class Company implements Serializable{
 		this.events = events;
 	}
 
+	@JsonIgnore
 	public List<User> getUsers() {
 		return users;
 	}
