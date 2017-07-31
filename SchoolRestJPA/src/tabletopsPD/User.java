@@ -89,17 +89,18 @@ public class User implements Serializable{
 	/**
 	 * @return the company
 	 */
-//	@JsonIgnore
-//	public Company getCompany() {
-//		return company;
-//	}
-//
-//	/**
-//	 * @param company the company to set
-//	 */
-//	public void setCompany(Company company) {
-//		this.company = company;
-//	}
+	@JsonIgnore
+	public Company getCompany() {
+		return company;
+	}
+
+	/**
+	 * @param company the company to set
+	 */
+	@XmlElement
+	public void setCompany(Company company) {
+		this.company = company;
+	}
 
 	/**
 	 * A user enters their old password and the new password and the password is set to the new password if and only if the old password is correct.

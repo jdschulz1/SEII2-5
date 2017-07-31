@@ -57,20 +57,20 @@ public class Event implements Serializable {
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime eventDateTime;
 	
-	/**
-	 * @return the company
-	 */
-	@JsonIgnore
-	public Company getCompany() {
-		return company;
-	}
-
-	/**
-	 * @param company the company to set
-	 */
-	public void setCompany(Company company) {
-		this.company = company;
-	}
+//	/**
+//	 * @return the company
+//	 */
+//	@JsonIgnore
+//	public Company getCompany() {
+//		return company;
+//	}
+//
+//	/**
+//	 * @param company the company to set
+//	 */
+//	public void setCompany(Company company) {
+//		this.company = company;
+//	}
 
 	/**
 	 * The title of the event.

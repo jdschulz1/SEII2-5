@@ -53,20 +53,20 @@ public class Client implements Serializable {
 	@JoinColumn(name="company",referencedColumnName="company_id")
 	private Company company;
 	
-	/**
-	 * @return the company
-	 */
-	@JsonIgnore
-	public Company getCompany() {
-		return company;
-	}
-
-	/**
-	 * @param company the company to set
-	 */
-	public void setCompany(Company company) {
-		this.company = company;
-	}
+//	/**
+//	 * @return the company
+//	 */
+//	@JsonIgnore
+//	public Company getCompany() {
+//		return company;
+//	}
+//
+//	/**
+//	 * @param company the company to set
+//	 */
+//	public void setCompany(Company company) {
+//		this.company = company;
+//	}
 
 	public int getClientID() {
 		return clientId;
