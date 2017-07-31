@@ -55,25 +55,33 @@
 	}
 
 	function deleteUser(id){
-
-		//call to delete client service
-		var url = "/SchoolRestJPA/rest/tabletopservices/users/" + id;
-		$.ajax({ 
-			   type: "DELETE",  
-		       url: url,  
-		       dataType: "json",  
-		       contentType: "application/json; charset=utf-8",
-		       success: function(resp){  
-		         // we have the response  
-		       
-		         alert("User Deleted");
-		         loadUsersTable();
-		       },  
-		       error: function (jqXHR, exception) {
-		    	    console.log(jqXHR.responseText);
-		   			alert("Error Deleting User");
-		    	  }  
-			});
+		var txt;
+		var r = confirm("Are you sure you want to delete the user?");
+		if (r == true) {
+		    txt = "Deleting User!";
+		  //call to delete user service
+			var url = "/SchoolRestJPA/rest/tabletopservices/users/" + id;
+			$.ajax({ 
+				   type: "DELETE",  
+			       url: url,  
+			       dataType: "json",  
+			       contentType: "application/json; charset=utf-8",
+			       success: function(resp){  
+			         // we have the response  
+			       
+			         alert("User Deleted");
+			         loadUsersTable();
+			       },  
+			       error: function (jqXHR, exception) {
+			    	    console.log(jqXHR.responseText);
+			   			alert("Error Deleting User");
+			    	  }  
+				});
+		
+		} else {
+		    txt = "You pressed Cancel!";
+		}
+		
 		
 	}
   </script>
