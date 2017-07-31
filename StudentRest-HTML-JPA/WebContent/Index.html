@@ -67,10 +67,11 @@
 		       contentType: "application/json; charset=utf-8",
 		       success: function(resp){  
 		         // we have the response  
-		       
-		         loadClientsTable();
+		         alert("Event Deleted");
+		         loadMyEvents();
 		       },  
 		       error: function (jqXHR, exception) {
+		    	   alert("Error Deleting Event");
 		    	    console.log(jqXHR.responseText);
 		   
 		    	  }  
