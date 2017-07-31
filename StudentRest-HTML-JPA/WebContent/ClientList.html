@@ -60,7 +60,10 @@ function editClient(id){
 }
 
 function deleteClient(id){
-
+	var txt;
+	var r = confirm("Are you sure you want to delete the user?");
+	if (r == true) {
+	    txt = "Deleting User!";
 	//call to delete client service
 	var url = "/SchoolRestJPA/rest/tabletopservices/clients/" + id;
 	$.ajax({ 
@@ -81,7 +84,9 @@ function deleteClient(id){
 	    	  }  
 		});
 	//reload clientsTable after delete
-	
+	} else {
+	    txt = "You pressed Cancel!";
+	}
 }
 </script>
    <div id="nav-container">
