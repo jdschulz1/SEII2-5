@@ -88,7 +88,7 @@ public class Company implements Serializable{
 	public Boolean addUser(User user) {
 		//TODO: Double check this line
 		this.users.add(user);
-		user.setCompany(this);
+//		user.setCompany(this);
 		UserDAO.addUser(user);
 		return true;
 	}
