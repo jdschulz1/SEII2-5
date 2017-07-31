@@ -66,12 +66,12 @@
 		       success: function(resp){  
 		         // we have the response  
 		       
-		         
+		         alert("User Deleted");
 		         loadUsersTable();
 		       },  
 		       error: function (jqXHR, exception) {
 		    	    console.log(jqXHR.responseText);
-		   
+		   			error("Error Deleting User");
 		    	  }  
 			});
 		
