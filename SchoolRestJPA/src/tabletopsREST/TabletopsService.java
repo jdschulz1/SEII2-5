@@ -336,6 +336,7 @@ public class TabletopsService {
 			    @DefaultValue("0") @QueryParam("page") String page,
 			    @DefaultValue("10") @QueryParam("per_page") String perPage){
 					EM.getEM().refresh(company);
+					
 					return company.getGuestsForEvent(id, Integer.parseInt(page),Integer.parseInt(perPage));
 			}
 			

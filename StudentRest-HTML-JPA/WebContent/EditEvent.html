@@ -44,11 +44,26 @@
  		         	$("#inputRole").val(data.role);
  		         	$("#inputVenueName").val(data.venueName);
  		         	$("#inputEventDate").val(data.eventDateTime.monthValue+"/"+data.eventDateTime.dayOfMonth+"/"+data.eventDateTime.year);
- 		         	$("#inputEventTime").val(data.eventDateTime.hour + ":" +data.eventDateTime.minute);
+ 		         	
+ 		         	var minute;
+ 		         	if (data.eventDateTime.minute < 10){
+ 		         		minute = "0" + String(data.eventDateTime.minute);
+ 		         	}else{
+ 		         		minute = data.eventDateTime.minute;
+ 		         	}
+ 		         	
+ 		         	var hour;
+ 		         	if (data.eventDateTime.hour < 10){
+ 		         		hour = "0" + String(data.eventDateTime.hour);
+ 		         	}else{
+ 		         		hour = data.eventDateTime.hour;
+ 		         	}
+ 		         	
+ 		         	$("#inputEventTime").val(hour + ":" + minute);
  		         	$("#inputTableEmptySpots").val(data.maxEmptySeats);
  		         	console.log(data.primaryPlanner.userID);
  		         	console.log(data.primaryPlanner.name);
- 		         	$("#selectPrimaryPlanner").val(1).change();
+ 		         	$("#selectPrimaryPlanner").val(String(data.primaryPlanner.userID)).change();
  		         	$("#inputTableSize").val(data.eventTableSize);
  		         	if(data.client != null){
  		         		$("#selectClientName").val(data.client.clientID);	
@@ -63,7 +78,7 @@
 		}
   }
   $(document).ready(function() { 
-  	$("#editUserForm").submit(function(e){
+  	$("#editEventForm").submit(function(e){
 	  e.preventDefault();
 	  // Get form
       	var data = {};
@@ -76,6 +91,7 @@
         	data[input.attr("name")] = input.val();
         	
         	delete data["undefined"];
+        	console.log(JSON.stringify(data));
     	});
 		
       $("#btnSubmit").prop("disabled", true);
@@ -213,7 +229,7 @@ function loadPlanners(){
 
 					<div class="row">
 						<div class="col-sm-12 col-md-12 col-lg-12">
-							<form class="form-horizontal">
+							<form  id="editEventForm" class="form-horizontal">
 								<fieldset>
 									<input type="hidden" id="#inputEventID" name="eventId" val="" >
 									<div class="form-group">
@@ -237,24 +253,31 @@ function loadPlanners(){
 										<label for="inputEventDate" class="col-lg-2 control-label">Event
 											Date/Time</label>
 										<div class="col-lg-10">
-											<input type="datetime" class="form-control date-input" id="inputEventDate" name="EventDate" placeholder="Event Date/Time">
-												<div class="input-group clockpicker" data-autoclose="true">
-    												<input type="text" class="form-control" id="inputEventTime" name="inputEventTime" value="13:14">
+											<div class="col-sm-6 col-md-6 col-lg-6">
+											<div class="input-group">
+												<input type="datetime" class="form-control date-input" id="inputEventDate" name="EventDate" placeholder="Event Date/Time">
+												<span class="input-group-addon">
+        												<span class="glyphicon glyphicon-calendar"></span>
+    											</span>
+											</div>
+											</div>
+										</div>
+										<div class="col-sm-6 col-md-6 col-lg-6">
+												<div class="input-group clockpicker " data-autoclose="true">
+    												<input type="text" class="form-control" id="inputEventTime" name="inputEventTime" value="">
     												<span class="input-group-addon">
         												<span class="glyphicon glyphicon-time"></span>
     												</span>
 												</div>	
 										</div>
+										
 									</div>
 									<div class="form-group">
 										<label for="selectClientName" class="col-lg-2 control-label">Client
 											Name</label>
 										<div class="col-lg-10">
 											<select class="form-control" id="selectClientName" name="EventTime">
-												<option>Albus Dumbledore</option>
-												<option>Harry Potter</option>
-												<option>Hedwig</option>
-												<option>Severus Snape</option>
+											
 											</select>
 										</div>
 									</div>
@@ -291,7 +314,7 @@ function loadPlanners(){
 									</div>
 							<div class="btn-group pull-right">
 										<div class="col-md-12 col-lg-12 ">
-											<button type="submit" class="btn btn-primary">Submit</button>
+											<button id="btnSubmit" type="submit" class="btn btn-primary">Submit</button>
 											<button type="reset" class="btn btn-default">Cancel</button>
 										</div>
 								</div>

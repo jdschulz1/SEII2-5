@@ -80,6 +80,7 @@ public class Company implements Serializable{
 	public Boolean addClient(Client client) {
 		//TODO: Double check this line
 		this.clients.add(client);
+		//WHY!?!?!?!?!?!?!??!
 //		client.setCompany(this);
 		ClientDAO.addClient(client);
 		return true;

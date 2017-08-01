@@ -56,7 +56,7 @@ public class Event implements Serializable {
 	@Column(name = "event_date_time", columnDefinition = "TIMESTAMP")
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime eventDateTime;
-	
+//  WHYYYYYYYYYYYYYYYYYY!?!?!??!	
 //	/**
 //	 * @return the company
 //	 */
