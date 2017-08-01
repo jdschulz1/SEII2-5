@@ -12,6 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
@@ -85,14 +87,30 @@ public class Guest implements Serializable{
 	@JoinColumn(name="event_table",referencedColumnName="event_table_id")
 	private EventTable eventTable;
 
-	@OneToMany(cascade = CascadeType.ALL, 
-	        mappedBy = "listOwner", orphanRemoval = true)
-	private List<J_Guest_WL> guestWhiteList;
+//	@OneToMany(cascade = CascadeType.ALL, 
+//	        mappedBy = "listOwner", orphanRemoval = true)
+//	@JoinTable(name="j_guest_wl")
+////	@IndexColumn(base=1, name="wl")
+//	private List<J_Guest_WL> guestWhiteList;
+//	
+//	@OneToMany(cascade = CascadeType.ALL, 
+//	        mappedBy = "listOwner", orphanRemoval = true)
+//	@JoinTable(name="j_guest_bl")
+////	@IndexColumn(base=1, name="bl")
+//	private List<J_Guest_BL> guestBlackList;
 	
-	@OneToMany(cascade = CascadeType.ALL, 
-	        mappedBy = "listOwner", orphanRemoval = true)
-	private List<J_Guest_BL> guestBlackList;
+	@JoinTable(name="whitelist", 
+			joinColumns= {@JoinColumn(name="list_owner", referencedColumnName = "guest_id", nullable = false)}, 
+			inverseJoinColumns = {@JoinColumn(name="list_member", referencedColumnName = "guest_id", nullable=false)})
+	@ManyToMany
+	private List<Guest> whitelist;
 	
+	@JoinTable(name="blacklist", 
+			joinColumns= {@JoinColumn(name="list_owner", referencedColumnName = "guest_id", nullable = false)}, 
+			inverseJoinColumns = {@JoinColumn(name="list_member", referencedColumnName = "guest_id", nullable=false)})
+	@ManyToMany
+	private List<Guest> blacklist;
+
 	@Transient
 	private BigDecimal guestFitness;
 	
@@ -182,25 +200,25 @@ public class Guest implements Serializable{
 		this.clientRelationship = clientRelationship;
 	}
 
-	@JsonIgnore
-	public List<J_Guest_WL> getGuestWhiteList() {
-		return guestWhiteList;
-	}
-
-	@XmlElement
-	public void setGuestWhiteList(List<J_Guest_WL> guestWhiteList) {
-		this.guestWhiteList = guestWhiteList;
-	}
-
-	@JsonIgnore
-	public List<J_Guest_BL> getGuestBlackList() {
-		return guestBlackList;
-	}
-
-	@XmlElement
-	public void setGuestBlackList(List<J_Guest_BL> guestBlackList) {
-		this.guestBlackList = guestBlackList;
-	}
+//	@JsonIgnore
+//	public List<J_Guest_WL> getGuestWhiteList() {
+//		return guestWhiteList;
+//	}
+//
+//	@XmlElement
+//	public void setGuestWhiteList(List<J_Guest_WL> guestWhiteList) {
+//		this.guestWhiteList = guestWhiteList;
+//	}
+//
+//	@JsonIgnore
+//	public List<J_Guest_BL> getGuestBlackList() {
+//		return guestBlackList;
+//	}
+//
+//	@XmlElement
+//	public void setGuestBlackList(List<J_Guest_BL> guestBlackList) {
+//		this.guestBlackList = guestBlackList;
+//	}
 	
 	public ArrayList<Message> validate() {
 		ArrayList<Message> messages= new ArrayList<Message>();
@@ -217,6 +235,38 @@ public class Guest implements Serializable{
 		
 	}
 	
+	/**
+	 * @return the whitelist
+	 */
+	@JsonIgnore
+	public List<Guest> getWhitelist() {
+		return whitelist;
+	}
+
+	/**
+	 * @param whitelist the whitelist to set
+	 */
+	@XmlElement
+	public void setWhitelist(List<Guest> whitelist) {
+		this.whitelist = whitelist;
+	}
+
+	/**
+	 * @return the blacklist
+	 */
+	@JsonIgnore
+	public List<Guest> getBlacklist() {
+		return blacklist;
+	}
+
+	/**
+	 * @param blacklist the blacklist to set
+	 */
+	@XmlElement
+	public void setBlacklist(List<Guest> blacklist) {
+		this.blacklist = blacklist;
+	}
+
 	public Boolean update(Guest guest) {
 	    setName(guest.getName());
 	    setClientRelationship(guest.getClientRelationship());

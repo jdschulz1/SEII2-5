@@ -73,18 +73,20 @@ public class EventTable implements Serializable{
 		
 		for (Guest g : this.guests){
 			BigDecimal total = BigDecimal.ZERO;
-			int totalGuestsInBLWL = g.getGuestBlackList().size() + g.getGuestWhiteList().size();
+			int totalGuestsInBLWL = g.getBlacklist().size() + g.getWhitelist().size();
+			
+			//TODO: create "is same guest" function using event number and guest number for use here
 			
 			//decrease fitness score for each black listed guest at the table
-			for(J_Guest_BL g2 : g.getGuestBlackList()){
-				if(this.guests.contains(g2.getListMember())){
+			for(Guest g2 : g.getBlacklist()){
+				if(this.guests.contains(g2)){//.getListMember())){
 					total = total.subtract(perGuest);
 				}
 			}
 			
 			//increase fitness score for each white listed guest at the table
-			for(J_Guest_WL g3 : g.getGuestWhiteList()){
-				if(this.guests.contains(g3.getListMember())){
+			for(Guest g3 : g.getWhitelist()){
+				if(this.guests.contains(g3)){//.getListMember())){
 					total = total.add(perGuest);
 				}
 			}
