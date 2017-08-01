@@ -81,7 +81,7 @@ public class Guest implements Serializable{
 	@JoinColumn(name="event",referencedColumnName="event_id")
 	private Event event;
 	
-	@ManyToOne(optional=false)
+	@ManyToOne(optional=true)
 	@JoinColumn(name="event_table",referencedColumnName="event_table_id")
 	private EventTable eventTable;
 
