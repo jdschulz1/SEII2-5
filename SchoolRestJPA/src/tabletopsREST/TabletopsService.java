@@ -29,6 +29,7 @@ import tabletopsPD.Guest;
 import tabletopsPD.SeatingArrangement;
 import tabletopsPD.User;
 import tabletopsDAO.EM;
+import tabletopsDAO.EventDAO;
 import schoolUT.Log;
 import schoolUT.Message;
 import tabletopsDAO.CompanyDAO;
@@ -121,9 +122,9 @@ public class TabletopsService {
 	   @Path("/events/{id}/generateSeatingAssignment")
 	   @Produces(MediaType.APPLICATION_JSON)
 	   @Consumes(MediaType.APPLICATION_JSON)
-	   public ArrayList<Message> generateSeatingAssignment(Event event,@Context final HttpServletResponse response) throws IOException{
+	   public ArrayList<Message> generateSeatingAssignment(@PathParam("id") String id,@Context final HttpServletResponse response) throws IOException{
 
-		  if (event == null) {
+		  if (id == null) {
 
 			  response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
 			  try {
@@ -133,7 +134,7 @@ public class TabletopsService {
 			  return messages;
 		  }
 		  else  {
-			  
+			  Event event = EventDAO.findEventByIdNumber(id);
 			  boolean result = event.calculateSeatingArrangement(new BigDecimal(90));
 
 			  if(result){
