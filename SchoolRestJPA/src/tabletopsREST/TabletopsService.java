@@ -119,10 +119,10 @@ public class TabletopsService {
 		  }
 	}
 	@POST
-	   @Path("/events/{id}/generateSeatingAssignment")
+	   @Path("/events/{id}/generateSeatingArrangement")
 	   @Produces(MediaType.APPLICATION_JSON)
 	   @Consumes(MediaType.APPLICATION_JSON)
-	   public ArrayList<Message> generateSeatingAssignment(@PathParam("id") String id,@Context final HttpServletResponse response) throws IOException{
+	   public ArrayList<Message> generateSeatingArrangement(@PathParam("id") String id,@Context final HttpServletResponse response) throws IOException{
 
 		  if (id == null) {
 
