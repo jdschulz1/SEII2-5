@@ -41,8 +41,12 @@
 								var keys = [];
 
 								$.each(resp, function(i, guest) {
-									guests[guest.name] = guest;
-									keys.push(guest.name);
+									if (guest.eventTableNumber == null){
+						        		alert("No table for guest " + guest.name);	
+						        	}else{
+										guests[guest.name] = guest;
+										keys.push(guest.name);
+						        	}
 								});
 
 								console.log(guests);

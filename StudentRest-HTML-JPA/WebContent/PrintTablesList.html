@@ -1,198 +1,112 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-
 <title>Tabletops</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap -->
-    <link href="css/bootstrap.css" rel="stylesheet" media="screen">
-    <link href="css/Site.css" rel="stylesheet" media="screen">
-     <script type="text/javascript">
-		$(document).ready(function() {
-			$('#nav-container').load('nav.html');
-		});
-	</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Bootstrap -->
+<link href="css/bootstrap.css" rel="stylesheet" media="screen">
+<link href="css/Site.css" rel="stylesheet" media="screen">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#nav-container').load('nav.html');
+		$('#tables-nav').load('TablesNav.html');
+		loadUsersTable();
+	});
+</script>
 </head>
 <body>
-      <div id="nav-container">
+	<script type="text/javascript">
+		function loadUsersTable() {
 
-  	</div>
+			var id = localStorage.eventId;
+			if (id > 0) {
+				var guestsUrl = "/SchoolRestJPA/rest/tabletopservices/events/"
+						+ id + "/guests";
 
-    <div class="container">
-    <div class="row">
-    <button class="btn btn-xs btn-default pull-right">Print</button>
-    <h1>Tables</h1>
-    </div>
-    <div class="row">
-			<div class="panel panel-primary">
-				<div class="panel-heading">
-					<h3 class="panel-title">Table 1</h3>
+				$
+						.ajax({
+							type : "GET",
+							url : guestsUrl,
+							dataType : "json",
+							success : function(resp) {
+								// we have the response  
+
+								$('#guest_table')
+										.html(
+												'<thead><tr><th>Guest Name</th><th>Table</th></tr></thead>');
+
+								var guests = [];
+								var tableNums = [];
+
+								$
+										.each(
+												resp,
+												function(i, guest) {
+													if (guest.eventTableNumber == null) {
+														alert("No table for guest "
+																+ guest.name);
+													} else {
+														if (guests[guest.eventTableNumber] == null) {
+															guests[guest.eventTableNumber] = [];
+															tableNums
+																	.push(guest.eventTableNumber);
+														}
+														guests[guest.eventTableNumber]
+																.push(guest);
+													}
+												});
+
+								tableNums.sort();
+								var table;
+
+								for (var i = 0; i < tableNums.length; i++) {
+									var key = tableNums[i];
+									var table = '<div class="panel panel-primary">'
+											+ '<div class="panel-heading">'
+											+ '<h3 class="panel-title">Table '
+											+ key
+											+ '</h3></div>'
+											+ '<div class="panel-body">'
+											+ '<div class="row"><table class="table table-striped table-hover">'
+											+ '<thead><tr><th>Guest Name</th></tr></thead><tbody>';
+									var tableGuests = guests[key];
+									for (var j = 0; j < tableGuests.length; j++) {
+										guest = tableGuests[j];
+										console.log(guest);
+										table = table + "<tr>" + "<td>"
+												+ guest.name + "</td></tr>";
+									}
+									table = table
+											+ '</tbody></div></div></table></div>';
+									$('#guest_tables').append(table);
+								}
+							},
+							error : function(jqXHR, exception) {
+
+								alert(jqXHR.responseText);
+							}
+						});
+			}
+		}
+	</script>
+	<div id="nav-container"></div>
+
+	<div class="container">
+
+		<div class="col-sm-12 col-md-12 col-lg-12">
+			<h1>Seating Arrangement</h1>
+			<div id="tables-nav"></div>
+			<div class="container">
+				<div class="row">
+					<h1>Guests</h1>
+					<button class="btn btn-xs btn-default pull-right">Print</button>
 				</div>
-				<div class="panel-body">
-					
-					<div class="row">
-						<table class="table table-striped table-hover ">
-							<thead>
-								<tr>
-									<th>#</th>
-									<th>Guest Name</th>
-									<th>Party Size</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>1</td>
-									<td>Mickey Mouse</td>
-									<td>2</td>
-									
-
-								</tr>
-								<tr>
-									<td>2</td>
-									<td>Minney Mouse</td>
-									<td>2</td>
-									
-								</tr>
-								<tr>
-									<td>3</td>
-									<td>Bugs Bunny</td>
-									<td>1</td>
-									
-								</tr>
-								<tr>
-									<td>4</td>
-									<td>Wacko</td>
-									<td>3</td>
-									
-								</tr>
-								<tr>
-									<td>5</td>
-									<td>Yacko</td>
-									<td>3</td>
-									
-								</tr>		
-								<tr>
-									<td>6</td>
-									<td>Dot</td>
-									<td>3</td>
-									
-								</tr>						
-							</tbody>
-						</table>
-					</div>
-				</div>
+				<hr />
+				<div class="row" id="guest_tables"></div>
 			</div>
-			<div class="panel panel-primary">
-				<div class="panel-heading">
-					<h3 class="panel-title">Table 2</h3>
-				</div>
-				<div class="panel-body">				
-					<div class="row">
-						<table class="table table-striped table-hover ">
-							<thead>
-								<tr>
-									<th>#</th>
-									<th>Guest Name</th>
-									<th>Party Size</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>1</td>
-									<td>Elmer Fudd</td>
-									<td>1</td>
-								
-
-								</tr>
-								<tr>
-									<td>2</td>
-									<td>Goofy</td>
-									<td>2</td>
-									
-								</tr>
-								<tr>
-									<td>3</td>
-									<td>Pluto</td>
-									<td>2</td>
-									
-								</tr>
-								<tr>
-									<td>4</td>
-									<td>Phil Phillerton</td>
-									<td>1</td>
-								
-								</tr>
-								<tr>
-									<td>5</td>
-									<td>-----</td>
-									<td>--</td>
-									
-								</tr>		
-								<tr>
-									<td>6</td>
-									<td>-----</td>
-									<td>--</td>
-									
-								</tr>						
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>  
-			
-			<div class="panel panel-primary">
-				<div class="panel-heading">
-					<h3 class="panel-title">Table 3</h3>
-				</div>
-				<div class="panel-body">
-					
-					<div class="row">
-						<table class="table table-striped table-hover ">
-							<thead>
-								<tr>
-									<th>#</th>
-									<th>Guest Name</th>
-									<th>Party Size</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>1</td>
-									<td>Bob Smith</td>
-									<td>3</td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td>Mary Smith</td>
-									<td>3</td>
-								</tr>
-								<tr>
-									<td>3</td>
-									<td>Kevin Smith</td>
-									<td>3</td>
-									</tr>
-								<tr>
-									<td>4</td>
-									<td>-----</td>
-									<td>--</td>
-									</tr>
-								<tr>
-									<td>5</td>
-									<td>-----</td>
-									<td>--</td>
-									</tr>		
-								<tr>
-									<td>6</td>
-									<td>-----</td>
-									<td>--</td>
-									</tr>						
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>      
-    </div>
-</div>
+		</div>
+	</div>
 </body>
 </html>

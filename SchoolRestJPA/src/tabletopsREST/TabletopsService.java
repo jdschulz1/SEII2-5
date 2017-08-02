@@ -1,6 +1,7 @@
 package tabletopsREST;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,6 +103,39 @@ public class TabletopsService {
 		    userTransaction.begin();
 			  Boolean result = company.addEvent(event);
 			  userTransaction.commit();
+			  if(result){
+				  messages.add(new Message("op001","Success Operation",""));
+				  return messages;
+			  }
+			  response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
+			  try {
+				  response.flushBuffer();
+			  }	
+			  catch(Exception e){
+				  }
+			  messages.add(new Message("op002","Fail Operation",""));
+			  return messages;
+		  }
+	}
+	@POST
+	   @Path("/events/{id}/generateSeatingAssignment")
+	   @Produces(MediaType.APPLICATION_JSON)
+	   @Consumes(MediaType.APPLICATION_JSON)
+	   public ArrayList<Message> generateSeatingAssignment(Event event,@Context final HttpServletResponse response) throws IOException{
+
+		  if (event == null) {
+
+			  response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
+			  try {
+			        response.flushBuffer();
+			  }catch(Exception e){}
+			  messages.add(new Message("op002","Fail Operation",""));
+			  return messages;
+		  }
+		  else  {
+			  
+			  boolean result = event.calculateSeatingArrangement(new BigDecimal(90));
+
 			  if(result){
 				  messages.add(new Message("op001","Success Operation",""));
 				  return messages;
