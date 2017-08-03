@@ -93,6 +93,7 @@ public class Guest implements Serializable, Cloneable{
 	/**
 	 * @return the event
 	 */
+	@JsonIgnore
 	public Event getEvent() {
 		return event;
 	}
