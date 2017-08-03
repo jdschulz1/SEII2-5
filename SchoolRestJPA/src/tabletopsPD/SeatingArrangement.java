@@ -76,10 +76,17 @@ public class SeatingArrangement implements Serializable{
 		try {
 		     SecureRandom number = SecureRandom.getInstanceStrong();
 		     EventTable first = new EventTable(1);
+		     List<Integer> usedRandoms = new ArrayList<Integer>();
+		     first.setSeatingArrangement(newArrangement);
 		     newArrangement.eventTables.add(first);
 		     // Generate guestList.size() integers 0..guestList.size()
 		     for (int i = 0; i < newArrangement.event.getGuestList().size(); i++) {
 		    	 guestidx = number.nextInt(newArrangement.event.getGuestList().size());
+		    	 while(usedRandoms.contains(guestidx)){
+		    		 guestidx = number.nextInt(newArrangement.event.getGuestList().size());
+		    	 }
+		    	 usedRandoms.add(guestidx);
+		    	 
 		    	 newGuest = newArrangement.event.getGuestList().get(guestidx).guestCopy();
 		    	 System.out.println(guestidx);
 		    	 if(newArrangement.eventTables.get(newArrangement.eventTables.size()-1).getGuests().size() < newArrangement.event.getEventTableSize()){
@@ -88,6 +95,7 @@ public class SeatingArrangement implements Serializable{
 		    	 else{
 		    		 EventTable newTable = new EventTable(newArrangement.eventTables.size()+1);
 		    		 newTable.addGuest(newGuest);
+		    		 newTable.setSeatingArrangement(newArrangement);
 		    		 newArrangement.eventTables.add(newTable);
 		    	 }
 		     }
@@ -185,6 +193,9 @@ public class SeatingArrangement implements Serializable{
 		BigDecimal fitness = BigDecimal.ZERO;
 		
 		for(EventTable et : this.eventTables){
+			if(et.getFitnessRating() == null) {
+				et.calculateFitness();
+			}
 			fitness.add(et.getFitnessRating());
 		}
 		

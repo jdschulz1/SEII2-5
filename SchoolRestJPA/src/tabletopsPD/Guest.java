@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityTransaction;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,11 +26,12 @@ import com.owlike.genson.annotation.JsonIgnore;
 
 import schoolUT.Message;
 import tabletopsDAO.ClientDAO;
+import tabletopsDAO.EM;
 import tabletopsDAO.GuestDAO;
 
 @XmlRootElement(name = "guest")
 @Entity(name = "guest")
-public class Guest implements Serializable{
+public class Guest implements Serializable, Cloneable{
 
 	/**
 	 * 
@@ -40,10 +42,15 @@ public class Guest implements Serializable{
 		
 	}
 	
-	public Guest(int guestNumber, String name, String clientRelationship){
+	public Guest(int guestNumber, String name, String clientRelationship, Event event){
 		this.guestNumber = guestNumber;
 		this.name = name;
 		this.clientRelationship = clientRelationship;
+		this.event = event;
+		EntityTransaction userTransaction = EM.getEM().getTransaction();
+	    userTransaction.begin();
+		GuestDAO.addGuest(this);
+		userTransaction.commit();
 	}
 	
 	public Guest guestCopy(){
@@ -126,32 +133,28 @@ public class Guest implements Serializable{
 	 * A method for adding to the Black List of Guests for the current Guest.
 	 */
 	public void addToBlackList(Guest member) {
-		// TODO - implement Guest.addToBlackList
-		throw new UnsupportedOperationException();
+		this.blacklist.add(member);
 	}
 
 	/**
 	 * A method for adding to the White List of Guests for the current Guest.
 	 */
 	public void addToWhiteList(Guest member) {
-		// TODO - implement Guest.addToWhiteList
-		throw new UnsupportedOperationException();
+		this.whitelist.add(member);
 	}
 
 	/**
 	 * A method for remove from the Black List of Guests for the current Guest.
 	 */
 	public void removeFromBlackList(Guest member) {
-		// TODO - implement Guest.removeFromBlackList
-		throw new UnsupportedOperationException();
+		this.blacklist.remove(member);
 	}
 
 	/**
 	 * A method for removing from the White List of Guests for the current Guest.
 	 */
 	public void removeFromWhiteList(Guest member) {
-		// TODO - implement Guest.removeFromWhiteList
-		throw new UnsupportedOperationException();
+		this.whitelist.remove(member);
 	}
 
 	public int getGuestNumber() {

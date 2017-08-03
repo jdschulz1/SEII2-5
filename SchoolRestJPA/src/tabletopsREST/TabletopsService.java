@@ -53,7 +53,7 @@ public class TabletopsService {
 		@MatrixParam("date") String date,
 	    @DefaultValue("0") @QueryParam("page") String page,
 	    @DefaultValue("10") @QueryParam("per_page") String perPage){
-			EM.getEM().refresh(company);
+//			EM.getEM().refresh(company);
 			if(idNumber != null && date != null) {
 				return company.getEventsForClientAndDate(idNumber, date, Integer.parseInt(page),Integer.parseInt(perPage));
 			}
@@ -445,6 +445,41 @@ public class TabletopsService {
 					  return messages;
 				  }
 			}
+			
+			@POST
+			   @Path("/events/{id}/importGuestList")
+			   @Produces(MediaType.APPLICATION_JSON)
+			   @Consumes(MediaType.APPLICATION_JSON)
+			   public ArrayList<Message> importGuestList(@PathParam("id") String id, @Context final HttpServletResponse response) throws IOException{
+
+				  if (id == null) {
+
+					  response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
+					  try {
+					        response.flushBuffer();
+					  }catch(Exception e){}
+					  messages.add(new Message("op002","Fail Operation",""));
+					  return messages;
+				  }
+				  else  {
+					  Event event = EventDAO.findEventByIdNumber(id);
+					  String filePath = "C:\\Users\\jenni\\mars_workspace\\SEII2-5\\SeatingArrangementSampleData.csv";
+					  Boolean result = event.importGuestList(filePath);
+					  if(result){
+						  messages.add(new Message("op001","help" + event.getGuestList().size() + " ",""));
+						  return messages;
+					  }
+					  response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
+					  try {
+						  response.flushBuffer();
+					  }	
+					  catch(Exception e){
+						  }
+					  messages.add(new Message("op002","Fail Operation",""));
+					  return messages;
+				  }
+			}
+			
 			@PUT
 			   @Path("/guests/{id}")
 			   @Produces(MediaType.APPLICATION_JSON)

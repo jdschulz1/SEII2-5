@@ -2,6 +2,7 @@ package tabletopsPD;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.TypedQuery;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import com.owlike.genson.annotation.JsonIgnore;
 
 import tabletopsDAO.EM;
 import tabletopsDAO.EventDAO;
@@ -64,11 +67,23 @@ public class EventTable implements Serializable{
 	@JoinColumn(name="seating_arrangement",referencedColumnName="seating_arrangement_id")
 	private SeatingArrangement seatingArrangement;
 
+	@JsonIgnore
+	public SeatingArrangement getSeatingArrangement() {
+		return seatingArrangement;
+	}
+
+	@XmlElement
+	public void setSeatingArrangement(SeatingArrangement seatingArrangement) {
+		this.seatingArrangement = seatingArrangement;
+	}
+
 	/**
 	 * An operation that calculates the fitness of the current instance of Table, based on the number of empty seats and the satisfaction of the guests with who they are seated with (determined by their black and white lists).
 	 */
 	public void calculateFitness() {
-		BigDecimal fitness = BigDecimal.ZERO, perGuest = BigDecimal.valueOf(100).divide(BigDecimal.valueOf(this.guests.size()));
+		BigDecimal fitness = BigDecimal.ZERO;
+		BigDecimal perGuest = BigDecimal.valueOf(100).divide(BigDecimal.valueOf(this.guests.size()), 2, RoundingMode.HALF_UP);
+		
 		int emptySeatsDiffMax = this.seatingArrangement.getEvent().getEventTableSize() - this.guests.size() - this.seatingArrangement.getEvent().getMaxEmptySeats();
 		
 		for (Guest g : this.guests){
@@ -78,20 +93,23 @@ public class EventTable implements Serializable{
 			//TODO: create "is same guest" function using event number and guest number for use here
 			
 			//decrease fitness score for each black listed guest at the table
-			for(Guest g2 : g.getBlacklist()){
-				if(this.guests.contains(g2)){//.getListMember())){
-					total = total.subtract(perGuest);
+			if(totalGuestsInBLWL != 0){
+				for(Guest g2 : g.getBlacklist()){
+					if(this.guests.contains(g2)){//.getListMember())){
+						total = total.subtract(perGuest);
+					}
 				}
+				
+				//increase fitness score for each white listed guest at the table
+				for(Guest g3 : g.getWhitelist()){
+					if(this.guests.contains(g3)){//.getListMember())){
+						total = total.add(perGuest);
+					}
+				}
+				
+				total = total.divide(BigDecimal.valueOf(totalGuestsInBLWL));
 			}
 			
-			//increase fitness score for each white listed guest at the table
-			for(Guest g3 : g.getWhitelist()){
-				if(this.guests.contains(g3)){//.getListMember())){
-					total = total.add(perGuest);
-				}
-			}
-			
-			total = total.divide(BigDecimal.valueOf(totalGuestsInBLWL));
 			g.setGuestFitness(total);
 			fitness = fitness.add(total);
 		}
