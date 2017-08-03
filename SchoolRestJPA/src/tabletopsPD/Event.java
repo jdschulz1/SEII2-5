@@ -48,7 +48,11 @@ public class Event implements Serializable {
 	public int getEventId() {
 		return eventId;
 	}
-
+	
+//	@XmlElement
+//	public void setEventId(int id) {
+//		this.eventId = id;
+//	}
 //	/**
 //	 * Date and time that the event will take place.
 //	 */
@@ -195,11 +199,14 @@ public class Event implements Serializable {
 		return eventDateTime;
 	}
 
+//	@XmlElement
+//	public void setEventDateTime(LocalDateTime eventDateTime) {
+//		this.eventDateTime = eventDateTime;
+//	}
 	@XmlElement
-	public void setEventDateTime(LocalDateTime eventDateTime) {
-		this.eventDateTime = eventDateTime;
+	public void setEventDateTime(String eventDateTime) {
+		this.eventDateTime = LocalDateTime.parse(eventDateTime);
 	}
-
 	public String getEventTitle() {
 		return eventTitle;
 	}

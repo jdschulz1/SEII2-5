@@ -2,6 +2,7 @@ package tabletopsREST;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+
+import org.eclipse.persistence.jpa.jpql.parser.DateTime;
 
 import tabletopsPD.Company;
 import tabletopsPD.Client;
@@ -168,7 +171,10 @@ public class TabletopsService {
 			  }
 		  else
 			  {
-				  ArrayList<Message> errMessages = event.validate();
+			  	System.out.println(LocalDateTime.now());
+			  	System.out.println(event.getEventId());
+				  ArrayList<Message> errMessages = new ArrayList<Message>();
+				  errMessages.add(new Message("op004", "whyyy", ""));//event.validate();
 				  if (errMessages != null) {
 					  response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
 					  try {
