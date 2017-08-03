@@ -16,7 +16,7 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('#nav-container').load('nav.html');
-		
+		var eventobj;
 		loadEventFromLocalStorage();
 		
 	});
@@ -34,16 +34,31 @@
 		 		type: 'GET',
 		 		url: clientUrl,  
 		 	    dataType: "json", 
-		         success: function (data) {
+		        success: function (data) {
 		        	 //alert("success");
-		        	 
+		        	 eventobj = data;
 		        	
 		        	$("#inputEventID").val(id);
 		        	$("#inputTitle").val(data.eventTitle);
  		         	
  		         	$("#inputRole").val(data.role);
  		         	$("#inputVenueName").val(data.venueName);
- 		         	$("#inputEventDate").val(data.eventDateTime.monthValue+"/"+data.eventDateTime.dayOfMonth+"/"+data.eventDateTime.year);
+ 		         	var month;
+ 		         	var day;
+ 		         	
+ 		         	if (data.eventDateTime.monthValue < 10){
+ 		         		month = "0" + data.eventDateTime.monthValue;
+ 		         	}else{
+ 		         		month = data.eventDateTime.monthValue;
+ 		         	}
+ 		         	
+ 		         	if(data.eventDateTime.dayOfMonth < 10){
+ 		         		day = "0" + eventDateTime.dayOfMonth;
+ 		         	}else{
+ 		         		day = data.eventDateTime.dayOfMonth;
+ 		         	}
+ 		         	
+ 		         	$("#inputEventDate").val(month +"/"+ day +"/"+data.eventDateTime.year);
  		         	
  		         	var minute;
  		         	if (data.eventDateTime.minute < 10){
@@ -81,35 +96,58 @@
   	$("#editEventForm").submit(function(e){
 	  e.preventDefault();
 	  // Get form
-      	var data = {};
-    	var Form = this;
+//       	var data = {};
+//     	var Form = this;
 		
+    	
+    	
+//     	var client = {};
+//     	var client = "";//$("#selectClientName").find(":selected").data("value");
+//     	var adate = new Date(Date.now());
+//     	data["client"] = client;
+//     	data["eventDateTime"] = adate;
+    	
+   
+    	
+//     	var eventdt = $("#inputEventDate").val();
+    	
+    	
+    	
+    	
+//     	data["eventID"] = 1;
+//     	data["eventTableSize"] = 8;
+//     	data["eventTitle"] = "Crackers Buffet";
+//     	data["guestList"] = {};
+//     	data["maxEmptySeats"] = 2;
+//     	var planner = "";//$("#selectPrimaryPlanner").find(":selected").data("value")
+//     		data["primaryPlanner"] = planner;
+//     	data["venueName"] = "CreepyBallroom";
     	//Gathering the Data
     	//and removing undefined keys(buttons)
-    	$.each(this.elements, function(i, v){
-            var input = $(v);
-        	data[input.attr("name")] = input.val();
+//     	$.each(this.elements, function(i, v){
+//             var input = $(v);
+//         	data[input.attr("name")] = input.val();
         	
-        	delete data["undefined"];
-        	console.log(JSON.stringify(data));
-    	});
-		
+//         	delete data["undefined"];
+        	
+//     	});
+    
       $("#btnSubmit").prop("disabled", true);
       
       
-	  var userID = $("#inputUserID").val();
-	
-	  if(userID > 0){
-		  console.log(JSON.stringify(data));
-		  var url =  "/SchoolRestJPA/rest/tabletopservices/users/" + userID;	  
+	  var eventID = $("#inputEventID").val();
+	  
+	  if(eventID > 0){
+		 // console.log(JSON.stringify(data));
+		  var url =  "/SchoolRestJPA/rest/tabletopservices/events/1";	  
 			$.ajax({
 	          type: "PUT",
 	          url: url,
 	          contentType: "application/json; charset=utf-8",
 	          dataType:"json",
-	          data: JSON.stringify(data),          
+	          data: JSON.stringify(eventobj),          
 	          cache: false,
-	          context : Form,
+	          //context : Form,
 	          success: function (data) {             
 	              $("#btnSubmit").prop("disabled", false);
 	          },
@@ -120,7 +158,7 @@
 	      });
 	  }else{ //new client
 		 
-		  var url =  "/SchoolRestJPA/rest/tabletopservices/users/";	  
+		  var url =  "/SchoolRestJPA/rest/tabletopservices/events/";	  
 			$.ajax({
 	          type: "POST",
 	          url: url,
@@ -128,7 +166,7 @@
 	          dataType:"json",
 	          data: JSON.stringify(data),          
 	          cache: false,
-	          context : Form,
+	          //context : Form,
 	          success: function (data) {             
 	              $("#btnSubmit").prop("disabled", false);
 	          },
@@ -231,7 +269,7 @@ function loadPlanners(){
 						<div class="col-sm-12 col-md-12 col-lg-12">
 							<form  id="editEventForm" class="form-horizontal">
 								<fieldset>
-									<input type="hidden" id="#inputEventID" name="eventId" val="" >
+									<input type="hidden" id="inputEventID" name="eventId" val="" >
 									<div class="form-group">
 										<label for="inputEventTitle" class="col-lg-2 control-label">
 											Event Title
@@ -261,7 +299,7 @@ function loadPlanners(){
     											</span>
 											</div>
 											</div>
-										</div>
+										
 										<div class="col-sm-6 col-md-6 col-lg-6">
 												<div class="input-group clockpicker " data-autoclose="true">
     												<input type="text" class="form-control" id="inputEventTime" name="inputEventTime" value="">
@@ -270,7 +308,7 @@ function loadPlanners(){
     												</span>
 												</div>	
 										</div>
-										
+										</div>
 									</div>
 									<div class="form-group">
 										<label for="selectClientName" class="col-lg-2 control-label">Client
@@ -388,6 +426,7 @@ function loadPlanners(){
     <script type="text/javascript">
 			$('.clockpicker').clockpicker();
 			$(".date-input").datepicker();
+		
 	</script>
   </body>
 </html>
