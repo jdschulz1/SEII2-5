@@ -1,10 +1,13 @@
 package tabletopsPD;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,6 +30,7 @@ import com.owlike.genson.annotation.JsonIgnore;
 import schoolUT.Message;
 import tabletopsDAO.EventDAO;
 import tabletopsDAO.LocalDateTimeConverter;
+import utils.CSVReader;
 
 /**
  * Events are records containing all information related to an event, including guest list and seating assignment information.
@@ -306,5 +310,25 @@ public class Event implements Serializable {
 	    setMaxEmptySeats(event.getMaxEmptySeats());
 
 	    return true;
+	}
+	
+	public Boolean importGuestList(String filePath) {
+		try {
+			Scanner scanner = new Scanner(new File(filePath));
+			while (scanner.hasNext()) {
+	            List<String> line = CSVReader.parseLine(scanner.nextLine());
+	            if(!line.get(0).contains("#"))
+	            {
+	            	Guest g = new Guest(Integer.parseInt(line.get(0)), line.get(1), "", this);
+	            	this.addToGuestList(g);
+	            }
+	        }
+	        scanner.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+				
+		return true;
 	}
 }
