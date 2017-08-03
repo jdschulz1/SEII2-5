@@ -141,6 +141,9 @@ public class Event implements Serializable {
 		 * Set the best fitness(or one of the best if tied) to the Event's 
 		 * seatingArrangment.
 		 * */
+		if(this.guestList.isEmpty()) 
+			return false;
+		
 		List<SeatingArrangement> population = new ArrayList<SeatingArrangement>();
 		SeatingArrangement temp, currentMostFit = this.seatingArrangement != null ? this.seatingArrangement : new SeatingArrangement(), parent, child;
 		
