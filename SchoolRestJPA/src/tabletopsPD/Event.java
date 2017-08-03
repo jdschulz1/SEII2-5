@@ -49,6 +49,7 @@ public class Event implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int eventId;
 	
+	@XmlElement
 	public int getEventId() {
 		return eventId;
 	}
