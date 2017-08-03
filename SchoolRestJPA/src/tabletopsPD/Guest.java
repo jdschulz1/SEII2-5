@@ -90,6 +90,21 @@ public class Guest implements Serializable, Cloneable{
 	@JoinColumn(name="event",referencedColumnName="event_id")
 	private Event event;
 	
+	/**
+	 * @return the event
+	 */
+	public Event getEvent() {
+		return event;
+	}
+
+	/**
+	 * @param event the event to set
+	 */
+	@XmlElement
+	public void setEvent(Event event) {
+		this.event = event;
+	}
+
 	@ManyToOne(optional=true)
 	@JoinColumn(name="event_table",referencedColumnName="event_table_id")
 	private EventTable eventTable;
