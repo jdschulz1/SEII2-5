@@ -303,6 +303,8 @@ public class Event implements Serializable {
 			messages.add(message);
 		}
 		
+		System.out.println("Event error messages: " + messages.size());
+		
 		if (messages.size() == 0 ) 
 			return null;
 		else 
