@@ -49,15 +49,14 @@ public class Event implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int eventId;
 	
-	@XmlElement
 	public int getEventId() {
 		return eventId;
 	}
 	
-//	@XmlElement
-//	public void setEventId(int id) {
-//		this.eventId = id;
-//	}
+	@XmlElement
+	public void setEventId(int id) {
+		this.eventId = id;
+	}
 //	/**
 //	 * Date and time that the event will take place.
 //	 */
