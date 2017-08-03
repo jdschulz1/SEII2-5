@@ -29,7 +29,7 @@ import tabletopsDAO.GuestDAO;
 
 @XmlRootElement(name = "guest")
 @Entity(name = "guest")
-public class Guest implements Serializable{
+public class Guest implements Serializable, Cloneable{
 
 	/**
 	 * 
@@ -126,32 +126,28 @@ public class Guest implements Serializable{
 	 * A method for adding to the Black List of Guests for the current Guest.
 	 */
 	public void addToBlackList(Guest member) {
-		// TODO - implement Guest.addToBlackList
-		throw new UnsupportedOperationException();
+		this.blacklist.add(member);
 	}
 
 	/**
 	 * A method for adding to the White List of Guests for the current Guest.
 	 */
 	public void addToWhiteList(Guest member) {
-		// TODO - implement Guest.addToWhiteList
-		throw new UnsupportedOperationException();
+		this.whitelist.add(member);
 	}
 
 	/**
 	 * A method for remove from the Black List of Guests for the current Guest.
 	 */
 	public void removeFromBlackList(Guest member) {
-		// TODO - implement Guest.removeFromBlackList
-		throw new UnsupportedOperationException();
+		this.blacklist.remove(member);
 	}
 
 	/**
 	 * A method for removing from the White List of Guests for the current Guest.
 	 */
 	public void removeFromWhiteList(Guest member) {
-		// TODO - implement Guest.removeFromWhiteList
-		throw new UnsupportedOperationException();
+		this.whitelist.remove(member);
 	}
 
 	public int getGuestNumber() {
