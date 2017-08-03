@@ -117,6 +117,14 @@ public class User implements Serializable{
 		return userId;
 	}
 	
+	/**
+	 * @param userId the userId to set
+	 */
+	@XmlElement
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
 	public String getName() {
 		return name;
 	}

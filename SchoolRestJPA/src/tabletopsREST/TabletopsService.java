@@ -104,7 +104,7 @@ public class TabletopsService {
 				  return errMessages;
 			  }
 			  EntityTransaction userTransaction = EM.getEM().getTransaction();
-		    userTransaction.begin();
+			  userTransaction.begin();
 			  Boolean result = company.addEvent(event);
 			  userTransaction.commit();
 			  if(result){
