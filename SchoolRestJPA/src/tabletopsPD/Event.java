@@ -28,8 +28,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.owlike.genson.annotation.JsonIgnore;
 
 import schoolUT.Message;
+import tabletopsDAO.ClientDAO;
 import tabletopsDAO.EventDAO;
 import tabletopsDAO.LocalDateTimeConverter;
+import tabletopsDAO.UserDAO;
 import utils.CSVReader;
 
 /**
@@ -203,10 +205,12 @@ public class Event implements Serializable {
 		return eventDateTime;
 	}
 
+	// Anna commented out - may have to remove again
 //	@XmlElement
-//	public void setEventDateTime(LocalDateTime eventDateTime) {
-//		this.eventDateTime = eventDateTime;
-//	}
+	public void setEventDateTime(LocalDateTime eventDateTime) {
+		this.eventDateTime = eventDateTime;
+	}
+	
 	@XmlElement
 	public void setEventDateTime(String eventDateTime) {
 		this.eventDateTime = LocalDateTime.parse(eventDateTime);
@@ -317,6 +321,9 @@ public class Event implements Serializable {
 	    setEventTitle(event.getEventTitle());
 	    setVenueName(event.getVenueName());
 	    setMaxEmptySeats(event.getMaxEmptySeats());
+	    setEventDateTime(event.getEventDateTime());
+	    setClient(ClientDAO.findClientById(event.client.getClientID()));
+	    setPrimaryPlanner(UserDAO.findUserById(event.primaryPlanner.getUserID()));
 
 	    return true;
 	}
