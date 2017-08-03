@@ -177,6 +177,7 @@ public class TabletopsService {
 				  event.validate();
 				  if (errMessages != null) {
 					  response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+					  System.out.println(errMessages.toString());
 					  try {
 						  response.flushBuffer();
 					  }	
