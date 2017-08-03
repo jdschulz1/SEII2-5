@@ -1,6 +1,7 @@
 package tabletopsPD;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -21,6 +22,7 @@ import tabletopsDAO.EventTableDAO;
 import tabletopsDAO.GuestDAO;
 import tabletopsDAO.SeatingArrangementDAO;
 import tabletopsDAO.UserDAO;
+import tabletopsDAO.TokenDAO;
 
 /**
  * The object representing the system and overall company information for ACME Couriers.
@@ -56,6 +58,9 @@ public class Company implements Serializable{
 	@OneToMany(cascade = CascadeType.ALL, 
 	        mappedBy = "company", orphanRemoval = true)
 	private List<User> users;
+	
+	private Collection<Token> tokens;
+	private Collection<Role> roles;
 	
 
 	public String getCompanyName() {
@@ -211,4 +216,27 @@ public class Company implements Serializable{
 	public User findUserByIdNumber(String idNumber) {
 	    return UserDAO.findUserByIdNumber(idNumber); 
 	}
+	public static User findUserByUserName(String userName) {
+	    return UserDAO.findUserByUserName(userName);
+	 }
+	
+	 public Collection<Token> getTokens() {
+		    return this.tokens;
+		  }
+
+		  public void setTokens(Collection<Token> tokens) {
+		    this.tokens = tokens;
+		  }
+
+//		  public Collection<User> getUsers() {
+//		    return this.users;
+//		  }
+
+		  /**
+		   * 
+		   * @param token
+		   */
+		  public static Token findToken(String token) {
+		    return TokenDAO.findTokenByToken(token);
+		  }
 }

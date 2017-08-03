@@ -2,11 +2,13 @@ package tabletopsPD;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,6 +41,9 @@ public class User implements Serializable{
 	@Column(name = "user_id", nullable = false)
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int userId;
+	
+	@OneToMany(mappedBy="user",targetEntity=RoleAssignment.class,fetch=FetchType.EAGER)
+	  private Collection<RoleAssignment> roleAssignments;
 	
 	/**
 	 * The legal name of the user.
@@ -117,6 +122,10 @@ public class User implements Serializable{
 		return userId;
 	}
 	
+	public boolean authenticate(String password) {
+	    return getPassword().equals(password);
+	  }
+	
 	public String getName() {
 		return name;
 	}
@@ -138,6 +147,22 @@ public class User implements Serializable{
 	public String getPassword() {
 		return password;
 	}
+	
+	public boolean isAuthorize(Role role) {
+	    for (RoleAssignment ra : getRoleAssignments()) {
+	      if (ra.getRole().equals(role) ) return true;
+	    }
+	    return false;
+	  }
+	
+	public Collection<RoleAssignment> getRoleAssignments() {
+	    return this.roleAssignments;
+	  }
+	
+	@XmlElement
+	  public void setRoleAssignments(Collection<RoleAssignment> roleAssignments) {
+	      this.roleAssignments=roleAssignments;
+	  }
 
 	@XmlElement
 	public void setPassword(String password) {

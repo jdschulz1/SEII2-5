@@ -22,6 +22,14 @@ public class UserDAO {
       return query.getResultList();
     }
     
+    public static User findUserByUserName(String username)
+    {
+      String qString = "SELECT user FROM user user  WHERE user.userName ='"+username+"'";
+      Query query = EM.getEM().createQuery(qString);
+      User user = (User)query.getSingleResult();
+      return user;
+    }
+    
     public static List<User> getAllUsersForEvent(Event event)
     {
       TypedQuery<User> query = EM.getEM().createQuery("SELECT user FROM user user", User.class);
