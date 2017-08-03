@@ -173,8 +173,7 @@ public class TabletopsService {
 			  {
 			  	System.out.println(LocalDateTime.now());
 			  	System.out.println(event.getEventId());
-				  ArrayList<Message> errMessages = new ArrayList<Message>();
-				  event.validate();
+				  ArrayList<Message> errMessages = event.validate();
 				  if (errMessages != null) {
 					  response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
 					  System.out.println(errMessages.toString());
