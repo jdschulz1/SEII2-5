@@ -282,10 +282,10 @@ public class Event implements Serializable {
 	public ArrayList<Message> validate() {
 		ArrayList<Message> messages= new ArrayList<Message>();
 		Message message;
-		if (getEventId() == 0){
-			message = new Message ("Event000","EventId must have a value","eventId");
-			messages.add(message);
-		}
+//		if (getEventId() == 0){
+//			message = new Message ("Event000","EventId must have a value","eventId");
+//			messages.add(message);
+//		}
 		if (getEventTableSize() == 0){
 			message = new Message ("Event001","Event Table Size must have a value","getEventTableSize");
 			messages.add(message);
