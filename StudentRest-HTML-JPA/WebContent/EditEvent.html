@@ -107,9 +107,7 @@
     //get selected client	
     var client = {};
     client["clientId"] = $("#selectClientName").val();
-    client["email"] = $("#selectClientName").find(":selected").data("value").email;
-    client["name"] = $("#selectClientName").find(":selected").data("value").name;
-    client["phonenumber"] = $("#selectClientName").find(":selected").data("value").phoneNumber;
+   
     var event1 = {};
     
     //get selected date and time
@@ -133,8 +131,7 @@
     
     var primaryPlanner = {};
     primaryPlanner["userId"] = $("#selectPrimaryPlanner").val();
-    primaryPlanner["name"] = $("#selectPrimaryPlanner").find(":selected").data("value").name;
-    primaryPlanner["email"] = $("#selectPrimaryPlanner").find(":selected").data("value").email;
+   
 
     event1["client"] = client;
     event1["eventDateTime"] = finalStupidFuckingDateString;//"2007-12-03T10:15:30";
@@ -285,7 +282,7 @@ function loadPlanners(){
 		       },  
 		       error: function (jqXHR, exception) {
 		    	    
-		    	    console("Error" + jqXHR.responseText);
+		    	    console.log("Error" + jqXHR.responseText);
 		    	  }  
 			});
 	  }
