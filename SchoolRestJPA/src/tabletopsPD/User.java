@@ -40,7 +40,7 @@ public class User implements Serializable{
 	@Id //signifies the primary key
 	@Column(name = "user_id", nullable = false)
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int userId;
+	private long userId;
 	
 	@OneToMany(mappedBy="user",targetEntity=RoleAssignment.class,fetch=FetchType.EAGER)
 	  private Collection<RoleAssignment> roleAssignments;
@@ -118,7 +118,7 @@ public class User implements Serializable{
 		throw new UnsupportedOperationException();
 	}
 
-	public int getUserID() {
+	public long getUserID() {
 		return userId;
 	}
 	

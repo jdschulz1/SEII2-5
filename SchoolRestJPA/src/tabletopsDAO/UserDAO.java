@@ -35,9 +35,9 @@ public class UserDAO {
       TypedQuery<User> query = EM.getEM().createQuery("SELECT user FROM user user", User.class);
       return query.getResultList();
     }
-    public static User findUserById(int id)
+    public static User findUserById(long id)
     {
-      User user = EM.getEM().find(User.class, new Integer(id));
+      User user = EM.getEM().find(User.class, new Long(id));
       return user;
     }
     

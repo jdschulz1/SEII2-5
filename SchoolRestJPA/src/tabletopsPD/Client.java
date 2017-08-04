@@ -29,7 +29,7 @@ public class Client implements Serializable {
 	@Id //signifies the primary key
 	@Column(name = "client_id", nullable = false)
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int clientId;
+	private long clientId;
 	
 	/**
 	 * Name of the Client.
@@ -68,7 +68,7 @@ public class Client implements Serializable {
 //		this.company = company;
 //	}
 
-	public int getClientID() {
+	public long getClientID() {
 		return clientId;
 	}
 	

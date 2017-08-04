@@ -30,9 +30,9 @@ public class ClientDAO {
               .getResultList();
     }
 
-    public static Client findClientById(int id)
+    public static Client findClientById(long id)
     {
-      Client client = EM.getEM().find(Client.class, new Integer(id));
+      Client client = EM.getEM().find(Client.class, new Long(id));
       return client;
     }
     

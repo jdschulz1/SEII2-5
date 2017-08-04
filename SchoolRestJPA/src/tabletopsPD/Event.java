@@ -49,9 +49,9 @@ public class Event implements Serializable {
 	@Id //signifies the primary key
 	@Column(name = "event_id", nullable = false)
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int eventId;
+	private long eventId;
 	
-	public int getEventId() {
+	public long getEventId() {
 		return eventId;
 	}
 	
