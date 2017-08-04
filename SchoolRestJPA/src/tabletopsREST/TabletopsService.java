@@ -399,6 +399,22 @@ public class TabletopsService {
 		      return company.findGuestByIdNumber(id);
 			}
 			
+			@GET
+			@Path("/guests/{id}/whitelist")
+			@Produces(MediaType.APPLICATION_JSON)
+			public List<Guest> getGuestWhitelist(@PathParam("id") String id){
+		      Guest guest = company.findGuestByIdNumber(id);
+		      return guest.getWhitelist();
+			}
+			
+			@GET
+			@Path("/guests/{id}/blacklist")
+			@Produces(MediaType.APPLICATION_JSON)
+			public List<Guest> getGuestBlacklist(@PathParam("id") String id){
+		      Guest guest = company.findGuestByIdNumber(id);
+		      return guest.getBlacklist();
+			}
+			
 			@POST
 			   @Path("/events/{id}/guests")
 			   @Produces(MediaType.APPLICATION_JSON)

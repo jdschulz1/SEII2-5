@@ -46,7 +46,6 @@ public class GuestDAO {
       return query.setFirstResult(page * pageSize)
               .setMaxResults(pageSize)
               .getResultList();
-
     }
     
     public static void removeGuest(Guest guest)
