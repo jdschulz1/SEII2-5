@@ -10,23 +10,24 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+
 
 <script src="js/bootstrap.min.js"></script>
 <script src="js/bootstrap-clockpicker.min.js"></script>
 <script src="js/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
 
-<script type="text/javascript">
+
+</head>
+  <body>
+  <script type="text/javascript">
 	$(document).ready(function() {
 		$('#nav-container').load('nav.html');
 		var eventobj;
 		loadEventFromLocalStorage();
-		
+		loadGuests();
 	});
 </script>
-</head>
-  <body>
- <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+
     <script type="text/javascript">
   function loadEventFromLocalStorage(){
 	  var id = localStorage.event;
@@ -95,42 +96,14 @@
 		     });
 		}
   }
+  
+  
   $(document).ready(function() { 
   	$("#editEventForm").submit(function(e){
 	  e.preventDefault();
 
      	var Form = this;
-//     	var client = {};
-//     	var client = "";//$("#selectClientName").find(":selected").data("value");
-//     	var adate = new Date(Date.now());
-//     	data["client"] = client;
-//     	data["eventDateTime"] = adate;
-    	
-   
-    	
-//     	var eventdt = $("#inputEventDate").val();
-    	
-    	
-    	
-    	
-//     	data["eventID"] = 1;
-//     	data["eventTableSize"] = 8;
-//     	data["eventTitle"] = "Crackers Buffet";
-//     	data["guestList"] = {};
-//     	data["maxEmptySeats"] = 2;
-//     	var planner = "";//$("#selectPrimaryPlanner").find(":selected").data("value")
-//     		data["primaryPlanner"] = planner;
-//     	data["venueName"] = "CreepyBallroom";
-    	//Gathering the Data
-    	//and removing undefined keys(buttons)
-//     	$.each(this.elements, function(i, v){
-//             var input = $(v);
-//         	data[input.attr("name")] = input.val();
-        	
-//         	delete data["undefined"];
-        	
-//     	});
-    
+
     //get selected client	
     var client = {};
     client["clientId"] = $("#selectClientName").val();
@@ -165,11 +138,12 @@
 
     event1["client"] = client;
     event1["eventDateTime"] = finalStupidFuckingDateString;//"2007-12-03T10:15:30";
-    event1["eventId"] = eventobj.eventId;
+    
+    
     event1["eventTableSize"] = $("#inputTableSize").val();
     event1["eventTitle"] = $("#inputTitle").val();
     event1["maxEmptySeats"] = $("#inputTableEmptySpots").val();
-    event1["guestList"] = eventobj.guestList;
+    
     event1["primaryPlanner"] = primaryPlanner;
     event1["venueName"] = $("#inputVenueName").val();
     
@@ -179,7 +153,9 @@
 	  var eventID = $("#inputEventID").val();
 	  console.log(JSON.stringify(event1));
 	  if(eventID > 0){
-		 // console.log(JSON.stringify(data));
+		  event1["eventId"] = eventobj.eventId;
+		  //event1["guestList"] = eventobj.guestList;
+		  // console.log(JSON.stringify(data));
 		  var url =  "/SchoolRestJPA/rest/tabletopservices/events/1";	  
 			$.ajax({
 	          type: "PUT",
@@ -191,13 +167,15 @@
 	         // context : Form,
 	          success: function (data) {             
 	              $("#btnSubmit").prop("disabled", false);
+	              alert("Event Data has been saved.");
 	          },
 	          error: function (e) {
+	        	  alert("Error Saving Event");
 	              console.log("ERROR : ", e.responseText);
 	              $("#btnSubmit").prop("disabled", false);
 	          }
 	      });
-	  }else{ //new client
+	  }else{ //new event
 		 
 		  var url =  "/SchoolRestJPA/rest/tabletopservices/events/";	  
 			$.ajax({
@@ -205,13 +183,15 @@
 	          url: url,
 	          contentType: "application/json; charset=utf-8",
 	          dataType:"json",
-	          data: JSON.stringify(data),          
+	          data: JSON.stringify(event1),          
 	          cache: false,
 	          //context : Form,
-	          success: function (data) {             
+	          success: function (data) {   
+	        	  alert("Event Data has been saved.");
 	              $("#btnSubmit").prop("disabled", false);
 	          },
 	          error: function (e) {
+	        	  alert("Error Saving Event");
 	              console.log("ERROR : ", e.responseText);
 	              $("#btnSubmit").prop("disabled", false);
 	          }
@@ -277,7 +257,73 @@ function loadPlanners(){
 			     });
   }
   
+  function loadGuests(){
+	  id = localStorage.event;
+	  if (id > 0){
+		  $.ajax({ 
+			   type: "GET",  
+		       url: "/SchoolRestJPA/rest/tabletopservices/events/" + id + "/guests",  
+		       dataType: "json",  
+		       success: function(resp){  
+		         // we have the response  
+		         
+		         $('#guestsTable').html("");
+		      
+		         var tableRow;
+		             
+		         $.each(resp, function(i,guest){
+		        		
+		        	    tableRow = 
+		        	        "<tr>"
+		        	            +"<td>" + guest.name + "</td>"
+		        	            +"<td>" + guest.clientRelationship + "</td>"+ 
+								"<td><a href=\"javascript:editGuest(" + guest.guestId + ")\">Edit</a>&nbsp;<a href=\"javascript:deleteGuest(" + guest.guestId + ")\">Delete</a></td>"
+		        	        +"</tr>";
+		        	       
+		        	$('#guestsTable').append(tableRow);
+		         });
+		       },  
+		       error: function (jqXHR, exception) {
+		    	    
+		    	    console("Error" + jqXHR.responseText);
+		    	  }  
+			});
+	  }
+  }
   
+  function deleteGuest(guestId){
+	  var txt;
+	  id = localStorage.event;
+		var r = confirm("Are you sure you want to delete the Guest?");
+		if (r == true) {
+			txt = "Deleting Guest!";
+	  var url = "/SchoolRestJPA/rest/tabletopservices/guests/" + guestId;
+		$.ajax({ 
+			   type: "DELETE",  
+		       url: url,  
+		       dataType: "json",  
+		       contentType: "application/json; charset=utf-8",
+		       success: function(resp){  
+		         // we have the response  
+		         alert("Guest Deleted");
+		         loadGuests();
+		       },  
+		       error: function (jqXHR, exception) {
+		    	   alert("Error Deleting Guest");
+		    	    console.log(jqXHR.responseText);
+		   
+		    	  }  
+			});
+		} else {
+		    txt = "You pressed Cancel!";
+		}
+  }
+  
+function editGuest(id){
+		  localStorage.editGuestId = id;
+		  
+		document.location.href = "/StudentRest-HTML-JPA/WebContent/EditGuest.html", true;  	  
+}
   </script>
    <script type="text/javascript">
   loadPlanners();
@@ -440,7 +486,7 @@ function loadPlanners(){
 									<th>Relationship to Client</th>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody id="guestsTable">
 								<tr>
 
 									<td>Bob Barker</td>
