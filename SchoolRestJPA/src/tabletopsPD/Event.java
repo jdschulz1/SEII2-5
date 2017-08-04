@@ -1,10 +1,13 @@
 package tabletopsPD;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -25,8 +28,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.owlike.genson.annotation.JsonIgnore;
 
 import schoolUT.Message;
+import tabletopsDAO.ClientDAO;
 import tabletopsDAO.EventDAO;
 import tabletopsDAO.LocalDateTimeConverter;
+import tabletopsDAO.UserDAO;
+import utils.CSVReader;
 
 /**
  * Events are records containing all information related to an event, including guest list and seating assignment information.
@@ -48,7 +54,11 @@ public class Event implements Serializable {
 	public int getEventId() {
 		return eventId;
 	}
-
+	
+	@XmlElement
+	public void setEventId(int id) {
+		this.eventId = id;
+	}
 //	/**
 //	 * Date and time that the event will take place.
 //	 */
@@ -131,6 +141,9 @@ public class Event implements Serializable {
 		 * Set the best fitness(or one of the best if tied) to the Event's 
 		 * seatingArrangment.
 		 * */
+		if(this.guestList.isEmpty()) 
+			return false;
+		
 		List<SeatingArrangement> population = new ArrayList<SeatingArrangement>();
 		SeatingArrangement temp, currentMostFit = this.seatingArrangement != null ? this.seatingArrangement : new SeatingArrangement(), parent, child;
 		
@@ -195,11 +208,16 @@ public class Event implements Serializable {
 		return eventDateTime;
 	}
 
-	@XmlElement
+	// Anna commented out - may have to remove again
+//	@XmlElement
 	public void setEventDateTime(LocalDateTime eventDateTime) {
 		this.eventDateTime = eventDateTime;
 	}
-
+	
+	@XmlElement
+	public void setEventDateTime(String eventDateTime) {
+		this.eventDateTime = LocalDateTime.parse(eventDateTime);
+	}
 	public String getEventTitle() {
 		return eventTitle;
 	}
@@ -271,10 +289,10 @@ public class Event implements Serializable {
 	public ArrayList<Message> validate() {
 		ArrayList<Message> messages= new ArrayList<Message>();
 		Message message;
-		if (getEventId() == 0){
-			message = new Message ("Event000","EventId must have a value","eventId");
-			messages.add(message);
-		}
+//		if (getEventId() == 0){
+//			message = new Message ("Event000","EventId must have a value","eventId");
+//			messages.add(message);
+//		}
 		if (getEventTableSize() == 0){
 			message = new Message ("Event001","Event Table Size must have a value","getEventTableSize");
 			messages.add(message);
@@ -292,6 +310,8 @@ public class Event implements Serializable {
 			messages.add(message);
 		}
 		
+		System.out.println("Event error messages: " + messages.size());
+		
 		if (messages.size() == 0 ) 
 			return null;
 		else 
@@ -304,7 +324,30 @@ public class Event implements Serializable {
 	    setEventTitle(event.getEventTitle());
 	    setVenueName(event.getVenueName());
 	    setMaxEmptySeats(event.getMaxEmptySeats());
+	    setEventDateTime(event.getEventDateTime());
+	    setClient(ClientDAO.findClientById(event.client.getClientID()));
+	    setPrimaryPlanner(UserDAO.findUserById(event.primaryPlanner.getUserID()));
 
 	    return true;
+	}
+	
+	public Boolean importGuestList(String filePath) {
+		try {
+			Scanner scanner = new Scanner(new File(filePath));
+			while (scanner.hasNext()) {
+	            List<String> line = CSVReader.parseLine(scanner.nextLine());
+	            if(!line.get(0).contains("#"))
+	            {
+	            	Guest g = new Guest(Integer.parseInt(line.get(0)), line.get(1), "", this);
+	            	this.addToGuestList(g);
+	            }
+	        }
+	        scanner.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+				
+		return true;
 	}
 }

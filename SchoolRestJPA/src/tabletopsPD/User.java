@@ -126,6 +126,14 @@ public class User implements Serializable{
 	    return getPassword().equals(password);
 	  }
 	
+	/**
+	 * @param userId the userId to set
+	 */
+	@XmlElement
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
 	public String getName() {
 		return name;
 	}

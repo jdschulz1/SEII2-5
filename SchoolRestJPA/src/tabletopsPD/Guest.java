@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityTransaction;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,6 +26,7 @@ import com.owlike.genson.annotation.JsonIgnore;
 
 import schoolUT.Message;
 import tabletopsDAO.ClientDAO;
+import tabletopsDAO.EM;
 import tabletopsDAO.GuestDAO;
 
 @XmlRootElement(name = "guest")
@@ -40,10 +42,15 @@ public class Guest implements Serializable, Cloneable{
 		
 	}
 	
-	public Guest(int guestNumber, String name, String clientRelationship){
+	public Guest(int guestNumber, String name, String clientRelationship, Event event){
 		this.guestNumber = guestNumber;
 		this.name = name;
 		this.clientRelationship = clientRelationship;
+		this.event = event;
+		EntityTransaction userTransaction = EM.getEM().getTransaction();
+	    userTransaction.begin();
+		GuestDAO.addGuest(this);
+		userTransaction.commit();
 	}
 	
 	public Guest guestCopy(){
@@ -83,6 +90,22 @@ public class Guest implements Serializable, Cloneable{
 	@JoinColumn(name="event",referencedColumnName="event_id")
 	private Event event;
 	
+	/**
+	 * @return the event
+	 */
+	@JsonIgnore
+	public Event getEvent() {
+		return event;
+	}
+
+	/**
+	 * @param event the event to set
+	 */
+	@XmlElement
+	public void setEvent(Event event) {
+		this.event = event;
+	}
+
 	@ManyToOne(optional=true)
 	@JoinColumn(name="event_table",referencedColumnName="event_table_id")
 	private EventTable eventTable;
