@@ -492,13 +492,13 @@ public class TabletopsService {
 		messages.add(new Message("op002", "Fail Operation", ""));
 		return messages;
 	}
-	
+
 	@PUT
 	@Path("/guests/{owner_id}/blacklist/{member_id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public ArrayList<Message> addToGuestList(@PathParam("owner_id") String ownerId, @PathParam("member_id") String memberId,
-			@Context final HttpServletResponse response) throws IOException {
+	public ArrayList<Message> addToBlackList(@PathParam("owner_id") String ownerId,
+			@PathParam("member_id") String memberId, @Context final HttpServletResponse response) throws IOException {
 		Guest ownerGuest = company.findGuestByIdNumber(ownerId);
 		Guest memberGuest = company.findGuestByIdNumber(memberId);
 		if (ownerGuest == null || memberGuest == null) {
@@ -509,23 +509,39 @@ public class TabletopsService {
 			}
 			messages.add(new Message("op002", "Fail Operation", ""));
 			return messages;
-		} else {
-			ownerGuest.addToBlackList(memberGuest);
 		}
+
 		EntityTransaction userTransaction = EM.getEM().getTransaction();
 		userTransaction.begin();
-		Boolean result = oldGuest.update(guest);
+		ownerGuest.addToBlackList(memberGuest);
 		userTransaction.commit();
-		if (result) {
-			messages.add(new Message("op001", "Success Operation", ""));
+		messages.add(new Message("op001", "Success Operation", ""));
+		return messages;
+	}
+	
+	@PUT
+	@Path("/guests/{owner_id}/whitelist/{member_id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<Message> addToWhiteList(@PathParam("owner_id") String ownerId,
+			@PathParam("member_id") String memberId, @Context final HttpServletResponse response) throws IOException {
+		Guest ownerGuest = company.findGuestByIdNumber(ownerId);
+		Guest memberGuest = company.findGuestByIdNumber(memberId);
+		if (ownerGuest == null || memberGuest == null) {
+			response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
+			try {
+				response.flushBuffer();
+			} catch (Exception e) {
+			}
+			messages.add(new Message("op002", "Fail Operation", ""));
 			return messages;
 		}
-		response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
-		try {
-			response.flushBuffer();
-		} catch (Exception e) {
-		}
-		messages.add(new Message("op002", "Fail Operation", ""));
+
+		EntityTransaction userTransaction = EM.getEM().getTransaction();
+		userTransaction.begin();
+		ownerGuest.addToWhiteList(memberGuest);
+		userTransaction.commit();
+		messages.add(new Message("op001", "Success Operation", ""));
 		return messages;
 	}
 
