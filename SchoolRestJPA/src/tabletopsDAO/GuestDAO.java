@@ -34,7 +34,7 @@ public class GuestDAO {
     
     public static Guest findGuestByIdNumber(String idNumber)
     {
-      String qString = "SELECT guest FROM guest guest  WHERE guest.idNumber ="+idNumber;
+      String qString = "SELECT guest FROM guest guest  WHERE guest.guestId ="+idNumber;
       Query query = EM.getEM().createQuery(qString);
       Guest guest = (Guest)query.getSingleResult();
       return guest;
