@@ -68,6 +68,14 @@ public class Guest implements Serializable, Cloneable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long guestId;
 	
+	public long getGuestId() {
+		return guestId;
+	}
+	@XmlElement
+	public void setGuestId(long guestId) {
+		this.guestId = guestId;
+	}
+
 	/**
 	 * The number that identifies a Guest.
 	 */
