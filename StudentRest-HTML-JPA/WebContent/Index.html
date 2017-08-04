@@ -34,13 +34,43 @@
 	         var tableRow;
 	             
 	         $.each(resp, function(i,event){
-	        		
+	          //todo: date!!!
+	        	 var month;
+		         	var day;
+		         	
+		         	if (event.eventDateTime.monthValue < 10){
+		         		month = "0" + event.eventDateTime.monthValue;
+		         	}else{
+		         		month = event.eventDateTime.monthValue;
+		         	}
+		         	
+		         	if(event.eventDateTime.dayOfMonth < 10){
+		         		day = "0" + event.eventDateTime.dayOfMonth;
+		         	}else{
+		         		day = event.eventDateTime.dayOfMonth;
+		         	}
+		         	var minute;
+ 		         	if (event.eventDateTime.minute < 10){
+ 		         		minute = "0" + String(event.eventDateTime.minute);
+ 		         	}else{
+ 		         		minute = event.eventDateTime.minute;
+ 		         	}
+ 		         	
+ 		         	var hour;
+ 		         	if (event.eventDateTime.hour < 10){
+ 		         		hour = "0" + String(event.eventDateTime.hour);
+ 		         	}else{
+ 		         		hour = event.eventDateTime.hour;
+ 		         	}
+		         	var theEventDate = month +"-"+ day +"-"+ event.eventDateTime.year;
+		         	var theEventTime = hour + ":" + minute;
 	        	    tableRow = 
 	        	        "<tr>"
 	        	            +"<td>" + event.eventTitle + "</td>"
-	        	            +"<td>07/15/2017 13:00</td>"+ 
-							+"<td>Funeral Home</td>"+
-							"<td><a href=\"javascript:editEvent(" + event.eventId + ")\">Edit</a>&nbsp;<a href=\"javascript:deleteEvent(" + event.eventId + ")\">Delete</a></td>"
+	        	            +"<td>"+ theEventDate +"</td>" 
+	        	            +"<td>"+ theEventTime +"</td>" 
+							+"<td>" + event.venueName + "</td>"
+							+"<td><a href=\"javascript:editEvent(" + event.eventId + ")\">Edit</a>&nbsp;<a href=\"javascript:deleteEvent(" + event.eventId + ")\">Delete</a></td>"
 	        	        +"</tr>";
 	        	       
 	        	$('#eventTable').append(tableRow);
@@ -87,10 +117,10 @@
   
   function search(date, client){
 	  $(document).ready(function() { 
-		  	$("#editClientForm").submit(function(e){
+		  	//$("#editClientForm").submit(function(e){
 		 		var eventDate =  $("#eventDate").val();		
 		 		
-		  	});
+		  	//});
 	  });
   }
   
@@ -156,7 +186,8 @@
 							<thead>
 								<tr>
 									<th>Title</th>
-									<th>Date/Time</th>
+									<th>Date</th>
+									<th>Time</th>
 									<th>Venue</th>
 								</tr>
 							</thead>
