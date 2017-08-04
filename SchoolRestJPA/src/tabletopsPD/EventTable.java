@@ -95,14 +95,14 @@ public class EventTable implements Serializable{
 			//decrease fitness score for each black listed guest at the table
 			if(totalGuestsInBLWL != 0){
 				for(Guest g2 : g.getBlacklist()){
-					if(this.guests.contains(g2)){//.getListMember())){
+					if(this.tableHasGuest(g2)){//.getListMember())){
 						total = total.subtract(perGuest);
 					}
 				}
 				
 				//increase fitness score for each white listed guest at the table
 				for(Guest g3 : g.getWhitelist()){
-					if(this.guests.contains(g3)){//.getListMember())){
+					if(this.tableHasGuest(g3)){//.getListMember())){
 						total = total.add(perGuest);
 					}
 				}
@@ -148,6 +148,13 @@ public class EventTable implements Serializable{
 	
 	public void removeGuest(Guest g){
 		guests.remove(g);
+	}
+	
+	public boolean tableHasGuest(Guest g){
+		for(Guest g2 : this.guests){
+			if(g2.isSameGuest(g))return true;
+		}
+		return false;
 	}
 	
 	@XmlElement
