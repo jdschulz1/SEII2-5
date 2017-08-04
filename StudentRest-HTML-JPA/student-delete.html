@@ -1,0 +1,74 @@
+<!DOCTYPE HTML> 
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="style.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+</head>
+<body> 
+
+<script>
+
+$.urlParam = function(name){
+    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+    if (results==null){
+       return null;
+    }
+    else{
+       return results[1] || 0;
+    }
+}
+
+$(document).ready(function() {
+
+
+$.getJSON( "/SchoolRestJPA/rest/studentservice/students/"+$.urlParam("id"))
+.done(function( response ) {
+	console.log(response)
+	$('#deleteMessage').html("Delete record for: "+response.firstName+" "+response.lastName+"?");
+	})
+.fail(function(jqXHR, textStatus, errorThrown) {
+    console.log("error " + textStatus);
+    console.log("incoming Text " + jqXHR.responseText);
+    });
+
+$("#deletebtn").click(function (e){
+	console.log("delete function");
+	$('#deleteMessage').html("Deleting record ... Wait");
+	$('#deletebtn').attr("disabled", true);
+	$.ajax({ 
+		url:"/SchoolRestJPA/rest/studentservice/students/"+$.urlParam("id"),
+		type: "DELETE",
+	    success: (function(data) {
+		  console.log("Delete success ");
+		  window.location.assign("student-list.html");
+		  console.log("Delete after change href");
+	  }),
+	  fail: (function(jqXHR, textStatus, errorThrown) {
+ 	      console.log("Delete error " + textStatus);
+ 	      console.log("incoming Text " + jqXHR.responseText);
+	  })
+
+  	 });
+	console.log("end of delete");
+});	
+})
+
+</script>
+<h2>Student Delete</h2>
+<div class ='block-center'>
+<br><br>
+<p id='deleteMessage'></p>
+<br><br>
+
+<input class ='inline' id ='deletebtn' type="button" value="Delete">
+
+<form action="student-list.html" method ="GET">
+<button type="submit" >Cancel</button>
+</form>
+</div>
+</body>
+</html>
+
+
+

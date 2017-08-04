@@ -1,0 +1,88 @@
+<!DOCTYPE HTML> 
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+
+<link rel="stylesheet" type="text/css" href="style.css">
+ 
+<script>
+
+	var start = 0;
+	var page = 5;
+	createTable(start);
+
+	function getPrevious()
+	{
+		start = start-page;
+		if (start <1)  start = 0;
+		createTable(start);
+	}
+	
+	function getNext()
+	{
+		if ($("#student-list-table") && $("#student-list-table").prop('rows').length-1 == page) start=start+page;
+		createTable(start);
+	}
+
+    function selectChange() 
+    {
+        id = getId();
+        $("#selectedID").html(id);
+        $("#updateID").val(id);
+        $("#deleteID").val(id);   
+    }
+    
+    function getId()
+	{ 
+	  return jQuery( 'input[name=selectedRow]:checked' ).val()
+	}
+  
+    function createTable(start) {
+    	$.getJSON( "/SchoolRestJPA/rest/studentservice/students",{ page:start, per_page:page } )
+    	  .done(function( response ) {
+    		  var tableHTML = '<tr><th></th><th width= 50px>ID</th><th width= 100px>First Name</th><th width= 100px>Last Name</th></tr>';
+    	        $.each(response, function (i, student) {
+    	            tableHTML += '<tr><td><input type="radio" onchange= "selectChange()" name="selectedRow" value='+student.idNumber+'><td>' + student.idNumber + '</td><td>' + student.firstName + '</td><td>' + student.lastName + '</td></tr>';
+    	        });
+    	        tableHTML+='</table>';
+    	       $('#student-list-table').html(tableHTML);})
+  	  .fail(function(jqXHR, textStatus, errorThrown) {
+  	        console.log("error " + textStatus);
+  	        console.log("incoming Text " + jqXHR.responseText);});
+      }
+	$(document).ready(function() {
+    		$("#previous").click(function() {getPrevious()});
+    		$("#next").click(function() {getNext()});
+    })
+</script>
+</head>
+<body> 
+<h2>Student List</h2>
+<div class = "block-center">
+<div id="student-table">
+<table class='center' id='student-list-table' >
+</table>
+</div>
+<br><br>
+<button id="previous" class='inline' >Previous</button>
+<button id = "next"class='inline' >Next</button>
+<br><br>
+
+<br><br>
+<p id="selectedID"></p>
+<form class='inline' action="student-update.html" method="get">
+	<input id="updateID" type="hidden" name="id" value="">
+    <input type="submit" value="Update">
+</form>
+
+<form class='inline' action="student-add.html" method ="get">
+<button type="submit" >Add</button>
+</form>
+<form class='inline' action="student-delete.html" method="get">
+	<input id="deleteID" type="hidden" name="id" value="">
+    <input type="submit" value="Delete">
+</form>
+</div>
+</body>
+</html>

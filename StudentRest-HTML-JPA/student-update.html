@@ -1,0 +1,162 @@
+<!DOCTYPE HTML> 
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="style.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+</head>
+<body> 
+<script>
+$.urlParam = function(name){
+    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+    if (results==null){
+       return null;
+    }
+    else{
+       return results[1] || 0;
+    }
+}
+
+function getLocation(zip)
+{
+	if (zip != '')
+	{
+		$.getJSON( "/SchoolRestJPA/rest/zipservice/zip/"+zip)
+  	  .done(function(data) {
+				if($("#city").val()=='')
+					 $("#city").val(data.city);
+				if($("#state").val()=='')
+					 	$("#state").val(data.state);})
+
+	}
+}
+
+$(document).ready(function() {
+	$("#zip").blur(function() {getLocation($(this).val())});
+
+	$.getJSON( "/SchoolRestJPA/rest/studentservice/students/"+$.urlParam("id"))
+	.done(function( response ) {
+		$('#id').val(response.idNumber);
+		$('#firstName').val(response.firstName);
+		$('#lastName').val(response.lastName);
+		$('#city').val(response.city);
+		$('#state').val(response.state);
+		$('#zip').val(response.zip); 
+		$('#email').val(response.email);
+		$("#"+response.classification).prop('checked', true);
+		$("#"+response.gender).prop('checked', true);
+		})
+	.fail(function(jqXHR, textStatus, errorThrown) {
+	    console.log("error " + textStatus);
+	    console.log("incoming Text " + jqXHR.responseText);
+	    });
+	
+$("#studentForm").submit(function (e){
+		e.preventDefault;
+		var idNumber =$('#id').val();
+		var firstName = $('#firstName').val();
+		var lastName = $('#lastName').val();
+		var city= $('#city').val();
+		var state = $('#state').val();
+		var zip = $('#zip').val(); 
+		var email = $('#email').val();
+		var classification = $("input[name='classification']:checked").val();
+		if (classification == null) classification ="";
+		var gender = $("input[name='gender']:checked").val();
+		if (gender == null) gender ="";
+
+		$.ajax( { 
+			url:"/SchoolRestJPA/rest/studentservice/students/"+$.urlParam("id"),
+			type: "PUT",
+			dataType: "json",
+			contentType: "application/json",
+			data: '{'+  
+				'"id" : "'+$.urlParam("id")+'",'+
+				'"idNumber" : "'+idNumber+'",'+
+				'"firstName" :"'+ firstName+'",'+
+				'"lastName" : "'+lastName+'",'+
+				'"city" : "'+city+'",'+
+				'"state" : "'+state+'",'+
+				'"zip" : "'+zip+'",'+
+				'"email" : "'+email+'",'+
+				'"classification" : "'+classification+'",'+
+				'"gender" : "'+gender+'"'+
+			"}",
+			statusCode: {
+				200: function(response) {
+	
+					  $("#page-message").html("Record Updated");
+					  window.location.assign("student-list.html");
+			  	},
+			  	406: function(response) {
+			  		var errors = response.responseJSON;
+			  		$(".error").html("*");
+			  		$.each(errors, function (i, message) {
+			  			$("#"+message.attributeName+"Err").html(message.message);
+			  			console.log("Error "+message.attributeName +" "+message.message)
+	    	        		});
+			  		$("#page-message").html("Fix errors and click Save");
+			  	},
+			  	
+				404 : function(jqXHR, textStatus, errorThrown) {
+					$("#page-message").html("Error:"+textStatus);
+					consule.log(errorThrown);
+		  	        console.log("error " + textStatus);
+		  	        console.log("incoming Text " + jqXHR.responseText);
+		  	      }
+				}
+			});
+
+		e.preventDefault();
+});
+});
+</script>
+
+<h2>Student Update</h2>
+<p id ='debug'></p>
+<div class ='block-center'>
+<p><span class="error-head">* required field.</span></p>
+<p><span id="page-messge">Enter fields and click Save</span></p>
+<form id="studentForm" > 
+   Id: <input type="text" id="id" >
+   <span id="idNumberErr" class="error">* </span>
+   <br><br>
+   Fist Name: <input type="text" id="firstName">
+   <span id="firstNameErr" class="error">* </span>
+   <br><br>
+   Last Name: <input type="text" id="lastName" ">
+   <span id="lastNameErr" class="error">* </span>
+   <br><br>
+   Zip: <input type="text" id="zip"  >
+   <span id="zipErr" class="error">* </span>
+   <br><br>
+   City: <input type="text" id="city">
+   <span id ="cityErr" class="error">* </span>
+   <br><br>
+   State: <input type="text" id="state">
+   <span id="stateErr" class="error">* </span>
+   <br><br>
+   E-mail: <input type="text" id="email" >
+   <span id="emailErr" class="error">* </span>
+   <br><br>
+   Classification:
+   <input id ="Freshman" type="radio" name="classification"  value="Freshman">Freshman
+   <input id = "Sophmore" type="radio" name="classification"  value="Sophmore">Sophmore
+   <input id = "Junior" type="radio" name="classification"  value="Junior">Junior
+   <input id ="Senior"= type="radio" name="classification"  value="Senior">Senior
+  <span id="classificationErr" class="error">* </span>
+   <br><br>
+   Gender:
+   <input id="f" type="radio" name="gender" value="f">Female
+   <input id="m" type="radio" name="gender" value="m">Male
+   <span id="genderErr" class="error">* </span>
+   <br><br>
+   <input type="submit" name="submit" value="Save"> 
+</form>
+<form action="student-list.html" method ="get">
+<button type="submit" >Cancel</button>
+</form>
+
+</div>
+</body>
+</html>
