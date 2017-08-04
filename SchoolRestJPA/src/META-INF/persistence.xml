@@ -8,6 +8,9 @@
          <class>tabletopsPD.Client</class>
          <class>tabletopsPD.Event</class>
          <class>tabletopsPD.Guest</class>
+         <class>tabletopsPD.Role</class>
+         <class>tabletopsPD.RoleAssignment</class>
+         <class>tabletopsPD.Token</class>
          <class>tabletopsPD.SeatingArrangement</class>
          <class>tabletopsPD.Company</class>
          <class>tabletopsPD.EventTable</class>
