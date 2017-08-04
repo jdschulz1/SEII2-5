@@ -63,6 +63,10 @@ public class Guest implements Serializable, Cloneable{
 		}
 	}
 	
+	public boolean isSameGuest(Guest g){
+		return this.event.getEventId() == g.event.getEventId() && this.guestNumber == g.guestNumber && this.name == g.name;
+	}
+	
 	@Id //signifies the primary key
 	@Column(name = "guest_id", nullable = false)
 	@GeneratedValue(strategy = GenerationType.AUTO)
