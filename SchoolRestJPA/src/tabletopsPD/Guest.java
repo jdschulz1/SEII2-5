@@ -301,7 +301,7 @@ public class Guest implements Serializable, Cloneable{
 	public Boolean update(Guest guest) {
 	    setName(guest.getName());
 	    setClientRelationship(guest.getClientRelationship());
-
+	   
 	    return true;
 	}
 	

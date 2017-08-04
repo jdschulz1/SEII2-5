@@ -187,6 +187,11 @@ public class Event implements Serializable {
 	 * A method for adding to the List of Guests attending the Event.
 	 */
 	public boolean addToGuestList(Guest guest) {
+		int maxId = 0;
+		for(Guest g: this.guestList) {
+			maxId = Math.max(maxId, g.getGuestNumber());
+		}
+		guest.setGuestNumber(maxId + 1); 
 		int size = this.guestList.size();
 		this.guestList.add(guest);
 		return this.guestList.size() > size;
