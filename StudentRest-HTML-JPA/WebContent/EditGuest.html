@@ -21,6 +21,11 @@
 		$(document).ready(function() {
 			$('#nav-container').load('nav.html');
 			loadGuestFromLocalStorage();
+			if(localStorage.editGuestId > 0)
+			{
+				loadWhiteList();
+				loadBlackList();
+			}
 			
 		});
 	</script>
@@ -102,7 +107,12 @@
 	          }
 	      });
 	  }else{ //new guest
-		  var url =  "/SchoolRestJPA/rest/tabletopservices/guests/";	  
+		  var eventId = localStorage.event;
+	  	  var eventobj = {};
+	  	  eventobj["eventId"] = eventId;
+	  		data["event"] = eventobj;
+	  		console.log(JSON.stringify(data));
+		  var url =  "/SchoolRestJPA/rest/tabletopservices/events/"+ eventId +"/guests";	  
 			$.ajax({
 	          type: "POST",
 	          url: url,
@@ -129,10 +139,68 @@
   });
   
   function loadBlackList(){
-	  
+	  var id = localStorage.editGuestId;
+	  $.ajax({ 
+		   type: "GET",  
+	       url: "/SchoolRestJPA/rest/tabletopservices/guests/" + id + "/blacklist",  
+	       dataType: "json",  
+	       success: function(resp){  
+	         // we have the response  
+	         
+	         $('#blackListTable').html("");
+	      
+	         var tableRow;
+	             
+	         $.each(resp, function(i,guest){
+	          //todo: date!!!
+	        	
+		    
+	        	    tableRow = 
+	        	        "<tr>"
+	        	            +"<td>" + guest.name + "</td>"
+	        	            +"<td><a href=\"javascript:deleteBlackListGuest(" + guest.guestId + ")\">Delete</a></td>"
+	        	        +"</tr>";
+	        	  console.log(tableRow);     
+	        	$('#blackListTable').append(tableRow);
+	         });
+	       },  
+	       error: function (jqXHR, exception) {
+	    	    
+	    	    alert("Error" + jqXHR.responseText);
+	    	  }  
+		});
   }
   function loadWhiteList(){
-	  
+	  var id = localStorage.editGuestId;
+	  $.ajax({ 
+		   type: "GET",  
+	       url: "/SchoolRestJPA/rest/tabletopservices/guests/" + id + "/whitelist",  
+	       dataType: "json",  
+	       success: function(resp){  
+	         // we have the response  
+	         
+	         $('#whiteListTable').html("");
+	      
+	         var tableRow;
+	             
+	         $.each(resp, function(i,guest){
+	          //todo: date!!!
+	        	
+		    
+	        	    tableRow = 
+	        	        "<tr>"
+	        	            +"<td>" + guest.name + "</td>"
+	        	            +"<td><a href=\"javascript:deleteWhiteListGuest(" + guest.guestId + ")\">Delete</a></td>"
+	        	        +"</tr>";
+	        	  console.log(tableRow);     
+	        	$('#whiteListTable').append(tableRow);
+	         });
+	       },  
+	       error: function (jqXHR, exception) {
+	    	    
+	    	    alert("Error" + jqXHR.responseText);
+	    	  }  
+		});
   }
   function addGuests(type){
 	  var heading;
@@ -201,16 +269,8 @@
 								<th>Action</th>
 							</tr>
 						</thead>
-						<tbody>
-							<tr>
-								<td>Debbie Downer</td>
-								<td><a href="#">Delete</a></td>
+						<tbody id="whiteListTable">
 
-							</tr>
-							<tr>
-								<td>Wendy Whiner</td>
-								<td><a href="#">Delete</a></td>
-							</tr>
 						</tbody>
 					</table>
 
@@ -239,17 +299,6 @@
 							</tr>
 						</thead>
 						<tbody id="blackListTable">
-							<tr>
-
-								<td>Voldemort</td>
-								<td><a href="#">Delete</a></td>
-
-							</tr>
-							<tr>
-
-								<td>Dobby Smithss</td>
-								<td><a href="#">Delete</a></td>
-							</tr>
 						</tbody>
 					</table>
 

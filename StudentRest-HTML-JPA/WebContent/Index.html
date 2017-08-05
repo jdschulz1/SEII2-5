@@ -13,7 +13,7 @@
     <script type="text/javascript">
 		$(document).ready(function() {
 			$('#nav-container').load('nav.html');
-			
+			loadClientListDropDown();
 			loadMyEvents();
 		});
 	</script>
@@ -22,6 +22,7 @@
   <body>
 <script type="text/javascript">
   function loadMyEvents(){
+	  console.log("Loading Events....");
 	  $.ajax({ 
 		   type: "GET",  
 	       url: "/SchoolRestJPA/rest/tabletopservices/events",  
@@ -206,7 +207,7 @@
     </div>
  <script type="text/javascript">
  
- loadClientListDropDown();
+
 
  	$(".date-input").datepicker();
  </script>

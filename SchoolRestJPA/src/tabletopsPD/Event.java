@@ -217,7 +217,7 @@ public class Event implements Serializable {
 
 	// Anna commented out - may have to remove again
 //	@XmlElement
-	public void setEventDateTime(LocalDateTime eventDateTime) {
+	public void setEventDateTime2(LocalDateTime eventDateTime) {
 		this.eventDateTime = eventDateTime;
 	}
 	
@@ -331,7 +331,7 @@ public class Event implements Serializable {
 	    setEventTitle(event.getEventTitle());
 	    setVenueName(event.getVenueName());
 	    setMaxEmptySeats(event.getMaxEmptySeats());
-	    setEventDateTime(event.getEventDateTime());
+	    setEventDateTime2(event.getEventDateTime());
 	    setClient(ClientDAO.findClientById(event.client.getClientID()));
 	    setPrimaryPlanner(UserDAO.findUserById(event.primaryPlanner.getUserID()));
 
@@ -389,6 +389,6 @@ public class Event implements Serializable {
 			e.printStackTrace();
 		}
 				
-		return true;
+		return 1;
 	}
 }
