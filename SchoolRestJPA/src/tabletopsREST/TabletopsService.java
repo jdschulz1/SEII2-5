@@ -468,10 +468,10 @@ public class TabletopsService {
 			return messages;
 		} else {
 			Event event = EventDAO.findEventByIdNumber(id);
-			String filePath = "C:\\Users\\jenni\\mars_workspace\\SEII2-5\\SeatingArrangementSampleData.csv";
+			String filePath = "C:\\Users\\jenni\\mars_workspace\\SEII2-5\\SeatingArrangementSampleData3.csv";
 			Boolean result = event.importGuestList(filePath);
-			if (result) {
-				messages.add(new Message("op001", "help" + event.getGuestList().size() + " " + event.getGuestList().get(0).getWhitelist().size(), ""));
+			if (!result) {
+				messages.add(new Message("op001", "Error Importing Guest List", ""));
 				return messages;
 			}
 			response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
@@ -921,7 +921,7 @@ public class TabletopsService {
 	private void authenticate(String username, String password) throws Exception {
 		// Authenticate against a database, LDAP, file or whatever
 		// Throw an Exception if the credentials are invalid
-		User user = company.findUserByUserName(username);
+		User user = Company.findUserByUserName(username);
 		if (user == null)
 			throw new Exception();
 		if (!user.authenticate(password))
@@ -935,9 +935,36 @@ public class TabletopsService {
 		// Return the issued token
 		EntityTransaction userTransaction = EM.getEM().getTransaction();
 		userTransaction.begin();
-		Token token = new Token(company.findUserByUserName(username));
+		Token token = new Token(Company.findUserByUserName(username));
 		token.save();
 		userTransaction.commit();
 		return token.getToken();
+	}
+	
+	@DELETE
+	@Path("/logout/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<Message> deleteToken(@PathParam("id") String id, @Context final HttpServletResponse response) {
+		Token token = Token.findTokenByIdNumber(id);
+		if (token == null) {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			try {
+				response.flushBuffer();
+			} catch (Exception e) {
+			}
+			messages.add(new Message("op002", "Fail Operation", ""));
+			return messages;
+		}
+		EntityTransaction userTransaction = EM.getEM().getTransaction();
+		userTransaction.begin();
+		Boolean result = token.delete();
+		userTransaction.commit();
+		if (result) {
+			messages.add(new Message("op001", "Success Operation", ""));
+			return messages;
+		} else {
+			messages.add(new Message("op002", "Fail Operation", ""));
+			return messages;
+		}
 	}
 }

@@ -34,7 +34,7 @@ public class Client implements Serializable {
 	/**
 	 * Name of the Client.
 	 */
-	@Column(name = "name",nullable = false, length = 40)
+	@Column(name = "name",nullable = false, length = 80)
 	private String name;
 	
 	/**
@@ -46,7 +46,7 @@ public class Client implements Serializable {
 	/**
 	 * Email address for the Client.
 	 */
-	@Column(name = "email",nullable = true)
+	@Column(name = "email",nullable = true, length = 80)
 	private String email;
 	
 	@ManyToOne(optional=false)

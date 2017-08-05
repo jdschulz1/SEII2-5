@@ -53,9 +53,17 @@ public class TokenDAO {
 
   }
   
+  public static Token findTokenByIdNumber(String idNumber)
+  {
+    String qString = "SELECT token FROM token token WHERE token.tokenID ="+idNumber;
+    Query query = EM.getEM().createQuery(qString);
+    Token token = (Token)query.getSingleResult();
+    return token;
+  }
+  
   public static void removeToken(Token token)
   {
-    EM.getEM().remove(token);
+	  EM.getEM().remove(token);
   }
 }
 

@@ -23,6 +23,7 @@ import com.owlike.genson.annotation.JsonIgnore;
 
 import tabletopsDAO.EM;
 import tabletopsDAO.EventDAO;
+import tabletopsDAO.EventTableDAO;
 
 @XmlRootElement(name = "event_table")
 @Entity(name = "event_table")
@@ -47,6 +48,20 @@ public class EventTable implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long eventTableId;
 	
+	/**
+	 * @return the eventTableId
+	 */
+	public long getEventTableId() {
+		return eventTableId;
+	}
+
+	/**
+	 * @param eventTableId the eventTableId to set
+	 */
+	public void setEventTableId(long eventTableId) {
+		this.eventTableId = eventTableId;
+	}
+
 	/**
 	 * The number that identifies the Table at the Event.
 	 */
@@ -75,6 +90,17 @@ public class EventTable implements Serializable{
 	@XmlElement
 	public void setSeatingArrangement(SeatingArrangement seatingArrangement) {
 		this.seatingArrangement = seatingArrangement;
+	}
+	
+	public static EventTable getDefaultTable() {
+		EventTable table = EventTableDAO.findEventTableById(0);
+		if(table == null)
+		{
+			table = new EventTable();
+			table.setEventTableNum(0);
+			table.setEventTableId(0);
+		}
+		return table;
 	}
 
 	/**
@@ -120,7 +146,7 @@ public class EventTable implements Serializable{
 		//this will give us our EventTable fitness
 		this.fitnessRating = fitness.subtract(BigDecimal.valueOf(emptySeatsDiffMax).multiply(perGuest));
 	}
-
+	
 	public int getEventTableNum() {
 		return eventTableNum;
 	}
