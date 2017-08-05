@@ -119,20 +119,8 @@ public class Guest implements Serializable, Cloneable{
 	}
 
 	@ManyToOne(optional=true)
-	@JoinColumn(name="event_table",referencedColumnName="event_table_id")
+	@JoinColumn(name="event_table", referencedColumnName="event_table_id", nullable=true)
 	private EventTable eventTable;
-
-//	@OneToMany(cascade = CascadeType.ALL, 
-//	        mappedBy = "listOwner", orphanRemoval = true)
-//	@JoinTable(name="j_guest_wl")
-////	@IndexColumn(base=1, name="wl")
-//	private List<J_Guest_WL> guestWhiteList;
-//	
-//	@OneToMany(cascade = CascadeType.ALL, 
-//	        mappedBy = "listOwner", orphanRemoval = true)
-//	@JoinTable(name="j_guest_bl")
-////	@IndexColumn(base=1, name="bl")
-//	private List<J_Guest_BL> guestBlackList;
 	
 	@JoinTable(name="whitelist", 
 			joinColumns= {@JoinColumn(name="list_owner", referencedColumnName = "guest_id", nullable = false)}, 
@@ -162,6 +150,7 @@ public class Guest implements Serializable, Cloneable{
 	 */
 	public void addToBlackList(Guest member) {
 		this.blacklist.add(member);
+		GuestDAO.saveGuest(this);
 	}
 
 	/**
@@ -169,6 +158,7 @@ public class Guest implements Serializable, Cloneable{
 	 */
 	public void addToWhiteList(Guest member) {
 		this.whitelist.add(member);
+		GuestDAO.saveGuest(this);
 	}
 
 	/**
@@ -176,6 +166,7 @@ public class Guest implements Serializable, Cloneable{
 	 */
 	public void removeFromBlackList(Guest member) {
 		this.blacklist.remove(member);
+		GuestDAO.saveGuest(this);
 	}
 
 	/**
@@ -183,6 +174,7 @@ public class Guest implements Serializable, Cloneable{
 	 */
 	public void removeFromWhiteList(Guest member) {
 		this.whitelist.remove(member);
+		GuestDAO.saveGuest(this);
 	}
 
 	public int getGuestNumber() {
@@ -230,26 +222,6 @@ public class Guest implements Serializable, Cloneable{
 	public void setClientRelationship(String clientRelationship) {
 		this.clientRelationship = clientRelationship;
 	}
-
-//	@JsonIgnore
-//	public List<J_Guest_WL> getGuestWhiteList() {
-//		return guestWhiteList;
-//	}
-//
-//	@XmlElement
-//	public void setGuestWhiteList(List<J_Guest_WL> guestWhiteList) {
-//		this.guestWhiteList = guestWhiteList;
-//	}
-//
-//	@JsonIgnore
-//	public List<J_Guest_BL> getGuestBlackList() {
-//		return guestBlackList;
-//	}
-//
-//	@XmlElement
-//	public void setGuestBlackList(List<J_Guest_BL> guestBlackList) {
-//		this.guestBlackList = guestBlackList;
-//	}
 	
 	public ArrayList<Message> validate() {
 		ArrayList<Message> messages= new ArrayList<Message>();
@@ -301,7 +273,7 @@ public class Guest implements Serializable, Cloneable{
 	public Boolean update(Guest guest) {
 	    setName(guest.getName());
 	    setClientRelationship(guest.getClientRelationship());
-	   
+		GuestDAO.saveGuest(this);
 	    return true;
 	}
 	

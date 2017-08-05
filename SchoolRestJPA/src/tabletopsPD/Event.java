@@ -27,9 +27,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.owlike.genson.annotation.JsonIgnore;
 
+import javafx.scene.shape.Line;
 import schoolUT.Message;
 import tabletopsDAO.ClientDAO;
 import tabletopsDAO.EventDAO;
+import tabletopsDAO.GuestDAO;
 import tabletopsDAO.LocalDateTimeConverter;
 import tabletopsDAO.UserDAO;
 import utils.CSVReader;
@@ -336,15 +338,49 @@ public class Event implements Serializable {
 	    return true;
 	}
 	
-	public Boolean importGuestList(String filePath) {
+	public Guest findGuestByGuestNumber(int id) {
+		for(Guest g: this.guestList)
+			if (g.getGuestId() == id)
+				return g;
+		return null;
+	}
+	
+	public int importGuestList(String filePath) {
 		try {
 			Scanner scanner = new Scanner(new File(filePath));
+			List<String> headers = CSVReader.parseLine(scanner.nextLine());
+			int whitelistCount = 0;
+			for(String header:headers) {
+				if(header.equalsIgnoreCase("Same Table")) 
+					whitelistCount++;
+			}
+			if(whitelistCount == 0) 
+				return 0;
+			// Add actual guests
 			while (scanner.hasNext()) {
 	            List<String> line = CSVReader.parseLine(scanner.nextLine());
 	            if(!line.get(0).contains("#"))
 	            {
 	            	Guest g = new Guest(Integer.parseInt(line.get(0)), line.get(1), "", this);
 	            	this.addToGuestList(g);
+	            }
+	        }
+			// Start over to add whitelist/blacklist
+			scanner.reset();
+			while (scanner.hasNext()) {
+	            List<String> line = CSVReader.parseLine(scanner.nextLine());
+	            if(!line.get(0).contains("#"))
+	            {
+            		Guest mainGuest = this.findGuestByGuestNumber(Integer.parseInt(line.get(0)));
+	            	for(int i = 2; i < line.size(); i++) {
+	            		Guest guestToAdd = this.findGuestByGuestNumber(Integer.parseInt(line.get(i)));
+	            		if((i - 2) < whitelistCount) {
+	            			mainGuest.addToWhiteList(guestToAdd);
+	            		}
+	            		else {
+	            			mainGuest.addToBlackList(guestToAdd);
+	            		}
+	            	}
 	            }
 	        }
 	        scanner.close();

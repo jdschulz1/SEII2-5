@@ -450,6 +450,40 @@ public class TabletopsService {
 		}
 	}
 
+	@POST
+	@Path("/events/{id}/importGuestList")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<Message> importGuestList(@PathParam("id") String id, @Context final HttpServletResponse response)
+			throws IOException {
+
+		if (id == null) {
+
+			response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
+			try {
+				response.flushBuffer();
+			} catch (Exception e) {
+			}
+			messages.add(new Message("op002", "Fail Operation", ""));
+			return messages;
+		} else {
+			Event event = EventDAO.findEventByIdNumber(id);
+			String filePath = "C:\\Users\\jenni\\mars_workspace\\SEII2-5\\SeatingArrangementSampleData.csv";
+			Boolean result = event.importGuestList(filePath);
+			if (result) {
+				messages.add(new Message("op001", "help" + event.getGuestList().size() + " " + event.getGuestList().get(0).getWhitelist().size(), ""));
+				return messages;
+			}
+			response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
+			try {
+				response.flushBuffer();
+			} catch (Exception e) {
+			}
+			messages.add(new Message("op002", "Fail Operation", ""));
+			return messages;
+		}
+	}
+
 	@PUT
 	@Path("/guests/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
