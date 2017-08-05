@@ -8,10 +8,7 @@
 <link href="css/Site.css" rel="stylesheet" media="screen">
 <link href="css/bootstrap-clockpicker.min.css" rel="stylesheet" >
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-
-
 <script src="js/bootstrap.min.js"></script>
 <script src="js/bootstrap-clockpicker.min.js"></script>
 <script src="js/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
@@ -23,17 +20,20 @@
 	$(document).ready(function() {
 		$('#nav-container').load('nav.html');
 		var eventobj;
+		
 		loadEventFromLocalStorage();
 		loadGuests();
 	});
 </script>
 
-    <script type="text/javascript">
+<script type="text/javascript">
   function loadEventFromLocalStorage(){
+	  loadPlanners();
+	  loadClients();	
 	  var id = localStorage.event;
 		if(id > 0){
-			var clientUrl = "/SchoolRestJPA/rest/tabletopservices/events/" + id;
-			
+		var clientUrl = "/SchoolRestJPA/rest/tabletopservices/events/" + id;
+			console.log("Loading event....");
 		 	$.ajax({
 		 		type: 'GET',
 		 		url: clientUrl,  
@@ -140,7 +140,7 @@
     event1["eventTableSize"] = $("#inputTableSize").val();
     event1["eventTitle"] = $("#inputTitle").val();
     event1["maxEmptySeats"] = $("#inputTableEmptySpots").val();
-    
+   
     event1["primaryPlanner"] = primaryPlanner;
     event1["venueName"] = $("#inputVenueName").val();
     
@@ -148,12 +148,14 @@
       
       
 	  var eventID = $("#inputEventID").val();
-	  console.log(JSON.stringify(event1));
+	 
 	  if(eventID > 0){
+		  console.log(JSON.stringify(eventobj.guestList));
+		  event1["guestList"] = eventobj.guestList;
 		  event1["eventId"] = eventobj.eventId;
 		  //event1["guestList"] = eventobj.guestList;
-		  // console.log(JSON.stringify(data));
-		  var url =  "/SchoolRestJPA/rest/tabletopservices/events/1";	  
+		   console.log(JSON.stringify(event1));
+		  var url =  "/SchoolRestJPA/rest/tabletopservices/events/" + eventID;	  
 			$.ajax({
 	          type: "PUT",
 	          url: url,
@@ -173,8 +175,9 @@
 	          }
 	      });
 	  }else{ //new event
-		 
-		  var url =  "/SchoolRestJPA/rest/tabletopservices/events/";	  
+		  event1["guestList"] = [];
+		  console.log(JSON.stringify(event1));
+		  var url =  "/SchoolRestJPA/rest/tabletopservices/events";	  
 			$.ajax({
 	          type: "POST",
 	          url: url,
@@ -204,11 +207,11 @@
 		
 	}
 function loadPlanners(){
-	  
+	  console.log("Loading planners...");
 // 	  $("select").change(function(){
 // 		    alert($(this).find(":selected").data("value").age);
 // 		});
-		var Url = "/SchoolRestJPA/rest/tabletopservices/users/"
+		var Url = "/SchoolRestJPA/rest/tabletopservices/users"
 	  $.ajax({
 	 		type: 'GET',
 	 		url: Url,  
@@ -219,7 +222,7 @@ function loadPlanners(){
 	        	 $("#selectPrimaryPlanner").empty();
 		         $("#selectPrimaryPlanner").append("<option value='0'>---Select Primary Planner---</option>");
 		         $.each(data, function(i, user){
-		        	 $("#selectPrimaryPlanner").append($("<option data-value=" + JSON.stringify(user) +" ></option>").val(user.userID).html(user.name));
+		        	 $("#selectPrimaryPlanner").append($("<option></option>").val(user.userID).html(user.name));
 		         });
 	        	
 	         },
@@ -232,7 +235,8 @@ function loadPlanners(){
   }
   
   function loadClients(){
-		var Url = "/SchoolRestJPA/rest/tabletopservices/clients/"
+	  	console.log("Loading Clients....");
+		var Url = "/SchoolRestJPA/rest/tabletopservices/clients"
 			  $.ajax({
 			 		type: 'GET',
 			 		url: Url,  
@@ -243,7 +247,7 @@ function loadPlanners(){
 			        	 $("#selectClientName").empty();
 				         $("#selectClientName").append("<option value='0'>---Select Client---</option>");
 				         $.each(data, function(i, client){
-				        	 $("#selectClientName").append($("<option data-value=" + JSON.stringify(client) +" ></option>").val(client.clientID).html(client.name));
+				        	 $("#selectClientName").append($("<option></option>").val(client.clientID).html(client.name));
 				         });
 			        	
 			         },
@@ -255,6 +259,7 @@ function loadPlanners(){
   }
   
   function loadGuests(){
+	  console.log("Loading Guests....");
 	  id = localStorage.event;
 	  if (id > 0){
 		  $.ajax({ 
@@ -322,10 +327,7 @@ function editGuest(id){
 		document.location.href = "/StudentRest-HTML-JPA/WebContent/EditGuest.html", true;  	  
 }
   </script>
-   <script type="text/javascript">
-  loadPlanners();
-	loadClients();
-  </script>
+
 <!--   <select> -->
 <!--     <option data-value='{"name":"rajiv","age":"40"}'>a</option> -->
 <!--     <option data-value='{"name":"mithun","age":"22"}'>f</option> -->
@@ -408,7 +410,7 @@ function editGuest(id){
 										<label for="selectPrimaryPlanner"
 											class="col-lg-2 control-label">Primary Planner</label>
 										<div class="col-lg-10">
-											<select class="form-control" id="selectPrimaryPlanner" name="primaryPlanner" >
+											<select class="form-control" id="selectPrimaryPlanner" name="primaryPlanner">
 												
 											</select>
 										</div>
@@ -457,7 +459,7 @@ function editGuest(id){
 				</div>
 				<div class="panel-body">
 					<div class="row">
-						<a href="#" class="btn btn-xs btn-primary pull-right"><i class="glyphicon glyphicon-plus"></i>New Guest</a>
+						<a href="javascript:editGuest(0)" class="btn btn-xs btn-primary pull-right"><i class="glyphicon glyphicon-plus"></i>New Guest</a>
 						<div class="form-inline">
 							<div class="input-group input-group-sm">
 								<input type="text" class="form-control"
@@ -493,10 +495,11 @@ function editGuest(id){
 	</div><!-- /.container -->
 	
 <!--     <script src="http://code.jquery.com/jquery.js"></script> -->
+ 
     <script type="text/javascript">
 			$('.clockpicker').clockpicker();
 			$("#inputEventDate").datepicker();
-		
+				
 	</script>
   </body>
 </html>
