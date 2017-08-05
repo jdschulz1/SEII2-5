@@ -468,10 +468,10 @@ public class TabletopsService {
 			return messages;
 		} else {
 			Event event = EventDAO.findEventByIdNumber(id);
-			String filePath = "C:\\Users\\jenni\\mars_workspace\\SEII2-5\\SeatingArrangementSampleData.csv";
+			String filePath = "C:\\Users\\jenni\\mars_workspace\\SEII2-5\\SeatingArrangementSampleData3.csv";
 			Boolean result = event.importGuestList(filePath);
-			if (result) {
-				messages.add(new Message("op001", "help" + event.getGuestList().size() + " " + event.getGuestList().get(0).getWhitelist().size(), ""));
+			if (!result) {
+				messages.add(new Message("op001", "Error Importing Guest List", ""));
 				return messages;
 			}
 			response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
