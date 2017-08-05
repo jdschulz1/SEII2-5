@@ -396,6 +396,6 @@ public class Event implements Serializable {
 			return false;
 		}
 				
-		return 1;
+		return true;
 	}
 }
