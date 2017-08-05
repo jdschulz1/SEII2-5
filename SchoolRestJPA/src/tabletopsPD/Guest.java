@@ -49,6 +49,7 @@ public class Guest implements Serializable, Cloneable{
 		this.event = event;
 		this.blacklist = new ArrayList<Guest>();
 		this.whitelist = new ArrayList<Guest>();
+		this.eventTable = EventTable.getDefaultTable();
 		EntityTransaction userTransaction = EM.getEM().getTransaction();
 	    userTransaction.begin();
 		GuestDAO.addGuest(this);
