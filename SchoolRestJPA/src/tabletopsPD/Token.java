@@ -17,6 +17,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import tabletopsDAO.TokenDAO;
+import tabletopsDAO.UserDAO;
 @XmlRootElement(name = "token")
 @Entity(name = "token")
 public class Token implements Serializable {
@@ -84,6 +85,15 @@ private static final long serialVersionUID = 1L;
   
   public void save() {
     TokenDAO.saveToken(this);
+  }
+  
+  public static Token findTokenByIdNumber(String idNumber) {
+	    return TokenDAO.findTokenByIdNumber(idNumber); 
+	}
+  
+  public Boolean delete() {
+		TokenDAO.removeToken(this);
+		return true;
   }
 
 }

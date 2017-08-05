@@ -189,11 +189,13 @@ public class Event implements Serializable {
 	 * A method for adding to the List of Guests attending the Event.
 	 */
 	public boolean addToGuestList(Guest guest) {
-		int maxId = 0;
-		for(Guest g: this.guestList) {
-			maxId = Math.max(maxId, g.getGuestNumber());
+		if(guest.getGuestNumber() == 0) {
+			int maxId = 0;
+			for(Guest g: this.guestList) {
+				maxId = Math.max(maxId, g.getGuestNumber());
+			}
+			guest.setGuestNumber(maxId + 1); 
 		}
-		guest.setGuestNumber(maxId + 1); 
 		int size = this.guestList.size();
 		this.guestList.add(guest);
 		return this.guestList.size() > size;
@@ -338,14 +340,14 @@ public class Event implements Serializable {
 	    return true;
 	}
 	
-	public Guest findGuestByGuestNumber(int id) {
+	public Guest findGuestByGuestNumber(int guestNum) {
 		for(Guest g: this.guestList)
-			if (g.getGuestId() == id)
+			if (g.getGuestNumber() == guestNum)
 				return g;
 		return null;
 	}
 	
-	public int importGuestList(String filePath) {
+	public Boolean importGuestList(String filePath) {
 		try {
 			Scanner scanner = new Scanner(new File(filePath));
 			List<String> headers = CSVReader.parseLine(scanner.nextLine());
@@ -354,8 +356,6 @@ public class Event implements Serializable {
 				if(header.equalsIgnoreCase("Same Table")) 
 					whitelistCount++;
 			}
-			if(whitelistCount == 0) 
-				return 0;
 			// Add actual guests
 			while (scanner.hasNext()) {
 	            List<String> line = CSVReader.parseLine(scanner.nextLine());
@@ -366,27 +366,34 @@ public class Event implements Serializable {
 	            }
 	        }
 			// Start over to add whitelist/blacklist
-			scanner.reset();
+			scanner = new Scanner(new File(filePath));
 			while (scanner.hasNext()) {
 	            List<String> line = CSVReader.parseLine(scanner.nextLine());
 	            if(!line.get(0).contains("#"))
 	            {
             		Guest mainGuest = this.findGuestByGuestNumber(Integer.parseInt(line.get(0)));
-	            	for(int i = 2; i < line.size(); i++) {
-	            		Guest guestToAdd = this.findGuestByGuestNumber(Integer.parseInt(line.get(i)));
-	            		if((i - 2) < whitelistCount) {
-	            			mainGuest.addToWhiteList(guestToAdd);
-	            		}
-	            		else {
-	            			mainGuest.addToBlackList(guestToAdd);
-	            		}
-	            	}
+            		if(mainGuest != null) {
+		            	for(int i = 2; i < line.size(); i++) {
+		            		try {
+		            			Guest guestToAdd = this.findGuestByGuestNumber(Integer.parseInt(line.get(i)));
+		            		
+			            		if((i - 2) < whitelistCount) {
+			            			mainGuest.addToWhiteList(guestToAdd);
+			            		}
+			            		else {
+			            			mainGuest.addToBlackList(guestToAdd);
+			            		}
+		            		} catch(Exception e) {
+		            		}
+		            	}
+            		}
 	            }
 	        }
 	        scanner.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
 				
 		return 1;
