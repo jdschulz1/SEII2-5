@@ -93,12 +93,13 @@ public class EventTable implements Serializable{
 	}
 	
 	public static EventTable getDefaultTable() {
-		EventTable table = EventTableDAO.findEventTableById(0);
+		long eventId = 999;
+		EventTable table = EventTableDAO.findEventTableById(eventId);
 		if(table == null)
 		{
 			table = new EventTable();
-			table.setEventTableNum(0);
-			table.setEventTableId(0);
+			table.setEventTableNum(999);
+			table.setEventTableId(999);
 		}
 		return table;
 	}

@@ -196,6 +196,7 @@ public class Event implements Serializable {
 			}
 			guest.setGuestNumber(maxId + 1); 
 		}
+		guest.setEventTable(EventTable.getDefaultTable());
 		int size = this.guestList.size();
 		this.guestList.add(guest);
 		return this.guestList.size() > size;

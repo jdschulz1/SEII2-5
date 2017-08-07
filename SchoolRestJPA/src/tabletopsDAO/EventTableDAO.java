@@ -23,9 +23,10 @@ public class EventTableDAO {
       return query.getResultList();
     }
 
-    public static EventTable findEventTableById(int id)
+    public static EventTable findEventTableById(long id)
     {
-      EventTable eventTable = EM.getEM().find(EventTable.class, new Integer(id));
+      
+      EventTable eventTable = EM.getEM().find(EventTable.class, new Long(id));
       return eventTable;
     }
     
