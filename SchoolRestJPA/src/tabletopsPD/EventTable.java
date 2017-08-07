@@ -122,7 +122,7 @@ public class EventTable implements Serializable{
 			if(totalGuestsInBLWL != 0){
 				for(Guest g2 : g.getBlacklist()){
 					if(this.tableHasGuest(g2)){//.getListMember())){
-						System.out.println("Guest " + g2.getName() + " should not be at the table " + this.getEventTableNum() + " with " + g.getName() + ". Minus "  + perGuest.toString() + " from Gryffindor(" + total.subtract(perGuest).toString() + ")");
+						//System.out.println("Guest " + g2.getName() + " should not be at the table " + this.getEventTableNum() + " with " + g.getName() + ". Minus "  + perGuest.toString() + " from Gryffindor(" + total.subtract(perGuest).toString() + ")");
 						total = total.subtract(perGuest);
 					}
 				}
@@ -130,7 +130,7 @@ public class EventTable implements Serializable{
 				//increase fitness score for each white listed guest at the table
 				for(Guest g3 : g.getWhitelist()){
 					if(this.tableHasGuest(g3)){//.getListMember())){
-						System.out.println("Guest " + g3.getName() + " should be at the table " + this.getEventTableNum() + " with " + g.getName() + ". Plus " + perGuest.toString() + " to Gryffindor(" + total.add(perGuest).toString() + ")");
+						//System.out.println("Guest " + g3.getName() + " should be at the table " + this.getEventTableNum() + " with " + g.getName() + ". Plus " + perGuest.toString() + " to Gryffindor(" + total.add(perGuest).toString() + ")");
 						total = total.add(perGuest);
 					}
 				}
@@ -176,6 +176,24 @@ public class EventTable implements Serializable{
 	
 	public void removeGuest(Guest g){
 		guests.remove(g);
+	}
+	
+	public void removeGuestByClone(Guest g){
+		for(Guest g2 : this.guests){
+			if(g2.isSameGuest(g)){
+				this.guests.remove(g2);
+				break;
+			}
+		}
+	}
+	
+	public void addGuestByClone(Guest g){
+		for(Guest g2 : this.guests){
+			if(g2.isSameGuest(g)){
+				this.guests.add(g2);
+				break;
+			}
+		}
 	}
 	
 	public boolean tableHasGuest(Guest g){

@@ -157,32 +157,57 @@ public class Event implements Serializable {
 			if(currentMostFit.getOverallFitnessRating() == null){
 				currentMostFit = temp;
 			}
-			else if (currentMostFit.getOverallFitnessRating().compareTo(temp.getOverallFitnessRating()) == 1){
+			else if (currentMostFit.getOverallFitnessRating().compareTo(temp.getOverallFitnessRating()) == -1){
 				currentMostFit = temp;
 			}
 			
 			population.add(temp);
 		}
 		
-		while(currentMostFit.getOverallFitnessRating().compareTo(threshold) == 1){
+		while(currentMostFit.getOverallFitnessRating().compareTo(threshold) == -1){
 			for(int i = 0; i < population.size(); i++){
 				parent = population.get(i); 
 				for(int j = 1; j < population.size(); j++){
 					parent = population.get(i).crossover(population.get(j));
 					population.add(parent);
 					temp = parent;
-					if(currentMostFit.getOverallFitnessRating().compareTo(temp.getOverallFitnessRating()) == 1)
+					if(currentMostFit.getOverallFitnessRating().compareTo(temp.getOverallFitnessRating()) == -1){
 						currentMostFit = temp;
+						if(currentMostFit.getOverallFitnessRating().compareTo(threshold) != -1){
+							this.seatingArrangement = this.finalSA(currentMostFit); 
+							return true;
+						}
+					}
+						
 				}
 			}
+			System.out.println("solution fitness" + currentMostFit.getOverallFitnessRating());
 		}
 		
 		if(currentMostFit.getOverallFitnessRating() != null){
 			this.seatingArrangement = currentMostFit;
 			return true;
 		}
-		else return false;
-			
+		else return false;	
+	}
+	
+	public SeatingArrangement finalSA(SeatingArrangement sa){
+		SeatingArrangement newSA = sa;
+		List<Guest> newGuestList = new ArrayList<Guest>();
+		for(EventTable et : newSA.getEventTables()){
+			for(Guest g : et.getGuests()){
+				newGuestList.add(g);
+			}
+		}
+		this.guestList = newGuestList;
+		return newSA;
+	}
+	
+	public Guest findGuestByNum (int num){
+		for(Guest g : this.getGuestList()){
+			if(g.getGuestNumber() == num)return g;
+		}
+		return null;
 	}
 
 	/**
