@@ -52,7 +52,7 @@ public class TabletopsService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Event> getEvents(@MatrixParam("client") String idNumber, @MatrixParam("date") String date,
 			@DefaultValue("0") @QueryParam("page") String page,
-			@DefaultValue("10") @QueryParam("per_page") String perPage) {
+			@DefaultValue("100") @QueryParam("per_page") String perPage) {
 		EM.getEM().refresh(company);
 		if (idNumber != null && date != null) {
 			return company.getEventsForClientAndDate(idNumber, date, Integer.parseInt(page), Integer.parseInt(perPage));
@@ -226,7 +226,7 @@ public class TabletopsService {
 	@Path("/clients")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Client> getClients(@DefaultValue("0") @QueryParam("page") String page,
-			@DefaultValue("10") @QueryParam("per_page") String perPage) {
+			@DefaultValue("100") @QueryParam("per_page") String perPage) {
 		EM.getEM().refresh(company);
 		return company.getAllClients(Integer.parseInt(page), Integer.parseInt(perPage));
 	}
@@ -366,7 +366,7 @@ public class TabletopsService {
 	@Path("/events/{id}/guests")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Guest> getGuestsForEvent(@PathParam("id") String id, @DefaultValue("0") @QueryParam("page") String page,
-			@DefaultValue("10") @QueryParam("per_page") String perPage) {
+			@DefaultValue("100") @QueryParam("per_page") String perPage) {
 		EM.getEM().refresh(company);
 
 		return company.getGuestsForEvent(id, Integer.parseInt(page), Integer.parseInt(perPage));
@@ -376,7 +376,7 @@ public class TabletopsService {
 	@Path("/tables/{id}/guests")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Guest> getGuestsForTable(@PathParam("id") String id, @DefaultValue("0") @QueryParam("page") String page,
-			@DefaultValue("10") @QueryParam("per_page") String perPage) {
+			@DefaultValue("100") @QueryParam("per_page") String perPage) {
 		EM.getEM().refresh(company);
 		return company.getGuestsForTable(id, Integer.parseInt(page), Integer.parseInt(perPage));
 	}
@@ -620,7 +620,7 @@ public class TabletopsService {
 	@Path("/seatingarrangement")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<SeatingArrangement> getSeatingArrangements(@DefaultValue("0") @QueryParam("page") String page,
-			@DefaultValue("10") @QueryParam("per_page") String perPage) {
+			@DefaultValue("100") @QueryParam("per_page") String perPage) {
 		EM.getEM().refresh(company);
 		return company.getAllSeatingArrangements(Integer.parseInt(page), Integer.parseInt(perPage));
 	}
@@ -756,7 +756,7 @@ public class TabletopsService {
 	@Path("/users")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<User> getUsers(@DefaultValue("0") @QueryParam("page") String page,
-			@DefaultValue("10") @QueryParam("per_page") String perPage) {
+			@DefaultValue("100") @QueryParam("per_page") String perPage) {
 		EM.getEM().refresh(company);
 		return company.getAllUsers(Integer.parseInt(page), Integer.parseInt(perPage));
 	}
@@ -772,7 +772,7 @@ public class TabletopsService {
 	@Path("/users/{id}/events")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Event> getEventsForUser(@PathParam("id") String id, @DefaultValue("0") @QueryParam("page") String page,
-			@DefaultValue("10") @QueryParam("per_page") String perPage) {
+			@DefaultValue("100") @QueryParam("per_page") String perPage) {
 		EM.getEM().refresh(company);
 		return company.getEventsForUser(id, Integer.parseInt(page), Integer.parseInt(perPage));
 	}
