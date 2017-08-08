@@ -45,7 +45,7 @@
 		 		url: clientUrl,  
 		 	    dataType: 'json', 
 		        success: function (data) {
-		        	 alert('success GET Event');
+		        	
 		        	 eventobj = data;
 		        	 console.log("load even success")
 		        	$('#inputEventID').val(id);
@@ -96,8 +96,8 @@
  		         	
 		         },
 		         error: function (jqXHR, exception) {
-		    	    console.log('Load Event ERROR');
-		     	    alert("Load Event Error" + jqXHR.responseText);
+		    	    console.log('Load Event ERROR' + jqXHR.responseText);
+		     	   
 		     	  }  
 		     });
 		}else{
