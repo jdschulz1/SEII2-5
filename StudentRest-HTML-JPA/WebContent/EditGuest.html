@@ -164,8 +164,8 @@
 		             
 		       
 		        	 $("#selectWhiteListGuest").empty();
-			         $("#selectBlackListGuest").append("<option value='0'>---Select Guest---</option>");
-			         $("#selectWhiteListGuest").empty();
+			         $("#selectWhiteListGuest").append("<option value='0'>---Select Guest---</option>");
+			         $("#selectBlackListGuest").empty();
 			         $("#selectBlackListGuest").append("<option value='0'>---Select Guest---</option>");
 			         $.each(resp, function(i, guest){
 			        	 $("#selectWhiteListGuest").append($("<option></option>").val(guest.guestId).html(guest.name));
