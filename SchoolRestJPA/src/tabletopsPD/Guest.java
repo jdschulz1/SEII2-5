@@ -24,10 +24,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import com.owlike.genson.annotation.JsonIgnore;
 
-import schoolUT.Message;
 import tabletopsDAO.ClientDAO;
 import tabletopsDAO.EM;
 import tabletopsDAO.GuestDAO;
+import tabletopsUT.Message;
 
 @XmlRootElement(name = "guest")
 @Entity(name = "guest")

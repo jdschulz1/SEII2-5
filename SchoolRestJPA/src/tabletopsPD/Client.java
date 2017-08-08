@@ -15,8 +15,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.owlike.genson.annotation.JsonIgnore;
 
-import schoolUT.Message;
 import tabletopsDAO.ClientDAO;
+import tabletopsUT.Message;
 
 /**
  * Client is a class representing a client that requests Eagle Event Planning's services.

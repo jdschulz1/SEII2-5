@@ -21,9 +21,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.owlike.genson.annotation.JsonIgnore;
 
-import schoolUT.Message;
 import tabletopsDAO.ClientDAO;
 import tabletopsDAO.UserDAO;
+import tabletopsUT.Message;
 
 /**
  * A general user of the software system.

@@ -28,13 +28,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.owlike.genson.annotation.JsonIgnore;
 
 import javafx.scene.shape.Line;
-import schoolUT.Message;
 import tabletopsDAO.ClientDAO;
 import tabletopsDAO.EventDAO;
 import tabletopsDAO.GuestDAO;
 import tabletopsDAO.LocalDateTimeConverter;
 import tabletopsDAO.UserDAO;
-import utils.CSVReader;
+import tabletopsUT.CSVReader;
+import tabletopsUT.Message;
 
 /**
  * Events are records containing all information related to an event, including guest list and seating assignment information.
