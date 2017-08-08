@@ -8,10 +8,15 @@
 <link href="css/Site.css" rel="stylesheet">
 <link href="css/bootstrap-clockpicker.min.css" rel="stylesheet" >
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+ <script src="js/jquery-3.2.1.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  
+<!-- <script	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script> -->
+
 <script src="js/bootstrap.min.js"></script>
 <script src="js/bootstrap-clockpicker.min.js"></script>
 <script src="js/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+<script src="js/jquery.twbsPagination.min.js"></script>
 
 
 </head>
@@ -34,20 +39,20 @@
 		if(id > 0){
 			
 		var clientUrl = "/SchoolRestJPA/rest/tabletopservices/events/" + id;
-			console.log("Loading event....");
+			console.log('----------------------------Loading event....');
 		 	$.ajax({
 		 		type: 'GET',
 		 		url: clientUrl,  
-		 	    dataType: "json", 
+		 	    dataType: 'json', 
 		        success: function (data) {
-		        	 //alert("success");
+		        	 alert('success GET Event');
 		        	 eventobj = data;
-		        	
-		        	$("#inputEventID").val(id);
+		        	 console.log("load even success")
+		        	$('#inputEventID').val(id);
 		        	$("#inputTitle").val(data.eventTitle);
  		         	
- 		         	$("#inputRole").val(data.role);
- 		         	$("#inputVenueName").val(data.venueName);
+ 		         	$('#inputRole').val(data.role);
+ 		         	$('#inputVenueName').val(data.venueName);
  		         	var month;
  		         	var day;
  		         	
@@ -63,7 +68,7 @@
  		         		day = data.eventDateTime.dayOfMonth;
  		         	}
  		         	
- 		         	$("#inputEventDate").val(month +"/"+ day +"/"+data.eventDateTime.year);
+ 		         	$('#inputEventDate').val(month +"/"+ day +"/"+data.eventDateTime.year);
  		         	
  		         	var minute;
  		         	if (data.eventDateTime.minute < 10){
@@ -91,8 +96,8 @@
  		         	
 		         },
 		         error: function (jqXHR, exception) {
-		    	    
-		     	    alert("Load Client Error" + jqXHR.responseText);
+		    	    console.log('Load Event ERROR');
+		     	    alert("Load Event Error" + jqXHR.responseText);
 		     	  }  
 		     });
 		}else{
@@ -161,7 +166,7 @@
 	 
 	  if(eventID > 0){
 		  console.log(JSON.stringify(eventobj.guestList));
-		  event1["guestList"] = eventobj.guestList;
+		 // event1["guestList"] = eventobj.guestList;
 		  event1["eventId"] = eventobj.eventId;
 		  //event1["guestList"] = eventobj.guestList;
 		   console.log(JSON.stringify(event1));
@@ -185,7 +190,7 @@
 	          }
 	      });
 	  }else{ //new event
-		  event1["guestList"] = [];
+		 // event1["guestList"] = [];
 		  console.log(JSON.stringify(event1));
 		  var url =  "/SchoolRestJPA/rest/tabletopservices/events";	  
 			$.ajax({
@@ -275,74 +280,105 @@ function loadPlanners(){
   }
   
   function loadGuests(){
-	  console.log("Loading Guests....");
-	  id = localStorage.event;
-	  if (id > 0){
-		  $.ajax({ 
-			   type: "GET",  
-		       url: "/SchoolRestJPA/rest/tabletopservices/events/" + id + "/guests",  
-		       dataType: "json",  
-		       success: function(resp){  
-		         // we have the response  
-		         
-		         $('#guestsTable').html("");
-		      
-		         var tableRow;
-		             
-		         $.each(resp, function(i,guest){
-		        		
-		        	    tableRow = 
-		        	        "<tr>"
-		        	            +"<td>" + guest.name + "</td>"
-		        	            +"<td>" + guest.clientRelationship + "</td>"+ 
-								"<td><a href=\"javascript:editGuest(" + guest.guestId + ")\">Edit</a>&nbsp;<a href=\"javascript:deleteGuest(" + guest.guestId + ")\">Delete</a></td>"
-		        	        +"</tr>";
-		        	       
-		        	$('#guestsTable').append(tableRow);
-		         });
-		       },  
-		       error: function (jqXHR, exception) {
-		    	    
-		    	    console.log("Error" + jqXHR.responseText);
-		    	  }  
-			});
-	  }
-  }
-  
-  function deleteGuest(guestId){
-	  var txt;
-	  id = localStorage.event;
+	 
+	console.log("Loading Guests....");
+		id = localStorage.event;
+		$('#pagination').twbsPagination(
+						{
+							totalPages : 10,
+							visiblePages : 5,
+							next : 'Next',
+							prev : 'Prev',
+							onPageClick : function(event, page) {
+								//fetch content and render here
+								var table = "";
+								if (id > 0) {
+									$.ajax({
+										type : "GET",
+										url : "/SchoolRestJPA/rest/tabletopservices/events/" + id + "/guests",
+												dataType : "json",
+												data : {
+													page : page,
+													per_page : "5"
+												},
+												success : function(resp) {
+													// we have the response  
+
+													//$('#guestsTable').html("");
+
+													var tableRow;
+
+													$.each(resp,function(i, guest) {
+
+																		tableRow = "<tr>"
+																				+ "<td>"
+																				+ guest.name
+																				+ "</td>"
+																				+ "<td>"
+																				+ guest.clientRelationship
+																				+ "</td>"
+																				+ "<td><a href=\"javascript:editGuest("
+																				+ guest.guestId
+																				+ ")\">Edit</a>&nbsp;<a href=\"javascript:deleteGuest("
+																				+ guest.guestId
+																				+ ")\">Delete</a></td>"
+																				+ "</tr>";
+
+																		//$('#guestsTable').append(tableRow);
+																		table += (tableRow);
+
+																	});
+													console.log("table " + (String(table)));
+													$("#guestsTable").html(table);
+												},
+												error : function(jqXHR,exception) {
+
+													console.log("Error"	+ jqXHR.responseText);
+												}
+											});
+								}
+								
+								
+							}
+						});
+
+	}
+
+	function deleteGuest(guestId) {
+		var txt;
+		id = localStorage.event;
 		var r = confirm("Are you sure you want to delete the Guest?");
 		if (r == true) {
 			txt = "Deleting Guest!";
-	  var url = "/SchoolRestJPA/rest/tabletopservices/guests/" + guestId;
-		$.ajax({ 
-			   type: "DELETE",  
-		       url: url,  
-		       dataType: "json",  
-		       contentType: "application/json; charset=utf-8",
-		       success: function(resp){  
-		         // we have the response  
-		         alert("Guest Deleted");
-		         loadGuests();
-		       },  
-		       error: function (jqXHR, exception) {
-		    	   alert("Error Deleting Guest");
-		    	    console.log(jqXHR.responseText);
-		   
-		    	  }  
+			var url = "/SchoolRestJPA/rest/tabletopservices/guests/" + guestId;
+			$.ajax({
+				type : "DELETE",
+				url : url,
+				dataType : "json",
+				contentType : "application/json; charset=utf-8",
+				success : function(resp) {
+					// we have the response  
+					alert("Guest Deleted");
+					loadGuests();
+				},
+				error : function(jqXHR, exception) {
+					alert("Error Deleting Guest");
+					console.log(jqXHR.responseText);
+
+				}
 			});
 		} else {
-		    txt = "You pressed Cancel!";
+			txt = "You pressed Cancel!";
 		}
-  }
-  
-function editGuest(id){
-		  localStorage.editGuestId = id;
-		  
-		document.location.href = "/StudentRest-HTML-JPA/WebContent/EditGuest.html", true;  	  
-}
-  </script>
+	}
+
+	function editGuest(id) {
+		localStorage.editGuestId = id;
+
+				document.location.href = "/StudentRest-HTML-JPA/WebContent/EditGuest.html",
+				true;
+	}
+</script>
 
 <!--   <select> -->
 <!--     <option data-value='{"name":"rajiv","age":"40"}'>a</option> -->
@@ -502,6 +538,7 @@ function editGuest(id){
 								
 							</tbody>
 						</table>
+						 <ul id="pagination" class="pagination-sm"></ul>
 					</div>
 				</div>
 			</div>
