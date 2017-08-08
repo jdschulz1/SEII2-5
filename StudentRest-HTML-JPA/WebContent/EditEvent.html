@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
 <link href="css/bootstrap.css" rel="stylesheet" media="screen">
-<link href="css/Site.css" rel="stylesheet" media="screen">
+<link href="css/Site.css" rel="stylesheet">
 <link href="css/bootstrap-clockpicker.min.css" rel="stylesheet" >
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
@@ -95,6 +95,15 @@
 		     	    alert("Load Client Error" + jqXHR.responseText);
 		     	  }  
 		     });
+		}else{
+			console.log("Hello");
+			$("#guestsPanel").addClass("disableDiv");
+			$("#guestsPanel *").attr("disabled", "disabled");
+			$("#btnNewGuest").attr("disabled", true);
+			$('#btnNewGuest').bind('click', false);
+			
+			$("#btnSeatingArrangement").attr("disabled", "disabled");
+			$('#btnSeatingArrangement').bind('click', false);
 		}
   }
   
@@ -190,6 +199,12 @@
 	          success: function (data) {   
 	        	  alert("Event Data has been saved.");
 	              $("#btnSubmit").prop("disabled", false);
+	              $("#guestsPanel *").attr("disabled", false);
+	  			$("#btnNewGuest").attr("disabled", false);
+	  			$('#btnNewGuest').unbind('click', false);
+	  			
+	  			$("#btnSeatingArrangement").attr("disabled", false);
+	  			$('#btnSeatingArrangement').unbind('click', false);
 	          },
 	          error: function (e) {
 	        	  alert("Error Saving Event");
@@ -342,7 +357,7 @@ function editGuest(id){
 	</div>
 	<div class="row">
 	<div class="pull-right">
-		<a href="javascript:seatingArrangement()" class="btn btn-info btn-sm">Seating Arrangement</a>
+		<a href="javascript:seatingArrangement()" id="btnSeatingArrangement" class="btn btn-info btn-sm">Seating Arrangement</a>
 	</div>
 	</div>
 		<div class="row">
@@ -453,14 +468,14 @@ function editGuest(id){
 		
 		
 		
-		<div class="row">
-			<div class="panel panel-primary">
+		<div class="row disableDiv">
+			<div id="guestsPanel" class="panel panel-primary">
 				<div class="panel-heading">
 					<h3 class="panel-title">Guests</h3>
 				</div>
 				<div class="panel-body">
 					<div class="row">
-						<a href="javascript:editGuest(0)" class="btn btn-xs btn-primary pull-right"><i class="glyphicon glyphicon-plus"></i>New Guest</a>
+						<a href="javascript:editGuest(0)" id="btnNewGuest" class="btn btn-xs btn-primary pull-right"><i class="glyphicon glyphicon-plus"></i>New Guest</a>
 						<div class="form-inline">
 							<div class="input-group input-group-sm">
 								<input type="text" class="form-control"

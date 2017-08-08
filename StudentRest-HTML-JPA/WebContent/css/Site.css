@@ -35,3 +35,8 @@
     padding-left: 0px;
     padding-right: 0px;
 }
+
+.disableDiv {
+    pointer-events: none;
+    opacity: 0.4;
+}
