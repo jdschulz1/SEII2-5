@@ -36,7 +36,7 @@
     <div class="row">
    
     <h3>Tables</h3>
-    
+    <div class="tables-nav"></div>
     </div>
     <div class="row">
 			<div class="panel panel-primary">
@@ -216,5 +216,15 @@
 			</div>      
     </div>
 </div>
+      <script type="text/javascript">
+  $(document).ready(function() {
+ 		$('#nav-container').load('nav.html');
+ 		//localStorage.tablesNavSelect = "btnPlaceCard";
+		$('#tables-nav').load('TablesNav.html');
+		
+// 		$('TablesNav.html #tables-nav').load("#btnPlaceCard").addClass('active');
+// 		console.log($("TablesNav.html #btnPlaceCard").attr('class'));
+	});
+  </script>
 </body>
 </html>

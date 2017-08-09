@@ -9,13 +9,15 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script type="text/javascript">
 		$(document).ready(function() {
-			$('#nav-container').load('nav.html');
-			$('#tables-nav').load('TablesNav.html');
+			
 			loadUsersTable();
+			
+			
 		});
 	</script>
   </head>
   <body>
+
   <script type="text/javascript">
   function loadUsersTable(){
 	  var id = localStorage.eventId;
@@ -79,5 +81,15 @@
 	</div>
     <script src="http://code.jquery.com/jquery.js"></script>
     <script src="js/bootstrap.min.js"></script>
+      <script type="text/javascript">
+  $(document).ready(function() {
+ 		$('#nav-container').load('nav.html');
+ 		localStorage.tablesNavSelect = "btnPlaceCard";
+		$('#tables-nav').load('TablesNav.html');
+		
+// 		$('TablesNav.html #tables-nav').load("#btnPlaceCard").addClass('active');
+// 		console.log($("TablesNav.html #btnPlaceCard").attr('class'));
+	});
+  </script>
   </body>
 </html>

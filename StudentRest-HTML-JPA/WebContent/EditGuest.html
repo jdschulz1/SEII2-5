@@ -21,6 +21,7 @@
 		$(document).ready(function() {
 			$('#nav-container').load('nav.html');
 			loadGuestFromLocalStorage();
+			loadGuestList();
 			if(localStorage.editGuestId > 0)
 			{
 				loadWhiteList();
@@ -57,6 +58,14 @@
 		     	    console.log("Load Guest Error" + jqXHR.responseText);
 		     	  }  
 		     });
+		}else{
+			$("#whiteListPanel *").attr("disabled", "disabled");
+			$("#blackListPanel *").attr("disabled", "disabled");
+			$("#whiteListAdd").attr("disabled", true);
+			$('#whiteListAdd').bind('click', false);
+			
+			$("#blackListAdd").attr("disabled", "disabled");
+			$('#blackListAdd').bind('click', false);			
 		}
   }
   $(document).ready(function() { 
@@ -103,13 +112,15 @@
 	          error: function (e) {
 	        	  alert("Error Saving Guest Data");
 	              console.log("ERROR : ", e.responseText);
+	              
 	              $("#btnSubmit").prop("disabled", false);
 	          }
 	      });
 	  }else{ //new guest
+		  console.log("New guest");
 		  var eventId = localStorage.event;
-	  	  var eventobj = {};
-	  	  eventobj["eventId"] = eventId;
+ 	  	  var eventobj = {};
+ 	  	  eventobj["eventId"] = eventId;
 	  		data["event"] = eventobj;
 	  		console.log(JSON.stringify(data));
 		  var url =  "/SchoolRestJPA/rest/tabletopservices/events/"+ eventId +"/guests";	  
@@ -137,7 +148,41 @@
 	  
   	});
   });
-  
+  function loadGuestList(){
+	  console.log("Loading Guests....");
+	  id = localStorage.event;
+	  if (id > 0){
+		  $.ajax({ 
+			   type: "GET",  
+		       url: "/SchoolRestJPA/rest/tabletopservices/events/" + id + "/guests",  
+		       dataType: "json",  
+		       success: function(resp){  
+		         // we have the response  
+		         
+		         $('#guestsTable').html("");
+		      
+		         var tableRow;
+		             
+		       
+		        	 $("#selectWhiteListGuest").empty();
+			         $("#selectWhiteListGuest").append("<option value='0'>---Select Guest---</option>");
+			         $("#selectBlackListGuest").empty();
+			         $("#selectBlackListGuest").append("<option value='0'>---Select Guest---</option>");
+			         $.each(resp, function(i, guest){
+			        	 $("#selectWhiteListGuest").append($("<option></option>").val(guest.guestId).html(guest.name));
+			        	 $("#selectBlackListGuest").append($("<option></option>").val(guest.guestId).html(guest.name));
+			         });
+		        			        	       
+		        	
+		         
+		       },  
+		       error: function (jqXHR, exception) {
+		    	    
+		    	    console.log("Error" + jqXHR.responseText);
+		    	  }  
+			});
+	  }
+  }
   function loadBlackList(){
 	  var id = localStorage.editGuestId;
 	  $.ajax({ 
@@ -204,12 +249,98 @@
   }
   function addGuests(type){
 	  var heading;
+	  localStorage.ownerGuestId = localStorage.editGuestId;
 	  var guestName =  $("#inputName").val();
+	  var addguestval;
+	  if(type == 0){
+		  heading =  guestName + " White List";
+	  	  addguestval = $("#selectWhiteListGuest").val();
+	  	  console.log("addguestval " + addguestval);
+	  	  url = "/SchoolRestJPA/rest/tabletopservices/guests/"+ localStorage.ownerGuestId + "/whitelist/"+ addguestval;
+	  }
+	  if(type == 1){
+		  heading = guestName + " Black List";
+		  addguestval = $("#selectBlackListGuest").val();
+		  url = "/SchoolRestJPA/rest/tabletopservices/guests/"+ localStorage.ownerGuestId + "/blacklist/"+ addguestval;
+	  }
+	  //localStorage.editListTypeId = type;
+	  //localStorage.editListTypeHeading = heading;
 	  
-	  if(type == 0){heading =  guestName + " White List";}
-	  if(type == 1){heading = guestName + " Black List";}
-	  localStorage.editListTypeId = type;
-	  localStorage.editListTypeHeading = heading;
+	 
+		$.ajax({
+        type: "PUT",
+        url: url,
+        contentType: "application/json; charset=utf-8",
+        dataType:"json",
+//         data: JSON.stringify(data),          
+        cache: false,
+        //context : Form,
+        success: function (data) {             
+            $("#btnSubmit").prop("disabled", false);
+            alert("Guest Data Saved");
+            //event id should still be in local storage
+      	  //document.location.href = "/StudentRest-HTML-JPA/WebContent/EditEvent.html", true;
+        	 if(type == 0){
+            	loadWhiteList();
+        	 }else{
+        		 loadBlackList();
+        	 }
+        },
+        error: function (e) {
+      	  alert("Error Saving Guest Data");
+            console.log("ERROR : ", e.responseText);
+          
+        }
+    });
+	  
+	 // document.location.href = "/StudentRest-HTML-JPA/WebContent/SelectAddGuests.html", true;  
+  }
+  
+  function deleteWhiteListGuest(id){
+	  url = "/SchoolRestJPA/rest/tabletopservices/guests/"+ localStorage.ownerGuestId + "/whitelist/"+ id;
+	  $.ajax({
+	        type: "Delete",
+	        url: url,
+	        contentType: "application/json; charset=utf-8",
+	        dataType:"json",         
+	        cache: false,
+	        //context : Form,
+	        success: function (data) {             
+	           
+	            alert("Guest Data Saved");
+	            //event id should still be in local storage
+	      	  //document.location.href = "/StudentRest-HTML-JPA/WebContent/EditEvent.html", true;
+	            	loadWhiteList();
+	        	 
+	        },
+	        error: function (e) {
+	      	  alert("Error Saving Guest Data");
+	            console.log("ERROR : ", e.responseText);
+	          
+	        }
+	    });
+  }
+  function deleteBlackListGuest(id){
+	  url = "/SchoolRestJPA/rest/tabletopservices/guests/"+ localStorage.ownerGuestId + "/blacklist/"+ id;
+	  $.ajax({
+	        type: "Delete",
+	        url: url,
+	        contentType: "application/json; charset=utf-8",
+	        dataType:"json",         
+	        cache: false,
+	        //context : Form,
+	        success: function (data) {             
+	           
+	            alert("Guest Deleted");
+	            loadBlackList();
+	        	
+	        },
+	        error: function (e) {
+	      	  alert("Error Saving Guest Data");
+	            console.log("ERROR : ", e.responseText);
+	          
+	        }
+	    });
   }
   </script>
     <div class="container">
@@ -250,11 +381,14 @@
 	<!-- End of Guest form       -->
 
 		<div class="row">
-			<div class="panel panel-primary">
+			<div id="whiteListPanel" class="panel panel-primary">
 				<div class="panel-heading clearfix">
 					<div class="pull-right">
 						<div class="form-inline">
-								<a href="javascript:addGuests(0)" ><i class="glyphicon glyphicon-plus"></i>Add Guest</a>
+								<select class="form-control" id="selectWhiteListGuest" name="EventTime">
+								</select>
+								<a href="javascript:addGuests(0)" id="whiteListAdd" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i>Add Guest</a>
+								
 							
 						</div>
 					</div>
@@ -279,12 +413,13 @@
 		</div>
 
 		<div class="row">
-			<div class="panel panel-primary">
+			<div id="blackListPanel" class="panel panel-primary">
 				<div class="panel-heading clearfix">
 					<div class="pull-right">
 						<div class="form-inline">
 							<div class="form-inline">
-								<a href="javascript:addGuests(1)" ><i class="glyphicon glyphicon-plus"></i>Add Guest</a>
+							<select class="form-control form-control-sm" id="selectBlackListGuest" name="blacklist"></select>
+								<a href="javascript:addGuests(1)" id="blackListAdd" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i>Add Guest</a>
 							</div>
 						</div>
 					</div>

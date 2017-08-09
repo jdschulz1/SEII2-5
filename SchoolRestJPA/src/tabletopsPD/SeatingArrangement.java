@@ -23,9 +23,9 @@ import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import schoolUT.Message;
 import tabletopsDAO.GuestDAO;
 import tabletopsDAO.SeatingArrangementDAO;
+import tabletopsUT.Message;
 
 /**
  * The SeatingArrangement is a solution in the genetic algorithm for best seating arrangement for the Event.

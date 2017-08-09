@@ -30,10 +30,10 @@ import tabletopsPD.Event;
 import tabletopsPD.Guest;
 import tabletopsPD.SeatingArrangement;
 import tabletopsPD.User;
+import tabletopsUT.Log;
+import tabletopsUT.Message;
 import tabletopsDAO.EM;
 import tabletopsDAO.EventDAO;
-import schoolUT.Log;
-import schoolUT.Message;
 import tabletopsDAO.CompanyDAO;
 import tabletopsPD.Token;
 import tabletopsPD.Role;
@@ -545,10 +545,10 @@ public class TabletopsService {
 			return messages;
 		}
 
-		EntityTransaction userTransaction = EM.getEM().getTransaction();
-		userTransaction.begin();
+//		EntityTransaction userTransaction = EM.getEM().getTransaction();
+		//userTransaction.begin();
 		ownerGuest.addToBlackList(memberGuest);
-		userTransaction.commit();
+		//userTransaction.commit();
 		messages.add(new Message("op001", "Success Operation", ""));
 		return messages;
 	}
@@ -571,10 +571,10 @@ public class TabletopsService {
 			return messages;
 		}
 
-		EntityTransaction userTransaction = EM.getEM().getTransaction();
-		userTransaction.begin();
+//		EntityTransaction userTransaction = EM.getEM().getTransaction();
+		//userTransaction.begin();
 		ownerGuest.addToWhiteList(memberGuest);
-		userTransaction.commit();
+		//userTransaction.commit();
 		messages.add(new Message("op001", "Success Operation", ""));
 		return messages;
 	}
@@ -593,10 +593,10 @@ public class TabletopsService {
 			messages.add(new Message("op002", "Fail Operation", ""));
 			return messages;
 		}
-		EntityTransaction userTransaction = EM.getEM().getTransaction();
-		userTransaction.begin();
+//		EntityTransaction userTransaction = EM.getEM().getTransaction();
+		//userTransaction.begin();
 		Boolean result = guest.delete();
-		userTransaction.commit();
+		//userTransaction.commit();
 		if (result) {
 			messages.add(new Message("op001", "Success Operation", ""));
 			return messages;
@@ -604,6 +604,56 @@ public class TabletopsService {
 			messages.add(new Message("op002", "Fail Operation", ""));
 			return messages;
 		}
+	}
+	
+	@DELETE
+	@Path("/guests/{owner_id}/whitelist/{member_id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<Message> deleteFromWhiteList(@PathParam("owner_id") String ownerId,
+			@PathParam("member_id") String memberId, @Context final HttpServletResponse response) throws IOException {
+		Guest ownerGuest = company.findGuestByIdNumber(ownerId);
+		Guest memberGuest = company.findGuestByIdNumber(memberId);
+		if (ownerGuest == null || memberGuest == null) {
+			response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
+			try {
+				response.flushBuffer();
+			} catch (Exception e) {
+			}
+			messages.add(new Message("op002", "Fail Operation", ""));
+			return messages;
+		}
+
+//		EntityTransaction userTransaction = EM.getEM().getTransaction();
+//		userTransaction.begin();
+		ownerGuest.removeFromWhiteList(memberGuest);
+//		userTransaction.commit();
+		messages.add(new Message("op001", "Success Operation", ""));
+		return messages;
+	}
+	
+	@DELETE
+	@Path("/guests/{owner_id}/blacklist/{member_id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<Message> deleteFromBlackList(@PathParam("owner_id") String ownerId,
+			@PathParam("member_id") String memberId, @Context final HttpServletResponse response) throws IOException {
+		Guest ownerGuest = company.findGuestByIdNumber(ownerId);
+		Guest memberGuest = company.findGuestByIdNumber(memberId);
+		if (ownerGuest == null || memberGuest == null) {
+			response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
+			try {
+				response.flushBuffer();
+			} catch (Exception e) {
+			}
+			messages.add(new Message("op002", "Fail Operation", ""));
+			return messages;
+		}
+
+//		EntityTransaction userTransaction = EM.getEM().getTransaction();
+//		userTransaction.begin();
+		ownerGuest.removeFromBlackList(memberGuest);
+//		userTransaction.commit();
+		messages.add(new Message("op001", "Success Operation", ""));
+		return messages;
 	}
 
 	//

@@ -24,10 +24,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import com.owlike.genson.annotation.JsonIgnore;
 
-import schoolUT.Message;
 import tabletopsDAO.ClientDAO;
 import tabletopsDAO.EM;
 import tabletopsDAO.GuestDAO;
+import tabletopsUT.Message;
 
 @XmlRootElement(name = "guest")
 @Entity(name = "guest")
@@ -175,7 +175,8 @@ public class Guest implements Serializable, Cloneable{
 	 */
 	public void removeFromBlackList(Guest member) {
 		EntityTransaction userTransaction = EM.getEM().getTransaction();
-	    userTransaction.begin();this.blacklist.remove(member);
+	    userTransaction.begin();
+	    this.blacklist.remove(member);
 		GuestDAO.saveGuest(this);
 		userTransaction.commit();
 	}

@@ -35,3 +35,14 @@
     padding-left: 0px;
     padding-right: 0px;
 }
+
+.disableDiv {
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+.scroll-panel{
+	height: 500px;
+	overflow: scroll;
+	overflow-x: hidden;
+}
