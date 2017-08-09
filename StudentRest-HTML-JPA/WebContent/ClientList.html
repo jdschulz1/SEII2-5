@@ -18,12 +18,48 @@
 </script>
 
 <script type="text/javascript">
+	function getCookie(cname) {
+		console.log("get cookie");
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for (var i = 0; i < ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	function setHeader(xhr) {
+		console.log("set Header");
+		token = getCookie("token");
+		console.log("Token: " + token);
+		xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+	}
 	function loadClientsTable() {
 		$
 				.ajax({
 					type : "GET",
 					url : "/SchoolRestJPA/rest/tabletopservices/clients",
 					dataType : "json",
+					statusCode : {
+						401 : function(response) {
+							$('#page-message').html("You must Login first");
+							alert("Please login to access this page");
+				        	document.location.href = "/StudentRest-HTML-JPA/WebContent/Login.html", true;
+						},
+						405 : function(response) {
+							$('#page-message').html(
+									"Access to the page forbiden");
+							alert("Please login to access this page");
+							document.location.href = "/StudentRest-HTML-JPA/WebContent/Login.html", true;
+						}
+					},
 					success : function(resp) {
 						// we have the response  
 
@@ -53,7 +89,8 @@
 
 						alert("Error Loading Clients");
 						console.log(jqXHR.responseText);
-					}
+					},
+				       beforeSend : setHeader
 				});
 	}
 
@@ -86,7 +123,8 @@
 					alert("Error Deleting Client");
 					console.log(jqXHR.responseText);
 
-				}
+				},
+			       beforeSend : setHeader
 			});
 			//reload clientsTable after delete
 		} else {
@@ -104,115 +142,14 @@ $(document).ready(function() {
 	$('#clientsNav').addClass('active');
 })
 
-</script>
-<script type="text/javascript">
-function getCookie(cname) {
-	console.log("get cookie");
-	var name = cname + "=";
-	var decodedCookie = decodeURIComponent(document.cookie);
-	var ca = decodedCookie.split(';');
-	for (var i = 0; i < ca.length; i++) {
-		var c = ca[i];
-		while (c.charAt(0) == ' ') {
-			c = c.substring(1);
-		}
-		if (c.indexOf(name) == 0) {
-			return c.substring(name.length, c.length);
-		}
-	}
-	return "";
-}
+</script>-->
 
-function setHeader(xhr) {
-	console.log("set Header");
-	token = getCookie("token");
-	console.log("Token: " + token);
-	xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-}
-function loadClientsTable(){
-	 $.ajax({ 
-		   type: "GET",  
-	       url: "/SchoolRestJPA/rest/tabletopservices/clients",  
-	       dataType: "json",
-	       statusCode : {
-				401 : function(response) {
-					$('#page-message').html("You must Login first");
-					alert("Please login to access this page");
-		        	document.location.href = "/StudentRest-HTML-JPA/WebContent/Login.html", true;
-				},
-				405 : function(response) {
-					$('#page-message').html(
-							"Access to the page forbiden");
-					alert("Please login to access this page");
-					document.location.href = "/StudentRest-HTML-JPA/WebContent/Login.html", true;
-				}
-			},
-	       success: function(resp){  
-	         // we have the response  
-	       
-	         $('#clientsTable').html("");
-	         var tableRow;
-  
-	         $.each(resp, function(i, client){
-	        		
-	        	    tableRow = 
-	        	        "<tr>"
-	        	            +"<td>" + client.name + "</td>"	        	  
-							+"<td><a href=\"javascript:editClient(" + client.clientID + ")\">Edit</a>&nbsp;<a href=\"javascript:deleteClient(" + client.clientID + ")\">Delete</a></td>"
-	        	        +"</tr>";
-	        	       
-	        	$('#clientsTable').append(tableRow);
-	         });
-	       },  
-	       error: function (jqXHR, exception) {
-	    	    
-	    	    alert("Error Loading Clients");
-	    	    console.log(jqXHR.responseText);
-	    	  },
-	       beforeSend : setHeader
-		});
-}
-
-
-	<div id="nav-container"></div>
+   <div id="nav-container"></div>
 	<div class="container">
 		<div class="row">
 			<h1>Clients</h1>
 		</div>
 		<div class="row">
-
-function deleteClient(id){
-	var txt;
-	var r = confirm("Are you sure you want to delete the Client?");
-	if (r == true) {
-	    txt = "Deleting Client!";
-	//call to delete client service
-	var url = "/SchoolRestJPA/rest/tabletopservices/clients/" + id;
-	$.ajax({ 
-		   type: "DELETE",  
-	       url: url,  
-	       dataType: "json",  
-	       contentType: "application/json; charset=utf-8",
-	       success: function(resp){  
-	         // we have the response  
-	       	 alert("Deleted Client");
-	         $('#clientsTable').html("");
-	         loadClientsTable();
-	       },  
-	       error: function (jqXHR, exception) {
-	    	   alert("Error Deleting Client"); 
-	    	   console.log(jqXHR.responseText);
-	   
-	    	  },
-		       beforeSend : setHeader  
-		});
-	//reload clientsTable after delete
-	} else {
-	    txt = "You pressed Cancel!";
-	}
-}
-</script>
-   <div id="nav-container">
 			<a href="javascript:editClient(0)"
 				class="btn btn-xs btn-primary pull-right"><i
 				class="glyphicon glyphicon-plus"></i>New Client</a>
