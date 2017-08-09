@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -27,7 +28,7 @@ import tabletopsDAO.EventTableDAO;
 
 @XmlRootElement(name = "event_table")
 @Entity(name = "event_table")
-public class EventTable implements Serializable{
+public class EventTable implements Serializable, Cloneable{
 
 	/**
 	 * 
@@ -39,8 +40,23 @@ public class EventTable implements Serializable{
 		this.guests = new ArrayList<Guest>();
 	}
 	
+	public EventTable(int tableNum, List<Guest> etGuests){
+		this.eventTableNum = tableNum;
+		this.guests = etGuests;
+	}
+	
 	public EventTable() {
 		
+	}
+	
+	public EventTable eventTableCopy(){
+		try {
+			return (EventTable) this.clone();
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	@Id //signifies the primary key
@@ -177,6 +193,12 @@ public class EventTable implements Serializable{
 	
 	public void removeGuest(Guest g){
 		guests.remove(g);
+	}
+	
+	public void removeGuest(List<Guest> rmGuests){
+		for(Guest g : rmGuests){
+			this.removeGuest(g);
+		}
 	}
 	
 	public void removeGuestByClone(Guest g){
