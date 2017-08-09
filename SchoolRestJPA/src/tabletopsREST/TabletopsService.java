@@ -624,9 +624,9 @@ public class TabletopsService {
 		}
 
 		EntityTransaction userTransaction = EM.getEM().getTransaction();
-		//userTransaction.begin();
+		userTransaction.begin();
 		ownerGuest.removeFromWhiteList(memberGuest);
-		//userTransaction.commit();
+		userTransaction.commit();
 		messages.add(new Message("op001", "Success Operation", ""));
 		return messages;
 	}
