@@ -21,11 +21,22 @@
 </head>
   <body>
 <script type="text/javascript">
-  function loadMyEvents(){
+  function loadMyEvents(callback){
 	  console.log("Loading Events....");
+	  
+	  if($("#selectClient").empty()){
+		  var url = "/SchoolRestJPA/rest/tabletopservices/events";
+		  
+	  }
+	  else {
+		  var url = "/SchoolRestJPA/rest/tabletopservices/events;client=2";
+		  console.log("Loading Events, and a client....");
+	  }
+	  
 	  $.ajax({ 
 		   type: "GET",  
-	       url: "/SchoolRestJPA/rest/tabletopservices/events",  
+	       url: url,
+	       cache: false,
 	       dataType: "json",  
 	       success: function(resp){  
 	         // we have the response  
@@ -84,6 +95,108 @@
 		});
   }
   
+  function searchEvent(){
+	  //Get id of selected client
+	  //get date
+	  if(document.getElementById("selectClient").value != 0  && document.getElementById("eventDate").value) {
+		  console.log("Loading Events with Client and Date....");
+		  var dd = $("#eventDate").datepicker("getDate").getDate();
+		    var mm = $("#eventDate").datepicker("getDate").getMonth()+1;//new Date(sdate).getMonth()+1;
+		    var yy = $("#eventDate").datepicker("getDate").getFullYear();//new Date(sdate).getFullYear();
+		    var hh = 00;
+		    var ms = 00;
+		  var x = yy + ',' + mm + ',' + dd + ' ' + hh + ':' + ms ;
+		    var eventDateTime = new Date(x);
+		    var stupidFuckingDateString = new Date(eventDateTime.getTime()  - (eventDateTime.getTimezoneOffset() * 60000)).toJSON(); //2017-07-03T00:10:00.000Z
+		    var finalStupidFuckingDateString = stupidFuckingDateString.split(".")[0];
+		  
+		  var url = "/SchoolRestJPA/rest/tabletopservices/events;client=" + document.getElementById("selectClient").value + ";date=" + finalStupidFuckingDateString;
+	  }
+	  else if(document.getElementById("selectClient").value != 0 && !document.getElementById("eventDate").value) {
+		  console.log("Loading Events with Client!....");
+		  
+		  var url = "/SchoolRestJPA/rest/tabletopservices/events;client=" + document.getElementById("selectClient").value;
+	  }
+	  else if(document.getElementById("selectClient").value == 0 && document.getElementById("eventDate").value) {
+		  console.log("Loading Events with Date....");
+		  var dd = $("#eventDate").datepicker("getDate").getDate();
+		    var mm = $("#eventDate").datepicker("getDate").getMonth()+1;//new Date(sdate).getMonth()+1;
+		    var yy = $("#eventDate").datepicker("getDate").getFullYear();//new Date(sdate).getFullYear();
+		    var hh = 00;
+		    var ms = 00;
+		  var x = yy + ',' + mm + ',' + dd + ' ' + hh + ':' + ms ;
+		    var eventDateTime = new Date(x);
+		    var stupidFuckingDateString = new Date(eventDateTime.getTime()  - (eventDateTime.getTimezoneOffset() * 60000)).toJSON(); //2017-07-03T00:10:00.000Z
+		    var finalStupidFuckingDateString = stupidFuckingDateString.split(".")[0];
+		  var url = "/SchoolRestJPA/rest/tabletopservices/events;date=" + finalStupidFuckingDateString;
+	  }
+	  else {
+		  var url = "/SchoolRestJPA/rest/tabletopservices/events";
+	  }
+	  console.log(document.getElementById("selectClient").value + " AND " + document.getElementById("eventDate").value);
+	  $.ajax({ 
+		   type: "GET",  
+	       url: url,
+	       cache: false,
+	       dataType: "json",  
+	       success: function(resp){  
+	         // we have the response  
+	         
+	         $('#eventTable').html("");
+	      
+	         var tableRow;
+	             
+	         $.each(resp, function(i,event){
+	          //todo: date!!!
+	        	 var month;
+		         	var day;
+		         	
+		         	if (event.eventDateTime.monthValue < 10){
+		         		month = "0" + event.eventDateTime.monthValue;
+		         	}else{
+		         		month = event.eventDateTime.monthValue;
+		         	}
+		         	
+		         	if(event.eventDateTime.dayOfMonth < 10){
+		         		day = "0" + event.eventDateTime.dayOfMonth;
+		         	}else{
+		         		day = event.eventDateTime.dayOfMonth;
+		         	}
+		         	var minute;
+		         	if (event.eventDateTime.minute < 10){
+		         		minute = "0" + String(event.eventDateTime.minute);
+		         	}else{
+		         		minute = event.eventDateTime.minute;
+		         	}
+		         	
+		         	var hour;
+		         	if (event.eventDateTime.hour < 10){
+		         		hour = "0" + String(event.eventDateTime.hour);
+		         	}else{
+		         		hour = event.eventDateTime.hour;
+		         	}
+		         	var theEventDate = month +"-"+ day +"-"+ event.eventDateTime.year;
+		         	var theEventTime = hour + ":" + minute;
+	        	    tableRow = 
+	        	        "<tr>"
+	        	            +"<td>" + event.eventTitle + "</td>"
+	        	            +"<td>"+ theEventDate +"</td>" 
+	        	            +"<td>"+ theEventTime +"</td>" 
+							+"<td>" + event.venueName + "</td>"
+							+"<td><a href=\"javascript:editEvent(" + event.eventId + ")\">Edit</a>&nbsp;<a href=\"javascript:deleteEvent(" + event.eventId + ")\">Delete</a></td>"
+	        	        +"</tr>";
+	        	       
+	        	$('#eventTable').append(tableRow);
+	         });
+	       },  
+	       error: function (jqXHR, exception) {
+	    	    
+	    	    alert("Error" + jqXHR.responseText);
+	    	  }  
+		});
+	  
+  }
+  
   function editEvent(id){
 	  localStorage.event = id;
 		document.location.href = "/StudentRest-HTML-JPA/WebContent/EditEvent.html", true;  
@@ -135,7 +248,8 @@
  			$("#selectClient").empty();
 	         $("#selectClient").append("<option value='0'>---Select Client---</option>");
 	         $.each(resp, function(i, client){
-	        	 $("#selectClient").append($("<option></option>").val(client.ID).html(client.name));
+	        	 console.log(client);
+	        	 $("#selectClient").append($("<option></option>").val(client.clientID).html(client.name));
 	         });
 	       },  
 	       error: function (jqXHR, exception) {
@@ -161,8 +275,8 @@
 							<option>Select Client</option>
 						</select>
 
-						<button type="submit" id="btnSearch"
-							class="btn btn-primary btn-sm ">Search</button>
+						<button type="button" id="btnSearch"
+							class="btn btn-primary btn-sm" onclick="searchEvent()">Search</button>
 					</div>
 				</form>
 			</div>
