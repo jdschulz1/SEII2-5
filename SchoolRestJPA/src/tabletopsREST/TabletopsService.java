@@ -545,7 +545,7 @@ public class TabletopsService {
 			return messages;
 		}
 
-		EntityTransaction userTransaction = EM.getEM().getTransaction();
+//		EntityTransaction userTransaction = EM.getEM().getTransaction();
 		//userTransaction.begin();
 		ownerGuest.addToBlackList(memberGuest);
 		//userTransaction.commit();
@@ -571,7 +571,7 @@ public class TabletopsService {
 			return messages;
 		}
 
-		EntityTransaction userTransaction = EM.getEM().getTransaction();
+//		EntityTransaction userTransaction = EM.getEM().getTransaction();
 		//userTransaction.begin();
 		ownerGuest.addToWhiteList(memberGuest);
 		//userTransaction.commit();
@@ -593,7 +593,7 @@ public class TabletopsService {
 			messages.add(new Message("op002", "Fail Operation", ""));
 			return messages;
 		}
-		EntityTransaction userTransaction = EM.getEM().getTransaction();
+//		EntityTransaction userTransaction = EM.getEM().getTransaction();
 		//userTransaction.begin();
 		Boolean result = guest.delete();
 		//userTransaction.commit();
@@ -623,10 +623,10 @@ public class TabletopsService {
 			return messages;
 		}
 
-		EntityTransaction userTransaction = EM.getEM().getTransaction();
-		userTransaction.begin();
+//		EntityTransaction userTransaction = EM.getEM().getTransaction();
+//		userTransaction.begin();
 		ownerGuest.removeFromWhiteList(memberGuest);
-		userTransaction.commit();
+//		userTransaction.commit();
 		messages.add(new Message("op001", "Success Operation", ""));
 		return messages;
 	}
@@ -648,10 +648,10 @@ public class TabletopsService {
 			return messages;
 		}
 
-		EntityTransaction userTransaction = EM.getEM().getTransaction();
-		userTransaction.begin();
+//		EntityTransaction userTransaction = EM.getEM().getTransaction();
+//		userTransaction.begin();
 		ownerGuest.removeFromBlackList(memberGuest);
-		userTransaction.commit();
+//		userTransaction.commit();
 		messages.add(new Message("op001", "Success Operation", ""));
 		return messages;
 	}
