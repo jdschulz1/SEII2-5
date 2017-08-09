@@ -36,6 +36,29 @@
 
   </div>
   <script type="text/javascript">
+  function getCookie(cname) {
+		console.log("get cookie");
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for (var i = 0; i < ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+
+	function setHeader(xhr) {
+		console.log("set Header");
+		token = getCookie("token");
+		console.log("Token: " + token);
+		xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+	}
   function loadGuestFromLocalStorage(){
 	  var id = localStorage.editGuestId;
 		if(id > 0){
@@ -44,7 +67,20 @@
 		 	$.ajax({
 		 		type: 'GET',
 		 		url: Url,  
-		 	    dataType: "json", 
+		 	    dataType: "json",
+		 	   statusCode : {
+					401 : function(response) {
+						$('#page-message').html("You must Login first");
+						alert("Please login to access this page");
+			        	document.location.href = "/StudentRest-HTML-JPA/WebContent/Login.html", true;
+					},
+					405 : function(response) {
+						$('#page-message').html(
+								"Access to the page forbiden");
+						alert("Please login to access this page");
+						document.location.href = "/StudentRest-HTML-JPA/WebContent/Login.html", true;
+					}
+				},
 		         success: function (data) {
 		        	 //alert("success");
 		        	 
@@ -56,7 +92,8 @@
 		         error: function (jqXHR, exception) {
 		    	    
 		     	    console.log("Load Guest Error" + jqXHR.responseText);
-		     	  }  
+		     	  },
+			       beforeSend : setHeader  
 		     });
 		}else{
 			$("#whiteListPanel *").attr("disabled", "disabled");
@@ -114,7 +151,8 @@
 	              console.log("ERROR : ", e.responseText);
 	              
 	              $("#btnSubmit").prop("disabled", false);
-	          }
+	          },
+		       beforeSend : setHeader
 	      });
 	  }else{ //new guest
 		  console.log("New guest");
@@ -141,7 +179,8 @@
 	        	  alert("Error Saving Guest Data");
 	        	  console.log("ERROR : ", e.responseText);
 	              $("#btnSubmit").prop("disabled", false);
-	          }
+	          },
+		       beforeSend : setHeader
 	      });
 	  }
 	  
@@ -179,7 +218,8 @@
 		       error: function (jqXHR, exception) {
 		    	    
 		    	    console.log("Error" + jqXHR.responseText);
-		    	  }  
+		    	  },
+			       beforeSend : setHeader  
 			});
 	  }
   }
@@ -212,7 +252,8 @@
 	       error: function (jqXHR, exception) {
 	    	    
 	    	    alert("Error" + jqXHR.responseText);
-	    	  }  
+	    	  },
+		       beforeSend : setHeader  
 		});
   }
   function loadWhiteList(){
@@ -244,7 +285,8 @@
 	       error: function (jqXHR, exception) {
 	    	    
 	    	    alert("Error" + jqXHR.responseText);
-	    	  }  
+	    	  },
+		       beforeSend : setHeader 
 		});
   }
   function addGuests(type){
@@ -290,7 +332,8 @@
       	  alert("Error Saving Guest Data");
             console.log("ERROR : ", e.responseText);
           
-        }
+        },
+	       beforeSend : setHeader
     });
 	  
 	 // document.location.href = "/StudentRest-HTML-JPA/WebContent/SelectAddGuests.html", true;  
@@ -317,7 +360,8 @@
 	      	  alert("Error Saving Guest Data");
 	            console.log("ERROR : ", e.responseText);
 	          
-	        }
+	        },
+		       beforeSend : setHeader
 	    });
   }
   function deleteBlackListGuest(id){
@@ -339,7 +383,8 @@
 	      	  alert("Error Saving Guest Data");
 	            console.log("ERROR : ", e.responseText);
 	          
-	        }
+	        },
+		       beforeSend : setHeader
 	    });
   }
   </script>

@@ -20,7 +20,29 @@
 	</script>
   <body>
   <script type="text/javascript">
-  
+  function getCookie(cname) {
+		console.log("get cookie");
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for (var i = 0; i < ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+
+	function setHeader(xhr) {
+		console.log("set Header");
+		token = getCookie("token");
+		console.log("Token: " + token);
+		xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+	}
   function loadClientFromLocalStorage(){
 	  var id = localStorage.client;
 		if(id > 0){
@@ -29,7 +51,20 @@
 		 	$.ajax({
 		 		type: 'GET',
 		 		url: clientUrl,  
-		 	    dataType: "json", 
+		 	    dataType: "json",
+		 	   statusCode : {
+					401 : function(response) {
+						$('#page-message').html("You must Login first");
+						alert("Please login to access this page");
+			        	document.location.href = "/StudentRest-HTML-JPA/WebContent/Login.html", true;
+					},
+					405 : function(response) {
+						$('#page-message').html(
+								"Access to the page forbiden");
+						alert("Please login to access this page");
+						document.location.href = "/StudentRest-HTML-JPA/WebContent/Login.html", true;
+					}
+				},
 		         success: function (data) {
 		        	 //alert("success");
 		        	 $("#inputClientID").val(id);
@@ -40,7 +75,8 @@
 		         error: function (jqXHR, exception) {
 		    	    
 		     	    alert("Load Client Error" + jqXHR.responseText);
-		     	  }  
+		     	  },
+			       beforeSend : setHeader  
 		     });
 		}
   }
@@ -86,7 +122,8 @@
 	        	  alert("Error Saving Client Data");
 	              console.log("ERROR : ", e.responseText);
 	              $("#btnSubmit").prop("disabled", false);
-	          }
+	          },
+		       beforeSend : setHeader
 	      });
 	  }else{ //new client
 		  var url =  "/SchoolRestJPA/rest/tabletopservices/clients/";	  
@@ -107,7 +144,8 @@
 	        	  alert("Error Saving Client Data");
 	        	  console.log("ERROR : ", e.responseText);
 	              $("#btnSubmit").prop("disabled", false);
-	          }
+	          },
+		       beforeSend : setHeader
 	      });
 	  }
 	  

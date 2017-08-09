@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityTransaction;
 import javax.servlet.http.HttpServletResponse;
@@ -47,6 +48,7 @@ public class TabletopsService {
 	Log log = new Log();
 
 	// Events REST Services
+	@Secured()
 	@GET
 	@Path("/events")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -65,6 +67,7 @@ public class TabletopsService {
 		}
 	}
 
+	@Secured()
 	@GET
 	@Path("/events/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -72,6 +75,7 @@ public class TabletopsService {
 		return company.findEventByIdNumber(id);
 	}
 
+	@Secured()
 	@POST
 	@Path("/events")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -117,6 +121,7 @@ public class TabletopsService {
 		}
 	}
 
+	@Secured()
 	@POST
 	@Path("/events/{id}/generateSeatingArrangement")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -151,6 +156,7 @@ public class TabletopsService {
 		}
 	}
 
+	@Secured()
 	@PUT
 	@Path("/events/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -194,6 +200,7 @@ public class TabletopsService {
 		return messages;
 	}
 
+	@Secured()
 	@DELETE
 	@Path("/events/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -222,6 +229,7 @@ public class TabletopsService {
 	}
 
 	// Client REST Services
+	@Secured()
 	@GET
 	@Path("/clients")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -231,6 +239,7 @@ public class TabletopsService {
 		return company.getAllClients(Integer.parseInt(page), Integer.parseInt(perPage));
 	}
 
+	@Secured()
 	@GET
 	@Path("/clients/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -238,6 +247,7 @@ public class TabletopsService {
 		return company.findClientByIdNumber(id);
 	}
 
+	@Secured()
 	@POST
 	@Path("/clients")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -283,6 +293,7 @@ public class TabletopsService {
 		}
 	}
 
+	@Secured()
 	@PUT
 	@Path("/clients/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -326,6 +337,7 @@ public class TabletopsService {
 		return messages;
 	}
 
+	@Secured()
 	@DELETE
 	@Path("/clients/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -362,6 +374,7 @@ public class TabletopsService {
 	// }
 	//
 	// Guest REST Services
+	@Secured()
 	@GET
 	@Path("/events/{id}/guests")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -372,6 +385,7 @@ public class TabletopsService {
 		return company.getGuestsForEvent(id, Integer.parseInt(page), Integer.parseInt(perPage));
 	}
 
+	@Secured()
 	@GET
 	@Path("/tables/{id}/guests")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -381,6 +395,7 @@ public class TabletopsService {
 		return company.getGuestsForTable(id, Integer.parseInt(page), Integer.parseInt(perPage));
 	}
 
+	@Secured()
 	@GET
 	@Path("/guests/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -388,6 +403,7 @@ public class TabletopsService {
 		return company.findGuestByIdNumber(id);
 	}
 
+	@Secured()
 	@GET
 	@Path("/guests/{id}/whitelist")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -396,6 +412,7 @@ public class TabletopsService {
 		return guest.getWhitelist();
 	}
 
+	@Secured()
 	@GET
 	@Path("/guests/{id}/blacklist")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -404,6 +421,7 @@ public class TabletopsService {
 		return guest.getBlacklist();
 	}
 
+	@Secured()
 	@POST
 	@Path("/events/{id}/guests")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -450,6 +468,7 @@ public class TabletopsService {
 		}
 	}
 
+	@Secured()
 	@POST
 	@Path("/events/{id}/importGuestList")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -484,6 +503,7 @@ public class TabletopsService {
 		}
 	}
 
+	@Secured()
 	@PUT
 	@Path("/guests/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -527,6 +547,7 @@ public class TabletopsService {
 		return messages;
 	}
 
+	@Secured()
 	@PUT
 	@Path("/guests/{owner_id}/blacklist/{member_id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -553,6 +574,7 @@ public class TabletopsService {
 		return messages;
 	}
 	
+	@Secured()
 	@PUT
 	@Path("/guests/{owner_id}/whitelist/{member_id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -579,6 +601,7 @@ public class TabletopsService {
 		return messages;
 	}
 
+	@Secured()
 	@DELETE
 	@Path("/guests/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -606,6 +629,7 @@ public class TabletopsService {
 		}
 	}
 	
+	@Secured()
 	@DELETE
 	@Path("/guests/{owner_id}/whitelist/{member_id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -631,6 +655,7 @@ public class TabletopsService {
 		return messages;
 	}
 	
+	@Secured()
 	@DELETE
 	@Path("/guests/{owner_id}/blacklist/{member_id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -666,6 +691,7 @@ public class TabletopsService {
 	//// }
 	//
 	// SeatingArrangement REST Services
+	@Secured()
 	@GET
 	@Path("/seatingarrangement")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -675,6 +701,7 @@ public class TabletopsService {
 		return company.getAllSeatingArrangements(Integer.parseInt(page), Integer.parseInt(perPage));
 	}
 
+	@Secured()
 	@GET
 	@Path("/seatingarrangements/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -730,6 +757,7 @@ public class TabletopsService {
 	// return messages;
 	// }
 	// }
+	@Secured()
 	@PUT
 	@Path("/seatingarrangements/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -773,6 +801,7 @@ public class TabletopsService {
 		return messages;
 	}
 
+	@Secured()
 	@DELETE
 	@Path("/seatingarrangements/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -802,6 +831,7 @@ public class TabletopsService {
 	}
 
 	// User REST Services
+	@Secured()
 	@GET
 	@Path("/users")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -811,6 +841,7 @@ public class TabletopsService {
 		return company.getAllUsers(Integer.parseInt(page), Integer.parseInt(perPage));
 	}
 
+	@Secured()
 	@GET
 	@Path("/users/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -818,6 +849,7 @@ public class TabletopsService {
 		return company.findUserByIdNumber(id);
 	}
 
+	@Secured()
 	@GET
 	@Path("/users/{id}/events")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -827,6 +859,7 @@ public class TabletopsService {
 		return company.getEventsForUser(id, Integer.parseInt(page), Integer.parseInt(perPage));
 	}
 
+	@Secured()
 	@POST
 	@Path("/users")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -872,6 +905,7 @@ public class TabletopsService {
 		}
 	}
 
+	@Secured()
 	@PUT
 	@Path("/users/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -915,6 +949,7 @@ public class TabletopsService {
 		return messages;
 	}
 
+	@Secured()
 	@DELETE
 	@Path("/users/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -951,14 +986,53 @@ public class TabletopsService {
 	@Path("/login")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response authenticateUser(User user) {
+	public Response authenticateUser(Map<String, String> user) {
 
+		System.out.println(user);
+//		if (user == null) {
+//
+//			response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
+//			try {
+//				response.flushBuffer();
+//			} catch (Exception e) {
+//			}
+//			messages.add(new Message("op002", "Fail Operation", ""));
+//			return messages;
+//		} else {
+
+//			ArrayList<Message> errMessages = client.validate();
+//			if (errMessages != null) {
+//
+//				response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+//				try {
+//					response.flushBuffer();
+//				} catch (Exception e) {
+//				}
+//				return errMessages;
+//			}
+//			EntityTransaction userTransaction = EM.getEM().getTransaction();
+//			userTransaction.begin();
+//			Boolean result = company.addClient(client);
+//			userTransaction.commit();
+//			if (result) {
+//				messages.add(new Message("op001", "Success Operation", ""));
+//				return messages;
+//			}
+//			response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
+//			try {
+//				response.flushBuffer();
+//			} catch (Exception e) {
+//			}
+//			messages.add(new Message("op002", "Fail Operation", ""));
+//			return messages;
+//		}
+		
 		try {
 			// Authenticate the user using the credentials provided
-			authenticate(user.getUserName(), user.getPassword());
+			authenticate(user.get("userName"), user.get("password"));
 
 			// Issue a token for the user
-			String token = issueToken(user.getUserName());
+			String token = issueToken(user.get("userName"));
 
 			// Return the token on the response
 			return Response.ok(token).build();
