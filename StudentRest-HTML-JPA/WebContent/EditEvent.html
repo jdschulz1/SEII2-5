@@ -378,6 +378,36 @@ function loadPlanners(){
 				document.location.href = "/StudentRest-HTML-JPA/WebContent/EditGuest.html",
 				true;
 	}
+	$(function(){
+	    $('#btnImport').click(upload);
+	});
+
+	function upload(){
+		console.log("Uploading....");
+	    var file = $('input[name="inputFileUpload"]').get(0).files[0];
+	 
+	    var formData = new FormData();
+	    formData.append('file', file);
+
+	    $.ajax({
+	        url: '/SchoolRestJPA/rest/tabletopservices/upload',
+	        type: 'POST',
+	        data: formData,
+	        cache: false,
+	        contentType: false,
+	        processData: false,
+	        success: function(){
+	            alert('file upload complete');
+	        },
+	        error: function(response){
+	            var error = "error";
+	            if (response.status === 409){
+	                error = response.responseText;
+	            }
+	            alert(error);
+	        }	       
+	    });
+	}
 </script>
 
 <!--   <select> -->
@@ -514,15 +544,14 @@ function loadPlanners(){
 						<a href="javascript:editGuest(0)" id="btnNewGuest" class="btn btn-xs btn-primary pull-right"><i class="glyphicon glyphicon-plus"></i>New Guest</a>
 						<div class="form-inline">
 							<div class="input-group input-group-sm">
-								<input type="text" class=""
-									placeholder="Import from file">
-								<div class="input-group-btn">
-									<label class="btn btn-default btn-sm btn-file"> Browse
-										<input type="file" style="display: none;">
-									</label>
-								</div>
+<!-- 								<input type="text" class=""	placeholder="Import from file"> -->
+<!-- 								<div class="input-group-btn"> -->
+<!-- 									<label class="btn btn-default btn-sm btn-file"> Browse -->
+										<input type="file" id="inputFileUpload" name="inputFileUpload" />
+<!-- 									</label> -->
+<!-- 								</div> -->
 							</div>
-							<button class="btn btn-sm btn-success">Import</button>
+							<button id="btnImport" type="button" class="btn btn-sm btn-success">Import</button>
 						</div>
 					</div>
 						<hr>

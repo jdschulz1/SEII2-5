@@ -297,6 +297,10 @@
   }
   
   function deleteWhiteListGuest(id){
+	  var txt;
+		var r = confirm("Are you sure you want to delete the guest from the white list?");
+		if (r == true) {
+		    txt = "Deleting Guest!";
 	  url = "/SchoolRestJPA/rest/tabletopservices/guests/"+ localStorage.ownerGuestId + "/whitelist/"+ id;
 	  $.ajax({
 	        type: "Delete",
@@ -314,13 +318,18 @@
 	        	 
 	        },
 	        error: function (e) {
-	      	  alert("Error Saving Guest Data");
+	      	  alert("Error Deleting Guest Data");
 	            console.log("ERROR : ", e.responseText);
 	          
 	        }
 	    });
+		}
   }
   function deleteBlackListGuest(id){
+	  var txt;
+		var r = confirm("Are you sure you want to delete the guest from the black list?");
+		if (r == true) {
+		    txt = "Deleting Guest!";
 	  url = "/SchoolRestJPA/rest/tabletopservices/guests/"+ localStorage.ownerGuestId + "/blacklist/"+ id;
 	  $.ajax({
 	        type: "Delete",
@@ -336,11 +345,12 @@
 	        	
 	        },
 	        error: function (e) {
-	      	  alert("Error Saving Guest Data");
+	      	  alert("Error Deleting Guest Data");
 	            console.log("ERROR : ", e.responseText);
 	          
 	        }
 	    });
+		}
   }
   </script>
     <div class="container">

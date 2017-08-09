@@ -187,6 +187,7 @@ public class Company implements Serializable{
 	
 	public List<Guest> getGuestsForEvent(String idNumber, int page, int perPage) {
 		List<Guest> guestList= EventDAO.getGuestsForEvent(idNumber, page,  perPage);
+		System.out.println(guestList.toString());
 		return guestList;
 	}
 	
