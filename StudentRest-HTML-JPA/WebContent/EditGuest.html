@@ -117,9 +117,10 @@
 	          }
 	      });
 	  }else{ //new guest
+		  console.log("New guest");
 		  var eventId = localStorage.event;
-	  	  var eventobj = {};
-	  	  eventobj["eventId"] = eventId;
+ 	  	  var eventobj = {};
+ 	  	  eventobj["eventId"] = eventId;
 	  		data["event"] = eventobj;
 	  		console.log(JSON.stringify(data));
 		  var url =  "/SchoolRestJPA/rest/tabletopservices/events/"+ eventId +"/guests";	  

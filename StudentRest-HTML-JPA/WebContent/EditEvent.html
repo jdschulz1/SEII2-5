@@ -282,26 +282,25 @@ function loadPlanners(){
   
   function loadGuests(){
 	 
-	console.log("Loading Guests....");
+	console.log("Loading Guests....Event ID = " + localStorage.event);
 		id = localStorage.event;
-		$('#pagination').twbsPagination(
-						{
-							totalPages : 10,
-							visiblePages : 5,
-							next : 'Next',
-							prev : 'Prev',
-							onPageClick : function(event, page) {
-								//fetch content and render here
+// 		$('#pagination').twbsPagination(
+// 						{
+// 							totalPages : 5,
+// 							visiblePages : 5,
+// 							next : 'Next',
+// 							prev : 'Prev',
+// 							onPageClick : function(event, page) {
+// 								//fetch content and render here
 								var table = "";
 								if (id > 0) {
 									$.ajax({
 										type : "GET",
 										url : "/SchoolRestJPA/rest/tabletopservices/events/" + id + "/guests",
 												dataType : "json",
-												data : {
-													page : page,
-													per_page : "5"
-												},
+// 												data : {
+// 													page : page,
+// 													per_page : "15"	},
 												success : function(resp) {
 													// we have the response  
 
@@ -337,11 +336,11 @@ function loadPlanners(){
 													console.log("Error"	+ jqXHR.responseText);
 												}
 											});
-								}
+								//}
 								
 								
 							}
-						});
+						//});
 
 	}
 
