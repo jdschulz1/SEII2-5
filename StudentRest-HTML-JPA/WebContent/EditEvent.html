@@ -38,7 +38,7 @@
 	  var id = localStorage.event;
 		if(id > 0){
 			
-		var clientUrl = "/SchoolRestJPA/rest/tabletopservices/events/" + id;
+			var clientUrl = "/SchoolRestJPA/rest/tabletopservices/events/" + id;
 			console.log('----------------------------Loading event....');
 		 	$.ajax({
 		 		type: 'GET',
@@ -190,7 +190,7 @@
 	          }
 	      });
 	  }else{ //new event
-		 // event1["guestList"] = [];
+		  event1["guestList"] = [];
 		  console.log(JSON.stringify(event1));
 		  var url =  "/SchoolRestJPA/rest/tabletopservices/events";	  
 			$.ajax({
@@ -203,6 +203,7 @@
 	          //context : Form,
 	          success: function (data) {   
 	        	  alert("Event Data has been saved.");
+	        	  $("#guestsPanel").removeClass("disableDiv");
 	              $("#btnSubmit").prop("disabled", false);
 	              $("#guestsPanel *").attr("disabled", false);
 	  			$("#btnNewGuest").attr("disabled", false);
@@ -504,7 +505,7 @@ function loadPlanners(){
 		
 		
 		
-		<div class="row disableDiv">
+		<div class="row">
 			<div id="guestsPanel" class="panel panel-primary">
 				<div class="panel-heading">
 					<h3 class="panel-title">Guests</h3>

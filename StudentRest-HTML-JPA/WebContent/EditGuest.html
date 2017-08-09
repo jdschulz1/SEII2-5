@@ -296,7 +296,50 @@
   }
   
   function deleteWhiteListGuest(id){
-	  localStorage.ownerGuestId = localStorage.editGuestId;
+	  url = "/SchoolRestJPA/rest/tabletopservices/guests/"+ localStorage.ownerGuestId + "/whitelist/"+ id;
+	  $.ajax({
+	        type: "Delete",
+	        url: url,
+	        contentType: "application/json; charset=utf-8",
+	        dataType:"json",         
+	        cache: false,
+	        //context : Form,
+	        success: function (data) {             
+	           
+	            alert("Guest Data Saved");
+	            //event id should still be in local storage
+	      	  //document.location.href = "/StudentRest-HTML-JPA/WebContent/EditEvent.html", true;
+	            	loadWhiteList();
+	        	 
+	        },
+	        error: function (e) {
+	      	  alert("Error Saving Guest Data");
+	            console.log("ERROR : ", e.responseText);
+	          
+	        }
+	    });
+  }
+  function deleteBlackListGuest(id){
+	  url = "/SchoolRestJPA/rest/tabletopservices/guests/"+ localStorage.ownerGuestId + "/blacklist/"+ id;
+	  $.ajax({
+	        type: "Delete",
+	        url: url,
+	        contentType: "application/json; charset=utf-8",
+	        dataType:"json",         
+	        cache: false,
+	        //context : Form,
+	        success: function (data) {             
+	           
+	            alert("Guest Deleted");
+	            loadBlackList();
+	        	
+	        },
+	        error: function (e) {
+	      	  alert("Error Saving Guest Data");
+	            console.log("ERROR : ", e.responseText);
+	          
+	        }
+	    });
   }
   </script>
     <div class="container">
