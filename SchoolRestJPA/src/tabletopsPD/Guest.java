@@ -175,7 +175,8 @@ public class Guest implements Serializable, Cloneable{
 	 */
 	public void removeFromBlackList(Guest member) {
 		EntityTransaction userTransaction = EM.getEM().getTransaction();
-	    userTransaction.begin();this.blacklist.remove(member);
+	    userTransaction.begin();
+	    this.blacklist.remove(member);
 		GuestDAO.saveGuest(this);
 		userTransaction.commit();
 	}

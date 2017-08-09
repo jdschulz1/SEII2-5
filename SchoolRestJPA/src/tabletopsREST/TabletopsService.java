@@ -605,6 +605,56 @@ public class TabletopsService {
 			return messages;
 		}
 	}
+	
+	@DELETE
+	@Path("/guests/{owner_id}/whitelist/{member_id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<Message> deleteFromWhiteList(@PathParam("owner_id") String ownerId,
+			@PathParam("member_id") String memberId, @Context final HttpServletResponse response) throws IOException {
+		Guest ownerGuest = company.findGuestByIdNumber(ownerId);
+		Guest memberGuest = company.findGuestByIdNumber(memberId);
+		if (ownerGuest == null || memberGuest == null) {
+			response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
+			try {
+				response.flushBuffer();
+			} catch (Exception e) {
+			}
+			messages.add(new Message("op002", "Fail Operation", ""));
+			return messages;
+		}
+
+		EntityTransaction userTransaction = EM.getEM().getTransaction();
+		userTransaction.begin();
+		ownerGuest.removeFromWhiteList(memberGuest);
+		userTransaction.commit();
+		messages.add(new Message("op001", "Success Operation", ""));
+		return messages;
+	}
+	
+	@DELETE
+	@Path("/guests/{owner_id}/blacklist/{member_id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<Message> deleteFromBlackList(@PathParam("owner_id") String ownerId,
+			@PathParam("member_id") String memberId, @Context final HttpServletResponse response) throws IOException {
+		Guest ownerGuest = company.findGuestByIdNumber(ownerId);
+		Guest memberGuest = company.findGuestByIdNumber(memberId);
+		if (ownerGuest == null || memberGuest == null) {
+			response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
+			try {
+				response.flushBuffer();
+			} catch (Exception e) {
+			}
+			messages.add(new Message("op002", "Fail Operation", ""));
+			return messages;
+		}
+
+		EntityTransaction userTransaction = EM.getEM().getTransaction();
+		userTransaction.begin();
+		ownerGuest.removeFromBlackList(memberGuest);
+		userTransaction.commit();
+		messages.add(new Message("op001", "Success Operation", ""));
+		return messages;
+	}
 
 	//
 	//// @OPTIONS
