@@ -431,9 +431,10 @@ function loadPlanners(){
 	 
 	    var formData = new FormData();
 	    formData.append('file', file);
-
+	    var id = localStorage.event;
+		var url = '/SchoolRestJPA/rest/tabletopservices/events/' + id + '/upload';
 	    $.ajax({
-	        url: '/SchoolRestJPA/rest/tabletopservices/upload',
+	        url: url,
 	        type: 'POST',
 	        data: formData,
 	        cache: false,
