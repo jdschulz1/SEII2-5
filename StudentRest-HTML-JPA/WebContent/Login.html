@@ -6,6 +6,9 @@
     <!-- Bootstrap -->
     <link href="css/bootstrap.css" rel="stylesheet" media="screen">
     <link href="css/Site.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script type="text/javascript">
 		$(document).ready(function() {
 			$('#nav-container').load('nav.html');
@@ -25,17 +28,17 @@
                         <h3 class="panel-title">Sign In</h3>
                     </div>
                     <div class="panel-body">
-                        <form role="form">
+                        <form id="loginForm" role="form">
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Username" name="email" type="email" autofocus="">
+                                    <input type="text" class="form-control" id="username" placeholder="Username" name="userName" type="email" autofocus="">
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Password" name="password" type="password" value="">
+                                    <input type="text" class="form-control" id="password" placeholder="Password" name="password" type="password" value="">
                                 </div>
                                
                                 <!-- Change this to a button or input when using this as a form -->
-                                <a href="javascript:;" class="btn btn-sm btn-success">Login</a>
+                                <button class="btn btn-sm btn-success" type="submit" id="btnSubmit">Login</a>
                             </fieldset>
                         </form>
                     </div>
@@ -45,6 +48,75 @@
 
 
 	</div><!-- /.container -->
+	
+	<script type="text/javascript">
+	
+	$(document).ready(function() {
+		$("#loginForm").submit(function (e){
+			e.preventDefault();
+			  // Get form
+		      	var data = {};
+		    	var Form = this;
+				
+		    	//Gathering the Data
+		    	//and removing undefined keys(buttons)
+		    	$.each(this.elements, function(i, v){
+		            var input = $(v);
+		        	data[input.attr("name")] = input.val();
+		        	console.log(input.attr("name") + " " + input.val());
+		        	delete data["undefined"];
+		    	});
+				console.log(JSON.stringify(data));
+			
+			
+				var userName = $('#username').val();
+				var password = $('#password').val();
+				console.log(userName + " " + password);
+
+				$.ajax( { 
+					url:"/SchoolRestJPA/rest/tabletopservices/login",
+					type: "POST",
+					dataType: "json",
+					contentType: "application/json",
+					//data: '{'+  
+					//	'"userName" : "'+userName+'",'+
+					//	'"password" : "'+password+'"'+
+					//"}",
+					data: JSON.stringify(data),
+					statusCode: {
+					200: function(response) {
+						  document.cookie="token=" + response.responseText;
+						  console.log(response.responseText);
+						  $("#page-message").html("Logged in");
+						  alert("Log In Success");
+			        	  document.location.href = "/StudentRest-HTML-JPA/WebContent/", true;
+				  		},
+				  	406: function(response) {
+				  		var errors = response.responseJSON;
+				  		$(".error").html("*");
+				  		$.each(errors, function (i, message) {
+				  			$("#"+message.attributeName+"Err").html(message.message);
+				  			console.log("Error "+message.attributeName +" "+message.message)
+		    	        		});
+				  		$("#page-message").html("Username and password not found");
+				  		},
+				  	
+					404 : function(jqXHR, textStatus, errorThrown) {
+						$("#page-message").html("Error:"+textStatus);
+						consule.log(errorThrown);
+			  	        console.log("error " + textStatus);
+			  	        console.log("incoming Text " + jqXHR.responseText);
+			  	      	}
+					}
+					});
+
+				e.preventDefault();
+		});
+		});
+	
+	
+	</script>
+	
     <script src="http://code.jquery.com/jquery.js"></script>
     <script src="js/bootstrap.min.js"></script>
   </body>

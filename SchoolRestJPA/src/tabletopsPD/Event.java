@@ -6,8 +6,13 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.NavigableSet;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -132,56 +137,81 @@ public class Event implements Serializable {
 	 * This operation executes the genetic algorithm to attempt to find the best SeatingArrangement for the Event.
 	 */
 	public boolean calculateSeatingArrangement(BigDecimal threshold) {
-		// TODO - implement Event.calculateSeatingArrangement
-		/*
-		 * Start with a generated population of 100 SeatingArrangements
-		 * while there isn't a solution above the fitness threshold 
-		 * (or maybe after a certain number of generations?),crossover each 
-		 * SeatingArrangement with every other SeatingArrangement 
-		 * in the population.
-		 * 
-		 * Set the best fitness(or one of the best if tied) to the Event's 
-		 * seatingArrangment.
-		 * */
+
 		if(this.guestList.isEmpty()) 
 			return false;
 		
-		List<SeatingArrangement> population = new ArrayList<SeatingArrangement>();
+		NavigableSet<SeatingArrangement> population = new TreeSet<SeatingArrangement>();
 		SeatingArrangement temp, currentMostFit = this.seatingArrangement != null ? this.seatingArrangement : new SeatingArrangement(), parent, child;
-		
+		List<SeatingArrangement> topTen = new ArrayList<SeatingArrangement>(); 
 		if(this.seatingArrangement != null) population.add(this.seatingArrangement);
 		
-		for(int i = 0; i < 100; i++){
+		for(int i = 0; i < 1000; i++){
 			temp = SeatingArrangement.createArrangement(this);
 			
-			if(currentMostFit.getOverallFitnessRating() == null){
-				currentMostFit = temp;
-			}
-			else if (currentMostFit.getOverallFitnessRating().compareTo(temp.getOverallFitnessRating()) == -1){
-				currentMostFit = temp;
-			}
+//			if(currentMostFit.getOverallFitnessRating() == null){
+//				currentMostFit = temp;
+//			}
+//			else if (currentMostFit.getOverallFitnessRating().compareTo(temp.getOverallFitnessRating()) == -1){
+//				currentMostFit = temp;
+//			}
 			
 			population.add(temp);
 		}
 		
-		while(currentMostFit.getOverallFitnessRating().compareTo(threshold) == -1){
-			for(int i = 0; i < population.size(); i++){
-				parent = population.get(i); 
-				for(int j = 1; j < population.size(); j++){
-					parent = population.get(i).crossover(population.get(j));
-					population.add(parent);
-					temp = parent;
-					if(currentMostFit.getOverallFitnessRating().compareTo(temp.getOverallFitnessRating()) == -1){
-						currentMostFit = temp;
-						if(currentMostFit.getOverallFitnessRating().compareTo(threshold) != -1){
-							this.seatingArrangement = this.finalSA(currentMostFit); 
-							return true;
+		currentMostFit = population.last();
+		
+		while(topTen.size() < 75){
+			topTen.add(population.pollLast());
+		}
+		
+		
+		
+		while(topTen.get(0).getOverallFitnessRating().compareTo(threshold) == -1){
+			for(int i = 0; i < topTen.size(); i++){
+				parent = topTen.get(i);
+				for(int j = 0; j < topTen.size(); j++){
+					child = parent.crossover(topTen.get(j));
+					if(!topTen.contains(child)){
+						topTen.add(child);
+						Collections.sort(topTen, Collections.reverseOrder());
+						if(topTen.size() > 99){
+							population.add(topTen.get(99));
+							topTen.remove(99);
 						}
 					}
-						
+					
+					
+//					if(child.getOverallFitnessRating().compareTo(topTen.get(9).getOverallFitnessRating()) == 1 &&
+//							child.getOverallFitnessRating().compareTo(topTen.get(8).getOverallFitnessRating()) == -1){
+//						population.add(topTen.get(9));
+//						topTen.remove(9);
+//						topTen.add(child);
+//					}
+//					else if() {
+//				
+//					}
 				}
 			}
-			System.out.println("solution fitness" + currentMostFit.getOverallFitnessRating());
+//			for(int i = 0; i < population.size(); i++){
+//				parent = population.pollFirst(); 
+//				for(int j = 1; j < population.size(); j++){
+//					parent = ((SeatingArrangement)population.get(i));
+//					child = population.get(i).crossover(population.get(j));
+//					population.add(child);
+//					temp = parent;
+//					if(currentMostFit.getOverallFitnessRating().compareTo(temp.getOverallFitnessRating()) == -1){
+//						currentMostFit = temp;
+//						if(currentMostFit.getOverallFitnessRating().compareTo(threshold) != -1){
+//							this.seatingArrangement = this.finalSA(currentMostFit); 
+//							return true;
+//						}
+//					}
+//						
+//				}
+//			}
+			
+			System.out.println("solution fitness" + topTen.get(0).getOverallFitnessRating());
 		}
 		
 		if(currentMostFit.getOverallFitnessRating() != null){

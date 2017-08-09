@@ -6,6 +6,8 @@ import java.math.RoundingMode;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -30,7 +32,7 @@ import tabletopsUT.Message;
  */
 @XmlRootElement(name = "seating_arrangement")
 @Entity(name = "seating_arrangement")
-public class SeatingArrangement implements Serializable, Cloneable{
+public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 
 	/**
 	 * 
@@ -81,7 +83,7 @@ public class SeatingArrangement implements Serializable, Cloneable{
 		     List<Integer> usedRandoms = new ArrayList<Integer>();
 		     first.setSeatingArrangement(newArrangement);
 		     newArrangement.eventTables.add(first);
-		     // Generate guestList.size() integers 0..guestList.size()
+		     
 		     for (int i = 0; i < newArrangement.event.getGuestList().size(); i++) {
 		    	 guestidx = number.nextInt(newArrangement.event.getGuestList().size());
 		    	 while(usedRandoms.contains(guestidx)){
@@ -90,11 +92,12 @@ public class SeatingArrangement implements Serializable, Cloneable{
 		    	 usedRandoms.add(guestidx);
 		    	 
 		    	 newGuest = newArrangement.event.getGuestList().get(guestidx).guestCopy();
-		    	 System.out.println(guestidx);
+		    	 
 		    	 if(newArrangement.eventTables.get(newArrangement.eventTables.size()-1).getGuests().size() < newArrangement.event.getEventTableSize()){
 		    		 newArrangement.eventTables.get(newArrangement.eventTables.size()-1).addGuest(newGuest);
 		    	 }
 		    	 else{
+		    		 System.out.println("Guest " + i + " out of " + newArrangement.event.getGuestList().size());
 		    		 EventTable newTable = new EventTable(newArrangement.eventTables.size()+1);
 		    		 newTable.addGuest(newGuest);
 		    		 newTable.setSeatingArrangement(newArrangement);
@@ -112,12 +115,12 @@ public class SeatingArrangement implements Serializable, Cloneable{
 	/**
 	 * Performs a random change to the seating arrangement (i.e. swapping 2 guests between tables).
 	 */
-	public Mutation mutate(Guest orig, String moveTableNum) {
+	public Mutation mutate(Guest orig, int moveTableNum) {
 		//EventTable moveTable = this.eventTables.get(Integer.parseInt(moveTableNum));
 		//EventTable origTable = this.eventTables.get(Integer.parseInt(orig.getEventTableNumber()));
 		EventTable moveTable  = this.getEventTableByNumber(moveTableNum);
 		String origTableNum = this.findGuestByNumber(orig.getGuestNumber()).getEventTableNumber();
-		EventTable origTable = this.getEventTableByNumber(origTableNum);
+		//EventTable origTable = this.getEventTableByNumber(origTableNum);
 		
 		Guest displaced = moveTable.getGuests().get(0);
 		
@@ -145,133 +148,147 @@ public class SeatingArrangement implements Serializable, Cloneable{
 //		System.out.println("origTable fitness after: " + origTable.getFitnessRating());
 	}
 	
-	public EventTable getEventTableByNumber(String num){
+	public void copyTable(EventTable et){
+		
+		EventTable current = this.getEventTableByNumber(et.getEventTableNum());
+		System.out.println("Currently in SeatingArrangement table#" + current.getEventTableNum());
+		int i = 1;
+		for(Guest g : current.getGuests()){
+			System.out.println("#" + i + " " + g.getName() + "(id#" + g.getGuestId() + " #" + g.getGuestNumber() + ") :" + g.getGuestFitness());
+			i++;
+		}
+		System.out.println("Equivalent table#" + et.getEventTableNum());
+		i = 1;
+		for(Guest g : et.getGuests()){
+			System.out.println("#" + i + " " + g.getName() + "(id#" + g.getGuestId() + " #" + g.getGuestNumber() + ") :" + g.getGuestFitness());
+			i++;
+		}
+		//1
+		this.destroyAllDupes(et.getGuests());
+		
+		//2
+		List<Guest> diff = this.eventTableGuestDiff(et, current);
+		
+		//3
+		current.removeGuest(diff);
+		
+		//4
+		this.removeEventTable(current);
+		
+		//5
+		this.addEventTable(et);
+		for(Guest g : et.getGuests()){
+			g.setEventTable(et);
+		}
+		
+		//6
+		this.fillSeats(diff);
+		
+	}
+	
+	public EventTable equivalentTable(EventTable et){
+		List<Guest> etGuests = new ArrayList<Guest>();
+		for (Guest g : et.getGuests()){
+			etGuests.add(this.findGuestByNumber(g.getGuestNumber()));
+		}
+		
+		EventTable equivalent = new EventTable(et.getEventTableNum(), etGuests);
+		equivalent.setFitnessRating(et.getFitnessRating());
+		
+		return equivalent;
+	}
+	
+	public List<Guest> eventTableGuestDiff (EventTable newTable, EventTable oldTable){
+		List<Guest> diff = new ArrayList<Guest>();
+		for(Guest g : oldTable.getGuests()){
+			if(!newTable.getGuests().contains(g))diff.add(g);
+		}
+		
+		return diff;
+	}
+	
+	public void destroyAllDupes (List<Guest> coGuests){
+		List<Guest> rmGuests;
+		for(EventTable et : this.eventTables){
+			rmGuests = new ArrayList<Guest>();
+			for(Guest g : coGuests){
+				if(et.getGuests().contains(g))rmGuests.add(g);
+			}
+			et.removeGuest(rmGuests);
+		}
+	}
+	
+	public void fillSeats(List<Guest> guests){
+		int tableSize = this.event.getEventTableSize();
+		Guest g;
+		
+		for(int i=0; i < guests.size(); i++){
+			g = guests.get(i);
+			
+			for(EventTable et : this.eventTables){
+				if(et.getGuests().size() < tableSize){
+					et.addGuest(g);
+					while(et.getGuests().size() < tableSize && i+1 < guests.size()){
+						i++;
+						g = guests.get(i);
+						et.addGuest(g);
+					}
+					break;
+				}
+			}
+		}
+	}
+	
+	public EventTable getEventTableByNumber(int num){
 		for (EventTable et : this.eventTables){
-			if(et.getEventTableNum() == Integer.parseInt(num))return et;
+			if(et.getEventTableNum() == num)return et;
 		}
 		return null;
 	}
 	
 	public Guest findGuestByNumber(int num){
 		for (Guest g : this.allGuests()){
-			if(g.getGuestNumber() == num)return g;
+			if(g.getGuestNumber() == num){
+				return g;
+			}
 		}
 		return null;
 	}
-
+	
 	/**
 	 * Produces a child seating arrangement based on two parent seating arrangements.
 	 * @param SeatingArrangement
 	 */
 	public SeatingArrangement crossover(SeatingArrangement seatingArrangement) {
-		// TODO - implement SeatingArrangement.crossover
-		/*
-		 * Swap guests with a fitness below 50% from the passed seatingArrangement with their equivalent position
-		 * on this seatingArrangement and repair by moving the displaced guest to where the incoming
-		 * guest's counterpart on this seatingArrangement is.  The candidates on this seatingArrangement 
-		 * for swap are the lowest fitness guests.
-		 * 
-		 * ideas for implementation:
-		 * 
-		 * Pre-condition:  SeatingArrangment needs to have an overallFitness
-		 * 
-		 * 1. find the bottom 50% guests based on fitness
-		 * 2. for each guest do the following
-		 * 		a. save the table number where the passed version of the guest resides
-		 * 		b. pick the lowest fitness guest at this table, then save and remove them from the table
-		 * 		c. add the guest(original) to this table and remove the guest(original) from their original table
-		 * 		d. add the guest(displaced) to the original guest's original table
-		 * */
+		
 		try {
 			SeatingArrangement origSA = (SeatingArrangement) this.clone();
 		
-			List<Guest> bottom50 = new ArrayList<Guest>();
+			List<EventTable> bottom50 = new ArrayList<EventTable>(),
+					saTables = seatingArrangement.eventTables;
 			
-			for(EventTable et : this.getEventTables()){
-				for(Guest g : et.getGuests()){
-					if(g.getGuestFitness().compareTo(BigDecimal.valueOf(50))==-1){
-						bottom50.add(g.guestCopy());
-					}
+			Collections.sort(saTables, new Comparator<EventTable>() {
+
+				@Override
+				public int compare(EventTable et1, EventTable et2) {
+					return et1.getFitnessRating().compareTo(et2.getFitnessRating());
 				}
+			});
+			
+			for(int i = 0; i < saTables.size()/2; i++){
+				bottom50.add(saTables.get(i));
 			}
 			
-			System.out.println("Before crossover fitnesses (" + this.getOverallFitnessRating() + ")");
-			this.printCurrentGuestFitness();
-			
-			Iterator<Guest> gIter = bottom50.iterator(), gIter2 = seatingArrangement.allGuests().iterator();
-			Guest g, g2;
-			Mutation m;
-			EventTable movedFrom, movedTo;
-			
-			while(gIter.hasNext()){
-				g = gIter.next();
-				//for(Guest g2 : bottom50){
-				while(gIter2.hasNext()){
-					g2 = gIter2.next().guestCopy();
-						
-					if(g.getName() == g2.getName()){
-						if(Integer.parseInt(g2.getEventTableNumber()) != Integer.parseInt(g.getEventTableNumber())){
-							m = this.mutate(g2, g.getEventTableNumber());
-							movedFrom = this.getEventTableByNumber(m.getMoving().getEventTableNumber());
-							movedTo = this.getEventTableByNumber(m.getDisplaced().getEventTableNumber());
-							
-							//System.out.println("moveTable fitness before: " + et1.getFitnessRating());
-							//System.out.println("origTable fitness before: " + et2.getFitnessRating());
-							
-							System.out.println("moveTable size: " + movedFrom.getGuests().size());
-							System.out.println("origTable size: " + movedTo.getGuests().size());
-							movedFrom.removeGuestByClone(m.getMoving());
-							movedTo.removeGuestByClone(m.getDisplaced());
-							movedFrom.addGuestByClone(m.getDisplaced());
-							movedTo.addGuestByClone(m.getMoving());
-							gIter.remove();
-							System.out.println("moveTable size after: " + movedFrom.getGuests().size());
-							System.out.println("origTable size after: " + movedTo.getGuests().size());
-							movedFrom.calculateFitness();
-							movedTo.calculateFitness();
-							break;
-						}
-						//System.out.println("moveTable fitness after: " + et1.getFitnessRating());
-						//System.out.println("origTable fitness after: " + et2.getFitnessRating());
-						break;
-					}
-				}
+			for(EventTable et : bottom50){
+				System.out.println("Next Best: " + et.getFitnessRating());
+				this.copyTable(this.equivalentTable(et));
 			}
-			
-			
-//			Iterator<EventTable> etIter = seatingArrangement.getEventTables().iterator();
-//			Iterator<Guest> gIter, gIter2;
-//			EventTable et;
-//			Guest g, g2;
-//			Mutation m;
-			
-//			for(EventTable et : seatingArrangement.getEventTables()){
-//			while(etIter.hasNext()){
-//				et = etIter.next();
-//				gIter = et.getGuests().iterator();
-//				//for(Guest g : et.getGuests()){
-//				while(gIter.hasNext()){
-//					g = gIter.next();
-//					gIter2 = bottom50.iterator();
-//					//for(Guest g2 : bottom50){
-//					while(gIter2.hasNext()){
-//						g2 = gIter2.next();
-//						if(g.getName() == g2.getName()){
-//							m = this.mutate(g2, g.getEventTableNumber());
-//							break;
-//						}
-//					}
-//					
-//				}
-//			}
 			
 			this.calculateOverallFitness();
-			System.out.println("After crossover fitnesses (" + this.getOverallFitnessRating() + ")");
-			this.printCurrentGuestFitness();
+
 			return origSA.getOverallFitnessRating().compareTo(this.getOverallFitnessRating()) == 1 ? origSA : this;
 		} catch (CloneNotSupportedException e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
+			e.printStackTrace();
 			return this;
 		}
 	}
@@ -306,7 +323,7 @@ public class SeatingArrangement implements Serializable, Cloneable{
 			if(et.getFitnessRating() == null) {
 				et.calculateFitness();
 			}
-			System.out.println("fitness(" + fitness + ") + Table #" + et.getEventTableNum() + "("+ et.getFitnessRating() + ") = " + fitness.add(et.getFitnessRating()).toString());
+			//System.out.println("fitness(" + fitness + ") + Table #" + et.getEventTableNum() + "("+ et.getFitnessRating() + ") = " + fitness.add(et.getFitnessRating()).toString());
 			fitness = fitness.add(et.getFitnessRating());
 		}
 		
@@ -331,6 +348,14 @@ public class SeatingArrangement implements Serializable, Cloneable{
 		this.eventTables = eventTables;
 	}
 
+	public void addEventTable(EventTable et){
+		this.eventTables.add(et);
+	}
+	
+	public void removeEventTable(EventTable et){
+		this.eventTables.remove(et);
+	}
+	
 	public Event getEvent() {
 		return event;
 	}
@@ -364,6 +389,11 @@ public class SeatingArrangement implements Serializable, Cloneable{
 	public Boolean delete() {
 		SeatingArrangementDAO.removeSeatingArrangement(this);
 		return true;
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		return this.overallFitnessRating.compareTo(((SeatingArrangement)o).overallFitnessRating);
 	}
 
 }

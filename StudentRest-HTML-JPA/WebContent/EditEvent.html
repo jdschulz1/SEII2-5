@@ -32,6 +32,29 @@
 </script>
 
 <script type="text/javascript">
+function getCookie(cname) {
+	console.log("get cookie");
+	var name = cname + "=";
+	var decodedCookie = decodeURIComponent(document.cookie);
+	var ca = decodedCookie.split(';');
+	for (var i = 0; i < ca.length; i++) {
+		var c = ca[i];
+		while (c.charAt(0) == ' ') {
+			c = c.substring(1);
+		}
+		if (c.indexOf(name) == 0) {
+			return c.substring(name.length, c.length);
+		}
+	}
+	return "";
+}
+
+function setHeader(xhr) {
+	console.log("set Header");
+	token = getCookie("token");
+	console.log("Token: " + token);
+	xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+}
   function loadEventFromLocalStorage(){
 	  loadPlanners();
 	  loadClients();	
@@ -43,7 +66,20 @@
 		 	$.ajax({
 		 		type: 'GET',
 		 		url: clientUrl,  
-		 	    dataType: 'json', 
+		 	    dataType: 'json',
+		 	   statusCode : {
+					401 : function(response) {
+						$('#page-message').html("You must Login first");
+						alert("Please login to access this page");
+			        	document.location.href = "/StudentRest-HTML-JPA/WebContent/Login.html", true;
+					},
+					405 : function(response) {
+						$('#page-message').html(
+								"Access to the page forbiden");
+						alert("Please login to access this page");
+						document.location.href = "/StudentRest-HTML-JPA/WebContent/Login.html", true;
+					}
+				},
 		        success: function (data) {
 		        	
 		        	 eventobj = data;
@@ -98,7 +134,8 @@
 		         error: function (jqXHR, exception) {
 		    	    console.log('Load Event ERROR' + jqXHR.responseText);
 		     	   
-		     	  }  
+		     	  },
+			       beforeSend : setHeader  
 		     });
 		}else{
 			
@@ -187,7 +224,8 @@
 	        	  alert("Error Saving Event");
 	              console.log("ERROR : ", e.responseText);
 	              $("#btnSubmit").prop("disabled", false);
-	          }
+	          },
+		       beforeSend : setHeader
 	      });
 	  }else{ //new event
 		  event1["guestList"] = [];
@@ -216,7 +254,8 @@
 	        	  alert("Error Saving Event");
 	              console.log("ERROR : ", e.responseText);
 	              $("#btnSubmit").prop("disabled", false);
-	          }
+	          },
+		       beforeSend : setHeader
 	      });
 	  }
 	  
@@ -251,7 +290,8 @@ function loadPlanners(){
 	         error: function (jqXHR, exception) {
 	    	    
 	     	    alert("Load Client Error" + jqXHR.responseText);
-	     	  }  
+	     	  },
+		       beforeSend : setHeader  
 	     });
   		console.log("loading planners");
   }
@@ -276,7 +316,8 @@ function loadPlanners(){
 			         error: function (jqXHR, exception) {
 			    	    
 			     	    alert("Load Client Error" + jqXHR.responseText);
-			     	  }  
+			     	  },
+				       beforeSend : setHeader  
 			     });
   }
   
@@ -334,7 +375,8 @@ function loadPlanners(){
 												error : function(jqXHR,exception) {
 
 													console.log("Error"	+ jqXHR.responseText);
-												}
+												},
+											       beforeSend : setHeader
 											});
 								//}
 								
@@ -365,7 +407,8 @@ function loadPlanners(){
 					alert("Error Deleting Guest");
 					console.log(jqXHR.responseText);
 
-				}
+				},
+			       beforeSend : setHeader
 			});
 		} else {
 			txt = "You pressed Cancel!";
