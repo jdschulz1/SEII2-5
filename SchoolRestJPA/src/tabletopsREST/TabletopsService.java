@@ -604,7 +604,6 @@ public class TabletopsService {
 		return messages;
 	}
 	
-	//TODO-MOVE GUEST
 	@Secured()
 	@PUT
 	@Path("/guests/{guest_id}/moveToTable/{table_id}")

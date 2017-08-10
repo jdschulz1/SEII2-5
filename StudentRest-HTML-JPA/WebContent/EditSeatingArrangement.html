@@ -18,6 +18,30 @@
 </head>
 <body>
 	<script type="text/javascript">
+	
+		function getCookie(cname) {
+			console.log("get cookie");
+			var name = cname + "=";
+			var decodedCookie = decodeURIComponent(document.cookie);
+			var ca = decodedCookie.split(';');
+			for (var i = 0; i < ca.length; i++) {
+				var c = ca[i];
+				while (c.charAt(0) == ' ') {
+					c = c.substring(1);
+				}
+				if (c.indexOf(name) == 0) {
+					return c.substring(name.length, c.length);
+				}
+			}
+			return "";
+		}
+		
+		function setHeader(xhr) {
+			console.log("set Header");
+			token = getCookie("token");
+			console.log("Token: " + token);
+			xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+		}
 		function loadUsersTable() {
 
 			var id = localStorage.eventId;
@@ -30,6 +54,19 @@
 							type : "GET",
 							url : guestsUrl,
 							dataType : "json",
+							statusCode : {
+								401 : function(response) {
+									$('#page-message').html("You must Login first");
+									alert("Please login to access this page");
+						        	document.location.href = "/StudentRest-HTML-JPA/WebContent/Login.html", true;
+								},
+								405 : function(response) {
+									$('#page-message').html(
+											"Access to the page forbiden");
+									alert("Please login to access this page");
+									document.location.href = "/StudentRest-HTML-JPA/WebContent/Login.html", true;
+								}
+							},
 							success : function(resp) {
 								// we have the response  
 
@@ -86,7 +123,8 @@
 							error : function(jqXHR, exception) {
 
 								alert(jqXHR.responseText);
-							}
+							},
+						       beforeSend : setHeader
 						});
 			}
 		}
