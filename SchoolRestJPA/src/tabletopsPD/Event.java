@@ -159,25 +159,24 @@ public class Event implements Serializable {
 			population.add(temp);
 		}
 		
-		currentMostFit = population.last();
-		
 		while(topTen.size() < 75){
 			topTen.add(population.pollLast());
 		}
-		
-		
 		
 		while(topTen.get(0).getOverallFitnessRating().compareTo(threshold) == -1){
 			for(int i = 0; i < topTen.size(); i++){
 				parent = topTen.get(i);
 				for(int j = 0; j < topTen.size(); j++){
-					child = parent.crossover(topTen.get(j));
-					if(!topTen.contains(child)){
-						topTen.add(child);
-						Collections.sort(topTen, Collections.reverseOrder());
-						if(topTen.size() > 99){
-							population.add(topTen.get(99));
-							topTen.remove(99);
+					if(!parent.equals(topTen.get(j))){
+						child = parent.crossover(topTen.get(j));
+					
+						if(child != null && !topTen.contains(child)){
+							topTen.add(child);
+							Collections.sort(topTen, Collections.reverseOrder());
+							if(topTen.size() > 99){
+								population.add(topTen.get(99));
+								topTen.remove(99);
+							}
 						}
 					}
 					
@@ -221,6 +220,20 @@ public class Event implements Serializable {
 		else return false;	
 	}
 	
+	/**
+	 * @return the seatingArrangement
+	 */
+	public SeatingArrangement getSeatingArrangement() {
+		return seatingArrangement;
+	}
+
+	/**
+	 * @param seatingArrangement the seatingArrangement to set
+	 */
+	public void setSeatingArrangement(SeatingArrangement seatingArrangement) {
+		this.seatingArrangement = seatingArrangement;
+	}
+
 	public SeatingArrangement finalSA(SeatingArrangement sa){
 		SeatingArrangement newSA = sa;
 		List<Guest> newGuestList = new ArrayList<Guest>();

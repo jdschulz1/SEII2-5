@@ -37,6 +37,7 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import tabletopsPD.Company;
 import tabletopsPD.Client;
 import tabletopsPD.Event;
+import tabletopsPD.EventTable;
 import tabletopsPD.Guest;
 import tabletopsPD.SeatingArrangement;
 import tabletopsPD.User;
@@ -374,14 +375,7 @@ public class TabletopsService {
 		}
 	}
 
-	// @OPTIONS
-	// @Path("/clients")
-	// @Produces(MediaType.APPLICATION_JSON)
-	// public String getSupportedOperations(){
-	// return "{ {'POST' : { 'description' : 'add a client'}} {'GET' :
-	// {'description' : 'get a client'}}}";
-	// }
-	//
+	
 	// Guest REST Services
 	@Secured()
 	@GET
@@ -609,6 +603,35 @@ public class TabletopsService {
 		messages.add(new Message("op001", "Success Operation", ""));
 		return messages;
 	}
+	
+	@Secured()
+	@PUT
+	@Path("/guests/{guest_id}/moveToTable/{table_id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<Message> moveGuest(@PathParam("guest_id") String guestId,
+			@PathParam("table_id") String tableId, @Context final HttpServletResponse response) throws IOException {
+		Guest guest = company.findGuestByIdNumber(guestId);
+		EventTable eventTable = company.findEventTableByIdNumber(tableId);
+		if (guest == null || eventTable == null) {
+			response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
+			try {
+				response.flushBuffer();
+			} catch (Exception e) {
+			}
+			messages.add(new Message("op002", "Fail Operation", ""));
+			return messages;
+		}
+		Boolean result = guest.moveToTable(eventTable);
+		if(result) {
+			messages.add(new Message("op001", "Success Operation", ""));
+		}
+		else {
+			messages.add(new Message("op003", "Cannot Move Guest", ""));
+		}
+
+		return messages;
+	}
 
 	@Secured()
 	@DELETE
@@ -690,15 +713,7 @@ public class TabletopsService {
 		return messages;
 	}
 
-	//
-	//// @OPTIONS
-	//// @Path("/guests")
-	//// @Produces(MediaType.APPLICATION_JSON)
-	//// public String getSupportedOperations(){
-	//// return "{ {'POST' : { 'description' : 'add a guest'}} {'GET' :
-	// {'description' : 'get a guest'}}}";
-	//// }
-	//
+
 	// SeatingArrangement REST Services
 	@Secured()
 	@GET
@@ -712,60 +727,12 @@ public class TabletopsService {
 
 	@Secured()
 	@GET
-	@Path("/seatingarrangements/{id}")
+	@Path("/events/{id}/tables")
 	@Produces(MediaType.APPLICATION_JSON)
 	public SeatingArrangement getSeatingArrangement(@PathParam("id") String id) {
 		return company.findSeatingArrangementByIdNumber(id);
 	}
 
-	// @POST
-	// @Path("events/{id}/seatingarrangements")
-	// @Produces(MediaType.APPLICATION_JSON)
-	// @Consumes(MediaType.APPLICATION_JSON)
-	// public ArrayList<Message> addSeatingArrangement(@PathParam("id") String
-	// id, SeatingArrangement sa,@Context final HttpServletResponse response)
-	// throws IOException{
-	//
-	// if (sa == null) {
-	//
-	// response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
-	// try {
-	// response.flushBuffer();
-	// }catch(Exception e){}
-	// messages.add(new Message("op002","Fail Operation",""));
-	// return messages;
-	// }
-	// else {
-	//
-	// ArrayList<Message> errMessages = sa.validate();
-	// if (errMessages != null) {
-	//
-	// response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
-	// try {
-	// response.flushBuffer();
-	// }
-	// catch(Exception e){
-	// }
-	// return errMessages;
-	// }
-	// EntityTransaction userTransaction = EM.getEM().getTransaction();
-	// userTransaction.begin();
-	// Boolean result = company.findEventByIdNumber(id)
-	// userTransaction.commit();
-	// if(result){
-	// messages.add(new Message("op001","Success Operation",""));
-	// return messages;
-	// }
-	// response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
-	// try {
-	// response.flushBuffer();
-	// }
-	// catch(Exception e){
-	// }
-	// messages.add(new Message("op002","Fail Operation",""));
-	// return messages;
-	// }
-	// }
 	@Secured()
 	@PUT
 	@Path("/seatingarrangements/{id}")

@@ -28,7 +28,7 @@ import tabletopsDAO.EventTableDAO;
 
 @XmlRootElement(name = "event_table")
 @Entity(name = "event_table")
-public class EventTable implements Serializable, Cloneable{
+public class EventTable implements Serializable, Cloneable, Comparable{
 
 	/**
 	 * 
@@ -229,5 +229,10 @@ public class EventTable implements Serializable, Cloneable{
 	@XmlElement
 	public void setGuests(List<Guest> guests) {
 		this.guests = guests;
+	}
+
+	@Override
+	public int compareTo(Object et) {
+		return this.fitnessRating.compareTo(((EventTable)et).fitnessRating);
 	}
 }
