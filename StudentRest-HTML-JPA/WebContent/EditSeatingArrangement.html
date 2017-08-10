@@ -19,7 +19,8 @@
 <body>
 	<script type="text/javascript">
 		function loadUsersTable() {
-
+			//getTablesForEvent()
+			window.tableList = ["1", "2", "3"];
 			var id = localStorage.eventId;
 			if (id > 0) {
 				var guestsUrl = "/SchoolRestJPA/rest/tabletopservices/events/"
@@ -59,7 +60,10 @@
 
 								tableNums.sort();
 								var table;
-
+								var selectTables = '<select></select>';
+								$.each(window.tableList, function(i, val){
+						        	 $(selectTables).append($("<option></option>").val(val).html(val));
+						         });
 								for (var i = 0; i < tableNums.length; i++) {
 									var key = tableNums[i];
 									var table = '<div class="panel panel-primary">'
@@ -76,12 +80,13 @@
 										console.log(guest);
 										table = table + "<tr>" 
 												+ "<td>" + guest.name + "</td>"
-												+"<td><a href=\"javascript:moveGuest(" + guest.guestId + ")\">Move</a></td></tr>";
+												+"<td>"+ selectTables +"<a href=\"javascript:moveGuest(" + guest.guestId + ")\">Move</a></td></tr>";
 									}
 									table = table
 											+ '</tbody></div></div></table></div>';
 									$('#guest_tables').append(table);
 								}
+								
 							},
 							error : function(jqXHR, exception) {
 
@@ -91,10 +96,16 @@
 			}
 		}
 		
+		function getTablesForEvent(){
+			var tableList = [];
+			window.tableList = tableList;
+		}
 		function moveGuest(id){
 			console.log("Move Guest " + id);  
 			
 		}
+		
+	
 	</script>
 	<div id="nav-container"></div>
 
