@@ -12,9 +12,6 @@
   <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
   
 <!-- <script	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script> -->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/jq-2.2.4/dt-1.10.15/fc-3.2.2/fh-3.1.2/rg-1.0.0/rr-1.2.0/se-1.2.2/datatables.min.css"/>
- 
-<script type="text/javascript" src="https://cdn.datatables.net/v/bs/jq-2.2.4/dt-1.10.15/fc-3.2.2/fh-3.1.2/rg-1.0.0/rr-1.2.0/se-1.2.2/datatables.min.js"></script>
 
 <script src="js/bootstrap.min.js"></script>
 <script src="js/bootstrap-clockpicker.min.js"></script>
@@ -374,7 +371,6 @@ function loadPlanners(){
 																	});
 													//console.log("table " + (String(table)));
 													$("#guestsTable").html(table);
-													$('#tblGuests').DataTable();
 												},
 												error : function(jqXHR,exception) {
 
@@ -605,7 +601,7 @@ function loadPlanners(){
 					</div>
 						<hr>
 					<div class="row">
-						<table id="tblGuests" class="table table-striped table-hover ">
+						<table class="table table-striped table-hover ">
 							<thead>
 								<tr>
 									<th>Name</th>
@@ -616,7 +612,7 @@ function loadPlanners(){
 								
 							</tbody>
 						</table>
-				
+						 <ul id="pagination" class="pagination-sm"></ul>
 					</div>
 				</div>
 			</div>
