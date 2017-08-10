@@ -41,12 +41,12 @@ public class AuthorizationFilter implements ContainerRequestFilter {
         // Get the resource class which matches with the requested URL
         // Extract the roles declared by it
         Class<?> resourceClass = resourceInfo.getResourceClass();
-        List<Role> classRoles = extractRoles(resourceClass);
+        List<String> classRoles = extractRoles(resourceClass);
 
         // Get the resource method which matches with the requested URL
         // Extract the roles declared by it
         Method resourceMethod = resourceInfo.getResourceMethod();
-        List<Role> methodRoles = extractRoles(resourceMethod);
+        List<String> methodRoles = extractRoles(resourceMethod);
 
         try {
 
@@ -65,25 +65,25 @@ public class AuthorizationFilter implements ContainerRequestFilter {
     }
 
     // Extract the roles from the annotated element
-    private List<Role> extractRoles(AnnotatedElement annotatedElement) {
+    private List<String> extractRoles(AnnotatedElement annotatedElement) {
         if (annotatedElement == null) {
-            return new ArrayList<Role>();
+            return new ArrayList<String>();
         } else {
             Secured secured = annotatedElement.getAnnotation(Secured.class);
             if (secured == null) {
-                return new ArrayList<Role>();
+                return new ArrayList<String>();
             } else {
-                Role[] allowedRoles = secured.value();
+                String[] allowedRoles = secured.value();
                 return Arrays.asList(allowedRoles);
             }
         }
     }
-    private void checkPermissions(List<Role> allowedRoles, String username) throws Exception {
+    private void checkPermissions(List<String> allowedRoles, String username) throws Exception {
       // Check if the user contains one of the allowed roles
       // Throw an Exception if the user has not permission to execute the method
      if (allowedRoles.size()==0) return;
       User user = Company.findUserByUserName(username);
-      for (Role role : allowedRoles) {
+      for (String role : allowedRoles) {
         if (user.isAuthorize(role)) return;
       }
       throw new Exception();

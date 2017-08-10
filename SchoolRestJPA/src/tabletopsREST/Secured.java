@@ -17,6 +17,6 @@ import tabletopsPD.Role;
 @Retention(RUNTIME)
 @Target({TYPE, METHOD})
 public @interface Secured {
-    Role[] value() default {};
+    String[] value() default {};
 }
 

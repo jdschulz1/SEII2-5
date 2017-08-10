@@ -156,11 +156,8 @@ public class User implements Serializable{
 		return password;
 	}
 	
-	public boolean isAuthorize(Role role) {
-	    for (RoleAssignment ra : getRoleAssignments()) {
-	      if (ra.getRole().equals(role) ) return true;
-	    }
-	    return false;
+	public boolean isAuthorize(String role) {
+	    return this.getRole().contains(role);
 	  }
 	
 	public Collection<RoleAssignment> getRoleAssignments() {

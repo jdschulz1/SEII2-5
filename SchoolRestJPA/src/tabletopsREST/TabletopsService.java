@@ -868,7 +868,7 @@ public class TabletopsService {
 		return company.getEventsForUser(id, Integer.parseInt(page), Integer.parseInt(perPage));
 	}
 
-	@Secured()
+	@Secured({"admin"})
 	@POST
 	@Path("/users")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -914,7 +914,7 @@ public class TabletopsService {
 		}
 	}
 
-	@Secured()
+	@Secured({"admin"})
 	@PUT
 	@Path("/users/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -958,7 +958,7 @@ public class TabletopsService {
 		return messages;
 	}
 
-	@Secured()
+	@Secured({"admin"})
 	@DELETE
 	@Path("/users/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
