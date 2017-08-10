@@ -28,6 +28,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.SecurityContext;
 
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
@@ -1104,9 +1105,10 @@ public class TabletopsService {
 	@Context ServletContext context;
 	
 	@POST
-	@Path("/upload")
+	@Path("/events/{id}/upload")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public Response uploadFile(
+		@PathParam("id") String id,
 		@FormDataParam("file") InputStream uploadedInputStream,
 		@FormDataParam("file") FormDataContentDisposition fileDetail) {
 		String realPath = context.getRealPath("/");
@@ -1115,14 +1117,20 @@ public class TabletopsService {
 		new File(uploadFileLocation).mkdirs();	
 		System.out.println(uploadFileLocation);
 		
-		
 		// save it
 		writeToFile(uploadedInputStream, uploadFileLocation + fileDetail.getFileName() );
 
 		String output = "File uploaded to : " + uploadFileLocation + fileDetail.getFileName();
-
-		return Response.status(200).entity(output).build();
-
+		
+		Event event = EventDAO.findEventByIdNumber(id);
+		Boolean result = event.importGuestList(uploadFileLocation + fileDetail.getFileName());
+		
+		if(result) {
+			return Response.status(200).entity(output).build();
+		}
+		else {
+			return Response.status(Status.NOT_ACCEPTABLE).build();
+		}
 	}
 
 	// save uploaded file to new location

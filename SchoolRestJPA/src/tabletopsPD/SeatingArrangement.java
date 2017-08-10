@@ -97,7 +97,6 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 		    		 newArrangement.eventTables.get(newArrangement.eventTables.size()-1).addGuest(newGuest);
 		    	 }
 		    	 else{
-		    		 System.out.println("Guest " + i + " out of " + newArrangement.event.getGuestList().size());
 		    		 EventTable newTable = new EventTable(newArrangement.eventTables.size()+1);
 		    		 newTable.addGuest(newGuest);
 		    		 newTable.setSeatingArrangement(newArrangement);
