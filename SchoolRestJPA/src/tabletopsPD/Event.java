@@ -221,6 +221,20 @@ public class Event implements Serializable {
 		else return false;	
 	}
 	
+	/**
+	 * @return the seatingArrangement
+	 */
+	public SeatingArrangement getSeatingArrangement() {
+		return seatingArrangement;
+	}
+
+	/**
+	 * @param seatingArrangement the seatingArrangement to set
+	 */
+	public void setSeatingArrangement(SeatingArrangement seatingArrangement) {
+		this.seatingArrangement = seatingArrangement;
+	}
+
 	public SeatingArrangement finalSA(SeatingArrangement sa){
 		SeatingArrangement newSA = sa;
 		List<Guest> newGuestList = new ArrayList<Guest>();
