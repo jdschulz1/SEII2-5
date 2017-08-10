@@ -37,6 +37,7 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import tabletopsPD.Company;
 import tabletopsPD.Client;
 import tabletopsPD.Event;
+import tabletopsPD.EventTable;
 import tabletopsPD.Guest;
 import tabletopsPD.SeatingArrangement;
 import tabletopsPD.User;
@@ -374,14 +375,7 @@ public class TabletopsService {
 		}
 	}
 
-	// @OPTIONS
-	// @Path("/clients")
-	// @Produces(MediaType.APPLICATION_JSON)
-	// public String getSupportedOperations(){
-	// return "{ {'POST' : { 'description' : 'add a client'}} {'GET' :
-	// {'description' : 'get a client'}}}";
-	// }
-	//
+	
 	// Guest REST Services
 	@Secured()
 	@GET
@@ -613,14 +607,14 @@ public class TabletopsService {
 	//TODO-MOVE GUEST
 	@Secured()
 	@PUT
-	@Path("/guests/{guest_id}/move/{member_id}")
+	@Path("/guests/{guest_id}/moveToTable/{table_id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public ArrayList<Message> addToWhiteList(@PathParam("owner_id") String ownerId,
-			@PathParam("member_id") String memberId, @Context final HttpServletResponse response) throws IOException {
-		Guest ownerGuest = company.findGuestByIdNumber(ownerId);
-		Guest memberGuest = company.findGuestByIdNumber(memberId);
-		if (ownerGuest == null || memberGuest == null) {
+	public ArrayList<Message> moveGuest(@PathParam("guest_id") String guestId,
+			@PathParam("table_id") String tableId, @Context final HttpServletResponse response) throws IOException {
+		Guest guest = company.findGuestByIdNumber(guestId);
+		EventTable eventTable = company.findEventTableByIdNumber(tableId);
+		if (guest == null || eventTable == null) {
 			response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
 			try {
 				response.flushBuffer();
@@ -629,12 +623,14 @@ public class TabletopsService {
 			messages.add(new Message("op002", "Fail Operation", ""));
 			return messages;
 		}
+		Boolean result = guest.moveToTable(eventTable);
+		if(result) {
+			messages.add(new Message("op001", "Success Operation", ""));
+		}
+		else {
+			messages.add(new Message("op003", "Cannot Move Guest", ""));
+		}
 
-//		EntityTransaction userTransaction = EM.getEM().getTransaction();
-		//userTransaction.begin();
-		ownerGuest.addToWhiteList(memberGuest);
-		//userTransaction.commit();
-		messages.add(new Message("op001", "Success Operation", ""));
 		return messages;
 	}
 

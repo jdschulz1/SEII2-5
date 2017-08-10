@@ -187,6 +187,10 @@ public class Company implements Serializable{
 	    return EventDAO.findEventByIdNumber(idNumber); 
 	}
 	
+	public EventTable findEventTableByIdNumber(String idNumber) {
+	    return EventTableDAO.findEventTableByIdNumber(idNumber); 
+	}
+	
 	public SeatingArrangement findSeatingArrangementByIdNumber(String idNumber) {
 	    return SeatingArrangementDAO.findSeatingArrangementByIdNumber(idNumber); 
 	}
