@@ -10,6 +10,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NavigableSet;
+import java.util.TreeSet;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -97,7 +99,6 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 		    		 newArrangement.eventTables.get(newArrangement.eventTables.size()-1).addGuest(newGuest);
 		    	 }
 		    	 else{
-		    		 System.out.println("Guest " + i + " out of " + newArrangement.event.getGuestList().size());
 		    		 EventTable newTable = new EventTable(newArrangement.eventTables.size()+1);
 		    		 newTable.addGuest(newGuest);
 		    		 newTable.setSeatingArrangement(newArrangement);
@@ -135,21 +136,11 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 		}
 		
 		return new Mutation(orig.guestCopy(), displaced.guestCopy());
-		
-//		moveTable.removeGuest(displaced);
-//		origTable.removeGuest(orig);
-//		moveTable.addGuest(orig);
-//		origTable.addGuest(displaced);
-//		System.out.println("moveTable fitness before: " + moveTable.getFitnessRating());
-//		moveTable.calculateFitness();
-//		System.out.println("moveTable fitness after: " + moveTable.getFitnessRating());
-//		System.out.println("origTable fitness before: " + origTable.getFitnessRating());
-//		origTable.calculateFitness();
-//		System.out.println("origTable fitness after: " + origTable.getFitnessRating());
 	}
 	
 	public void copyTable(EventTable et){
-		
+		System.out.println("Start new copyTable");
+		System.out.println(" ");
 		EventTable current = this.getEventTableByNumber(et.getEventTableNum());
 		System.out.println("Currently in SeatingArrangement table#" + current.getEventTableNum());
 		int i = 1;
@@ -163,6 +154,7 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 			System.out.println("#" + i + " " + g.getName() + "(id#" + g.getGuestId() + " #" + g.getGuestNumber() + ") :" + g.getGuestFitness());
 			i++;
 		}
+		
 		//1
 		this.destroyAllDupes(et.getGuests());
 		
@@ -184,6 +176,9 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 		//6
 		this.fillSeats(diff);
 		
+		System.out.println(" ");
+		System.out.println("End copyTable");
+		System.out.println(" ");
 	}
 	
 	public EventTable equivalentTable(EventTable et){
@@ -207,12 +202,26 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 		return diff;
 	}
 	
+	public EventTable leastFitTable(){
+		NavigableSet<EventTable> tables = new TreeSet<EventTable>();
+		
+		for(EventTable et : this.eventTables){
+			tables.add(et);
+		}
+		
+		return tables.pollFirst();
+	}
+	
 	public void destroyAllDupes (List<Guest> coGuests){
 		List<Guest> rmGuests;
 		for(EventTable et : this.eventTables){
 			rmGuests = new ArrayList<Guest>();
 			for(Guest g : coGuests){
-				if(et.getGuests().contains(g))rmGuests.add(g);
+				if(et.getGuests().contains(g)){
+					rmGuests.add(g);
+					System.out.println("Removed guest " + g.getName() + " from table #" + et.getEventTableNum());
+				}
+				
 			}
 			et.removeGuest(rmGuests);
 		}
@@ -232,6 +241,7 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 						i++;
 						g = guests.get(i);
 						et.addGuest(g);
+						System.out.println("Added guest " + g.getName() + " to table #" + et.getEventTableNum());
 					}
 					break;
 				}
@@ -264,7 +274,7 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 		try {
 			SeatingArrangement origSA = (SeatingArrangement) this.clone();
 		
-			List<EventTable> bottom50 = new ArrayList<EventTable>(),
+			List<EventTable> top50 = new ArrayList<EventTable>(),
 					saTables = seatingArrangement.eventTables;
 			
 			Collections.sort(saTables, new Comparator<EventTable>() {
@@ -276,11 +286,10 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 			});
 			
 			for(int i = 0; i < saTables.size()/2; i++){
-				bottom50.add(saTables.get(i));
+				top50.add(saTables.get(i));
 			}
 			
-			for(EventTable et : bottom50){
-				System.out.println("Next Best: " + et.getFitnessRating());
+			for(EventTable et : top50){
 				this.copyTable(this.equivalentTable(et));
 			}
 			
@@ -354,6 +363,10 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 	
 	public void removeEventTable(EventTable et){
 		this.eventTables.remove(et);
+		System.out.println("table #" + et.getEventTableNum() + " was removed:");
+		for(Guest g : et.getGuests()){
+			System.out.println("--" + g.getName());
+		}
 	}
 	
 	public Event getEvent() {
@@ -390,7 +403,7 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 		SeatingArrangementDAO.removeSeatingArrangement(this);
 		return true;
 	}
-
+	
 	@Override
 	public int compareTo(Object o) {
 		return this.overallFitnessRating.compareTo(((SeatingArrangement)o).overallFitnessRating);
