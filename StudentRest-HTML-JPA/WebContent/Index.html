@@ -284,7 +284,8 @@
 						error : function(jqXHR, exception) {
 
 							alert("Error" + jqXHR.responseText);
-						}
+						},
+						beforeSend : setHeader
 					});
 
 		}
@@ -315,7 +316,8 @@
 						alert("Error Deleting Event");
 						console.log(jqXHR.responseText);
 
-					}
+					},
+					beforeSend : setHeader
 				});
 			} else {
 				txt = "You pressed Cancel!";
@@ -351,7 +353,8 @@
 				error : function(jqXHR, exception) {
 
 					console.log(jqXHR.responseText);
-				}
+				},
+				beforeSend : setHeader
 			});
 		}
 	</script>

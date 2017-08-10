@@ -296,5 +296,43 @@ public class Guest implements Serializable, Cloneable{
 		GuestDAO.removeGuest(this);
 		return true;
 	}
-
+	
+	public Boolean moveToTable(EventTable newEventTable) {
+		// Check if there is room at the new table
+		EventTable oldEventTable = this.eventTable;
+		int guestsAtTable = newEventTable.getGuests().size();
+		int numOpenSeats = getEvent().getEventTableSize() - guestsAtTable;
+		if((this.getWhitelist().size() + 1) > numOpenSeats) {
+			return false;
+		}
+		// Move selected guest
+		oldEventTable.removeGuest(this);
+		newEventTable.addGuest(this);
+		
+		// Move all guests in whitelist
+		for(Guest g : this.whitelist) {
+			oldEventTable.removeGuest(g);
+			newEventTable.addGuest(g);
+		}
+		
+		// TODO: Validate 
+		Boolean isValidSeatingArrangement = this.event.getSeatingArrangement().isValid();
+		
+		if(isValidSeatingArrangement) {
+			return true;
+		}
+		else {
+			// Revert changes if invalid
+			// Move selected guest
+			newEventTable.removeGuest(this);
+			oldEventTable.addGuest(this);
+			
+			// Move all guests in whitelist
+			for(Guest g : this.whitelist) {
+				newEventTable.removeGuest(g);
+				oldEventTable.addGuest(g);
+			}
+			return false;
+		}
+	}
 }

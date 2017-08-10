@@ -338,6 +338,11 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 		
 		this.overallFitnessRating = fitness.divide(BigDecimal.valueOf(this.eventTables.size()), 2, RoundingMode.HALF_UP);
 	}
+	
+	// TODO: Check if seating valid 
+	public Boolean isValid() {
+		return true;
+	}
 
 	public BigDecimal getOverallFitnessRating() {
 		return overallFitnessRating;

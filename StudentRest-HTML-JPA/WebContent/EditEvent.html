@@ -345,7 +345,7 @@ function loadPlanners(){
 												success : function(resp) {
 													// we have the response  
 
-													//$('#guestsTable').html("");
+													$('#guestsTable').html("");
 
 													var tableRow;
 
@@ -369,7 +369,7 @@ function loadPlanners(){
 																		table += (tableRow);
 
 																	});
-													console.log("table " + (String(table)));
+													//console.log("table " + (String(table)));
 													$("#guestsTable").html(table);
 												},
 												error : function(jqXHR,exception) {
@@ -442,6 +442,7 @@ function loadPlanners(){
 	        processData: false,
 	        success: function(){
 	            alert('file upload complete');
+	            loadGuests();
 	        },
 	        error: function(response){
 	            var error = "error";
