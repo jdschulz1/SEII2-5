@@ -9,7 +9,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$('#nav-container').load('nav.html');
+			 $('#nav-container').load('nav.html'); 
 			loadUsersTable();
 		});
 	</script>
@@ -101,7 +101,13 @@
 			$.ajax({ 
 				   type: "DELETE",  
 			       url: url,  
-			       dataType: "json",  
+			       dataType: "json",
+			       statusCode : {
+						403 : function(response) {
+							$('#page-message').html("Access Denied");
+							alert("You must have admin credentials to perform this action");
+						},
+		          },
 			       contentType: "application/json; charset=utf-8",
 			       success: function(resp){  
 			         // we have the response  

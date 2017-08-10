@@ -112,6 +112,12 @@
 	          url: url,
 	          contentType: "application/json; charset=utf-8",
 	          dataType:"json",
+	          statusCode : {
+					403 : function(response) {
+						$('#page-message').html("Access Denied");
+						alert("You must have admin credentials to perform this action");
+					},
+	          },
 	          data: JSON.stringify(data),          
 	          cache: false,
 	          context : Form,
@@ -139,6 +145,12 @@
 	          url: url,
 	          contentType: "application/json; charset=utf-8",
 	          dataType:"json",
+	          statusCode : {
+					403 : function(response) {
+						$('#page-message').html("Access Denied");
+						alert("You must have admin credentials to perform this action");
+					},
+	          },
 	          data: JSON.stringify(data),          
 	          cache: false,
 	          context : Form,
