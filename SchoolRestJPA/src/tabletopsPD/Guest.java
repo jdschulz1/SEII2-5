@@ -219,6 +219,11 @@ public class Guest implements Serializable, Cloneable{
 //		this.eventTable = eventTable;
 //	}
 	
+	@XmlElement(name = "eventTableId")
+    public String getEventTableId() {
+        return "" + this.eventTable.getEventTableId();
+    }
+	
 	@XmlElement(name = "eventTableNumber")
     public String getEventTableNumber() {
         return "" + this.eventTable.getEventTableNum();
