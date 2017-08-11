@@ -205,6 +205,10 @@ public class User implements Serializable{
 	public User findUserByID(int id) {
 		  return UserDAO.findUserById(id);
 	}
+	
+	public User findUserByToken(String token) {
+		return UserDAO.findUserByToken(token);
+	}
 
 	public Boolean delete() {
 		UserDAO.removeUser(this);
