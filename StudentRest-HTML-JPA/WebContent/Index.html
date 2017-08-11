@@ -51,7 +51,13 @@
 		function loadMyEvents(callback) {
 			console.log("Loading Events....");
 
-			var url = "/SchoolRestJPA/rest/tabletopservices/events";
+			if(getCookie("token") != null) {
+				var token = getCookie("token");
+				var url = "/SchoolRestJPA/rest/tabletopservices/events/tokens/"+token;
+			}
+			else {
+				var url = "/SchoolRestJPA/rest/tabletopservices/events";
+			}
 
 			$
 					.ajax({

@@ -84,6 +84,14 @@ public class TabletopsService {
 	public Event getEvent(@PathParam("id") String id) {
 		return company.findEventByIdNumber(id);
 	}
+	
+	@Secured()
+	@GET
+	@Path("/events/tokens/{token}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Event> getEventsForUser(@PathParam("token") String token) {
+		return company.getEventsForUser(token, 0, 100);
+	}
 
 	@Secured()
 	@POST
@@ -648,10 +656,10 @@ public class TabletopsService {
 			messages.add(new Message("op002", "Fail Operation", ""));
 			return messages;
 		}
-//		EntityTransaction userTransaction = EM.getEM().getTransaction();
-		//userTransaction.begin();
+		EntityTransaction userTransaction = EM.getEM().getTransaction();
+		userTransaction.begin();
 		Boolean result = guest.delete();
-		//userTransaction.commit();
+		userTransaction.commit();
 		if (result) {
 			messages.add(new Message("op001", "Success Operation", ""));
 			return messages;

@@ -7,6 +7,7 @@ import javax.persistence.TypedQuery;
 import tabletopsPD.User;
 import tabletopsPD.Client;
 import tabletopsPD.Event;
+import tabletopsPD.Token;
 
 public class UserDAO { 
 
@@ -30,11 +31,21 @@ public class UserDAO {
       return user;
     }
     
+    public static User findUserByToken(String tokenStr) 
+    {
+    	String qString = "SELECT token FROM token token  WHERE token.token ='"+tokenStr+"'";
+        Query query = EM.getEM().createQuery(qString);
+        Token token = (Token)query.getSingleResult();
+        User user = token.getUser();
+        return user;
+    }
+    
     public static List<User> getAllUsersForEvent(Event event)
     {
       TypedQuery<User> query = EM.getEM().createQuery("SELECT user FROM user user", User.class);
       return query.getResultList();
     }
+    
     public static User findUserById(long id)
     {
       User user = EM.getEM().find(User.class, new Long(id));

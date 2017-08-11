@@ -155,13 +155,14 @@ public class Company implements Serializable{
 	
 	public List<EventTable> getEventTablesForEvent(String idNumber) {
 		Event event = EventDAO.findEventByIdNumber(idNumber);
-		List<EventTable> eventTableList = event.getSeatingArrangement().getEventTables();
+		List<EventTable> eventTableList = event.bullshit().getEventTables();
 		return eventTableList;
 	}
 	
-	public List<Event> getEventsForUser(String idNumber, int page, int perPage) {
-		
-		List<Event> eventList= EventDAO.getEventsForUser(idNumber, page,  perPage);
+	
+	public List<Event> getEventsForUser(String token, int page, int perPage) {
+		User user = UserDAO.findUserByToken(token);
+		List<Event> eventList= user.getEvents();
 		return eventList;
 	}
 	

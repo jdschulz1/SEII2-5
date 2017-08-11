@@ -219,6 +219,11 @@ public class Guest implements Serializable, Cloneable{
 //		this.eventTable = eventTable;
 //	}
 	
+	@XmlElement(name = "eventTableId")
+    public String getEventTableId() {
+        return "" + this.eventTable.getEventTableId();
+    }
+	
 	@XmlElement(name = "eventTableNumber")
     public String getEventTableNumber() {
         return "" + this.eventTable.getEventTableNum();
@@ -315,9 +320,7 @@ public class Guest implements Serializable, Cloneable{
 			newEventTable.addGuest(g);
 		}
 		
-		// TODO: Validate 
-		Boolean isValidSeatingArrangement = this.event.getSeatingArrangement().isValid();
-		
+		Boolean isValidSeatingArrangement = this.event.bullshit().isValid();
 		if(isValidSeatingArrangement) {
 			return true;
 		}

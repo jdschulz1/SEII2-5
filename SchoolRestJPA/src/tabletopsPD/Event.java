@@ -229,18 +229,8 @@ public class Event implements Serializable {
 		else return false;	
 	}
 	
-	/**
-	 * @return the seatingArrangement
-	 */
-	public SeatingArrangement getSeatingArrangement() {
+	public SeatingArrangement bullshit() {
 		return seatingArrangement;
-	}
-
-	/**
-	 * @param seatingArrangement the seatingArrangement to set
-	 */
-	public void setSeatingArrangement(SeatingArrangement seatingArrangement) {
-		this.seatingArrangement = seatingArrangement;
 	}
 
 	public SeatingArrangement finalSA(SeatingArrangement sa){
