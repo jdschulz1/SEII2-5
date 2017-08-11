@@ -146,7 +146,7 @@ public class Event implements Serializable {
 		List<SeatingArrangement> topTen = new ArrayList<SeatingArrangement>(); 
 		if(this.seatingArrangement != null) population.add(this.seatingArrangement);
 		
-		for(int i = 0; i < 1000; i++){
+		for(int i = 0; i < 1000000; i++){
 			temp = SeatingArrangement.createArrangement(this);
 			
 //			if(currentMostFit.getOverallFitnessRating() == null){
@@ -159,23 +159,29 @@ public class Event implements Serializable {
 			population.add(temp);
 		}
 		
-		while(topTen.size() < 75){
+		while(topTen.size() < 100){
 			topTen.add(population.pollLast());
 		}
+		population.clear();
 		
-		while(topTen.get(0).getOverallFitnessRating().compareTo(threshold) == -1){
+		for(SeatingArrangement sa : topTen){
+			population.add(sa);
+		}
+		topTen.clear();
+		
+		while(population.last().getOverallFitnessRating().compareTo(threshold) == -1){
 			for(int i = 0; i < topTen.size(); i++){
-				parent = topTen.get(i);
+				parent = population.pollLast();
 				for(int j = 0; j < topTen.size(); j++){
 					if(!parent.equals(topTen.get(j))){
 						child = parent.crossover(topTen.get(j));
 					
-						if(child != null && !topTen.contains(child)){
-							topTen.add(child);
-							Collections.sort(topTen, Collections.reverseOrder());
-							if(topTen.size() > 99){
-								population.add(topTen.get(99));
-								topTen.remove(99);
+						if(child != null && !population.contains(child)){
+							population.add(child);
+							
+							if(population.size() > 99){
+								topTen.add(population.pollLast());
+								Collections.sort(topTen, Collections.reverseOrder());
 							}
 						}
 					}
@@ -209,8 +215,11 @@ public class Event implements Serializable {
 //						
 //				}
 //			}
+			if(population.last().getOverallFitnessRating().compareTo(threshold) != -1){
+				currentMostFit = population.last();
+			}
 			
-			System.out.println("solution fitness" + topTen.get(0).getOverallFitnessRating());
+			System.out.println("solution fitness" + population.last().getOverallFitnessRating());
 		}
 		
 		if(currentMostFit.getOverallFitnessRating() != null){

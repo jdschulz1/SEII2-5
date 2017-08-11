@@ -11,6 +11,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NavigableSet;
+import java.util.Random;
 import java.util.TreeSet;
 
 import javax.persistence.CascadeType;
@@ -79,38 +80,34 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 		int guestidx;
 		Guest newGuest;
 		
-		try {
-		     SecureRandom number = SecureRandom.getInstanceStrong();
-		     EventTable first = new EventTable(1);
-		     List<Integer> usedRandoms = new ArrayList<Integer>();
-		     first.setSeatingArrangement(newArrangement);
-		     newArrangement.eventTables.add(first);
-		     
-		     for (int i = 0; i < newArrangement.event.getGuestList().size(); i++) {
-		    	 guestidx = number.nextInt(newArrangement.event.getGuestList().size());
-		    	 while(usedRandoms.contains(guestidx)){
-		    		 guestidx = number.nextInt(newArrangement.event.getGuestList().size());
-		    	 }
-		    	 usedRandoms.add(guestidx);
-		    	 
-		    	 newGuest = newArrangement.event.getGuestList().get(guestidx).guestCopy();
-		    	 
-		    	 if(newArrangement.eventTables.get(newArrangement.eventTables.size()-1).getGuests().size() < newArrangement.event.getEventTableSize()){
-		    		 newArrangement.eventTables.get(newArrangement.eventTables.size()-1).addGuest(newGuest);
-		    	 }
-		    	 else{
-		    		 EventTable newTable = new EventTable(newArrangement.eventTables.size()+1);
-		    		 newTable.addGuest(newGuest);
-		    		 newTable.setSeatingArrangement(newArrangement);
-		    		 newArrangement.eventTables.add(newTable);
-		    	 }
-		     }
-		     newArrangement.calculateOverallFitness();
-		     return newArrangement;
-		   } catch (NoSuchAlgorithmException nsae) {
-		     // Forward to handler
-			   return null;
-		   }
+	     Random number = new Random();
+	     number.setSeed(System.currentTimeMillis());
+	     EventTable first = new EventTable(1);
+	     List<Integer> usedRandoms = new ArrayList<Integer>();
+	     first.setSeatingArrangement(newArrangement);
+	     newArrangement.eventTables.add(first);
+	     
+	     for (int i = 0; i < newArrangement.event.getGuestList().size(); i++) {
+	    	 guestidx = number.nextInt(newArrangement.event.getGuestList().size());
+	    	 while(usedRandoms.contains(guestidx)){
+	    		 guestidx = number.nextInt(newArrangement.event.getGuestList().size());
+	    	 }
+	    	 usedRandoms.add(guestidx);
+	    	 
+	    	 newGuest = newArrangement.event.getGuestList().get(guestidx).guestCopy();
+	    	 
+	    	 if(newArrangement.eventTables.get(newArrangement.eventTables.size()-1).getGuests().size() < newArrangement.event.getEventTableSize()){
+	    		 newArrangement.eventTables.get(newArrangement.eventTables.size()-1).addGuest(newGuest);
+	    	 }
+	    	 else{
+	    		 EventTable newTable = new EventTable(newArrangement.eventTables.size()+1);
+	    		 newTable.addGuest(newGuest);
+	    		 newTable.setSeatingArrangement(newArrangement);
+	    		 newArrangement.eventTables.add(newTable);
+	    	 }
+	     }
+	     newArrangement.calculateOverallFitness();
+	     return newArrangement;
 	}
 
 	/**
@@ -141,7 +138,8 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 	public void copyTable(EventTable et){
 		System.out.println("Start new copyTable");
 		System.out.println(" ");
-		EventTable current = this.getEventTableByNumber(et.getEventTableNum());
+		//EventTable current = this.getEventTableByNumber(et.getEventTableNum());
+		EventTable current = this.leastFitTable();
 		System.out.println("Currently in SeatingArrangement table#" + current.getEventTableNum());
 		int i = 1;
 		for(Guest g : current.getGuests()){
@@ -187,7 +185,7 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 			etGuests.add(this.findGuestByNumber(g.getGuestNumber()));
 		}
 		
-		EventTable equivalent = new EventTable(et.getEventTableNum(), etGuests);
+		EventTable equivalent = new EventTable(this.leastFitTable().getEventTableNum(), etGuests);
 		equivalent.setFitnessRating(et.getFitnessRating());
 		
 		return equivalent;
@@ -291,9 +289,8 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 			
 			for(EventTable et : top50){
 				this.copyTable(this.equivalentTable(et));
+				this.calculateOverallFitness();
 			}
-			
-			this.calculateOverallFitness();
 
 			return origSA.getOverallFitnessRating().compareTo(this.getOverallFitnessRating()) == 1 ? origSA : this;
 		} catch (CloneNotSupportedException e) {
