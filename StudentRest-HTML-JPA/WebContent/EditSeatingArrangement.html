@@ -43,7 +43,7 @@
 			xhr.setRequestHeader('Authorization', 'Bearer ' + token);
 		}
 		function loadUsersTable() {
-
+			
 			var id = localStorage.eventId;
 			if (id > 0) {
 				var guestsUrl = "/SchoolRestJPA/rest/tabletopservices/events/"
@@ -96,7 +96,11 @@
 
 								tableNums.sort();
 								var table;
-
+								var selectTableNums = "<select>";
+								$.each( tableNums, function( index, value ){
+									selectTableNums  += "<option value=\""+ value +"\">" + value + "</option>";	
+								});
+								selectTableNums += "</select>";
 								for (var i = 0; i < tableNums.length; i++) {
 									var key = tableNums[i];
 									var table = '<div class="panel panel-primary">'
@@ -113,7 +117,7 @@
 										console.log(guest);
 										table = table + "<tr>" 
 												+ "<td>" + guest.name + "</td>"
-												+"<td><a href=\"javascript:moveGuest(" + guest.guestId + ")\">Move</a></td></tr>";
+												+"<td>"+ selectTableNums +"<a href=\"javascript:moveGuest(" + guest.guestId + ")\">Move</a></td></tr>";
 									}
 									table = table
 											+ '</tbody></div></div></table></div>';
@@ -133,6 +137,11 @@
 			console.log("Move Guest " + id);  
 			
 		}
+		function getTableNumbers(){
+			var tableNums = []
+			window.tableNums = tableNums;
+		}
+		
 	</script>
 	<div id="nav-container"></div>
 
