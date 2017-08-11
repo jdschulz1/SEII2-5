@@ -656,10 +656,10 @@ public class TabletopsService {
 			messages.add(new Message("op002", "Fail Operation", ""));
 			return messages;
 		}
-//		EntityTransaction userTransaction = EM.getEM().getTransaction();
-		//userTransaction.begin();
+		EntityTransaction userTransaction = EM.getEM().getTransaction();
+		userTransaction.begin();
 		Boolean result = guest.delete();
-		//userTransaction.commit();
+		userTransaction.commit();
 		if (result) {
 			messages.add(new Message("op001", "Success Operation", ""));
 			return messages;
