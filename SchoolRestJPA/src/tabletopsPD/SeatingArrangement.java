@@ -23,6 +23,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -62,6 +63,7 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 	@Column(name = "overall_fitness_rating")
 	private BigDecimal overallFitnessRating;
 	
+	@Transient
 	private boolean saValid = true;
 	
 	@OneToMany(cascade = CascadeType.ALL, 

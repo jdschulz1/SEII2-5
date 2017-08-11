@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import javax.persistence.TypedQuery;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -90,6 +91,7 @@ public class EventTable implements Serializable, Cloneable, Comparable{
 	@Column(name = "fitness_rating")
 	private BigDecimal fitnessRating;
 	
+	@Transient
 	private boolean isValid = true;
 	
 	@OneToMany(cascade = CascadeType.ALL, 
@@ -152,7 +154,7 @@ public class EventTable implements Serializable, Cloneable, Comparable{
 					}
 				}
 				
-				if((total-12.5) == (totalGuestsInBLWL * perGuest) && this.isValid){
+				if((total-12.5) == (totalGuestsInBLWL * perGuest) && this.isValid && emptySeatsDiffMax <= 0){
 					this.isValid = true;
 				}
 				else{
@@ -162,6 +164,9 @@ public class EventTable implements Serializable, Cloneable, Comparable{
 			}
 			else{
 				total = 12.5;
+				if(emptySeatsDiffMax > 0){
+					this.isValid = false;
+				}
 			}
 			
 			
