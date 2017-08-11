@@ -89,8 +89,8 @@ public class TabletopsService {
 	@GET
 	@Path("/events/users/{token}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Event getEventsForUser(@PathParam("token") String token) {
-		return company.getEventsForUser(token);
+	public List<Event> getEventsForUser(@PathParam("token") String token) {
+		return company.getEventsForUser(token, 0, 100);
 	}
 
 	@Secured()
