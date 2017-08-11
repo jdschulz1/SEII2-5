@@ -155,7 +155,7 @@ public class Company implements Serializable{
 	
 	public List<EventTable> getEventTablesForEvent(String idNumber) {
 		Event event = EventDAO.findEventByIdNumber(idNumber);
-		List<EventTable> eventTableList = event.getSeatingArrangement().getEventTables();
+		List<EventTable> eventTableList = event.bullshit().getEventTables();
 		return eventTableList;
 	}
 	
