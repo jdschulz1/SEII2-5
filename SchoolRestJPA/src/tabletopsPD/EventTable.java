@@ -90,6 +90,8 @@ public class EventTable implements Serializable, Cloneable, Comparable{
 	@Column(name = "fitness_rating")
 	private BigDecimal fitnessRating;
 	
+	private boolean isValid = true;
+	
 	@OneToMany(cascade = CascadeType.ALL, 
 	        mappedBy = "eventTable", orphanRemoval = true)
 	private List<Guest> guests;
@@ -130,7 +132,7 @@ public class EventTable implements Serializable, Cloneable, Comparable{
 		int emptySeatsDiffMax = this.seatingArrangement.getEvent().getEventTableSize() - this.guests.size() - this.seatingArrangement.getEvent().getMaxEmptySeats();
 		
 		for (Guest g : this.guests){
-			double total = 12.5;
+			double total = 0;
 			int totalGuestsInBLWL = g.getBlacklist().size() + g.getWhitelist().size();
 			
 			//decrease fitness score for each black listed guest at the table
@@ -150,8 +152,18 @@ public class EventTable implements Serializable, Cloneable, Comparable{
 					}
 				}
 				
+				if((total-12.5) == (totalGuestsInBLWL * perGuest) && this.isValid){
+					this.isValid = true;
+				}
+				else{
+					this.isValid = false;
+				}
 				total = total/totalGuestsInBLWL;
 			}
+			else{
+				total = 12.5;
+			}
+			
 			
 			g.setGuestFitness(BigDecimal.valueOf(total));
 			fitness = fitness+total;
@@ -232,5 +244,13 @@ public class EventTable implements Serializable, Cloneable, Comparable{
 	@Override
 	public int compareTo(Object et) {
 		return this.fitnessRating.compareTo(((EventTable)et).fitnessRating);
+	}
+
+	public boolean isValid() {
+		return isValid;
+	}
+
+	public void setValid(boolean isValid) {
+		this.isValid = isValid;
 	}
 }

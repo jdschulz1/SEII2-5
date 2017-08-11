@@ -62,6 +62,8 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 	@Column(name = "overall_fitness_rating")
 	private BigDecimal overallFitnessRating;
 	
+	private boolean saValid = true;
+	
 	@OneToMany(cascade = CascadeType.ALL, 
 	        mappedBy = "seatingArrangement", orphanRemoval = true)
 	private List<EventTable> eventTables;
@@ -329,6 +331,10 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 			if(et.getFitnessRating() == null) {
 				et.calculateFitness();
 			}
+			if(!et.isValid()){
+				this.saValid = false;
+			}
+			
 			//System.out.println("fitness(" + fitness + ") + Table #" + et.getEventTableNum() + "("+ et.getFitnessRating() + ") = " + fitness.add(et.getFitnessRating()).toString());
 			fitness = fitness.add(et.getFitnessRating());
 		}
@@ -338,7 +344,8 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 	
 	// TODO: Check if seating valid 
 	public Boolean isValid() {
-		return true;
+		this.calculateOverallFitness();
+		return saValid;
 	}
 
 	public BigDecimal getOverallFitnessRating() {
