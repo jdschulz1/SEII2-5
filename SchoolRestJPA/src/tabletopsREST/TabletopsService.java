@@ -687,10 +687,10 @@ public class TabletopsService {
 			return messages;
 		}
 
-//		EntityTransaction userTransaction = EM.getEM().getTransaction();
-//		userTransaction.begin();
+		EntityTransaction userTransaction = EM.getEM().getTransaction();
+		userTransaction.begin();
 		ownerGuest.removeFromWhiteList(memberGuest);
-//		userTransaction.commit();
+		userTransaction.commit();
 		messages.add(new Message("op001", "Success Operation", ""));
 		return messages;
 	}
@@ -713,10 +713,10 @@ public class TabletopsService {
 			return messages;
 		}
 
-//		EntityTransaction userTransaction = EM.getEM().getTransaction();
-//		userTransaction.begin();
+		EntityTransaction userTransaction = EM.getEM().getTransaction();
+		userTransaction.begin();
 		ownerGuest.removeFromBlackList(memberGuest);
-//		userTransaction.commit();
+		userTransaction.commit();
 		messages.add(new Message("op001", "Success Operation", ""));
 		return messages;
 	}

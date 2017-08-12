@@ -174,22 +174,22 @@ public class Guest implements Serializable, Cloneable{
 	 * A method for remove from the Black List of Guests for the current Guest.
 	 */
 	public void removeFromBlackList(Guest member) {
-		EntityTransaction userTransaction = EM.getEM().getTransaction();
-	    userTransaction.begin();
+//		EntityTransaction userTransaction = EM.getEM().getTransaction();
+//	    userTransaction.begin();
 	    this.blacklist.remove(member);
 		GuestDAO.saveGuest(this);
-		userTransaction.commit();
+//		userTransaction.commit();
 	}
 
 	/**
 	 * A method for removing from the White List of Guests for the current Guest.
 	 */
 	public void removeFromWhiteList(Guest member) {
-		EntityTransaction userTransaction = EM.getEM().getTransaction();
-	    userTransaction.begin();
+//		EntityTransaction userTransaction = EM.getEM().getTransaction();
+//	    userTransaction.begin();
 	    this.whitelist.remove(member);
 		GuestDAO.saveGuest(this);
-		userTransaction.commit();
+//		userTransaction.commit();
 	}
 
 	public int getGuestNumber() {
@@ -298,6 +298,10 @@ public class Guest implements Serializable, Cloneable{
 	}
 	
 	public Boolean delete() {
+		for (Guest g: this.blacklist)
+			this.removeFromBlackList(g);
+		for (Guest g: this.whitelist)
+			this.removeFromWhiteList(g);
 		GuestDAO.removeGuest(this);
 		return true;
 	}
