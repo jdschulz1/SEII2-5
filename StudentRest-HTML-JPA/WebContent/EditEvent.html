@@ -148,9 +148,11 @@ function setHeader(xhr) {
 			$('#btnSeatingArrangement').bind('click', false);
 		}
   }
-  
-  
-  $(document).ready(function() { 
+	  
+  $(document).ready(function() {
+	 $("#btnCancel").click(function(e){
+		document.location.href = "/StudentRest-HTML-JPA/WebContent/Index.html", true;
+	});
   	$("#editEventForm").submit(function(e){
 	  e.preventDefault();
 
@@ -563,7 +565,7 @@ function loadPlanners(){
 							<div class="btn-group pull-right">
 										<div class="col-md-12 col-lg-12 ">
 											<button id="btnSubmit" type="submit" class="btn btn-primary">Submit</button>
-											<button type="reset" class="btn btn-default">Cancel</button>
+											<button type="reset" id="btnCancel" class="btn btn-default">Cancel</button> 
 										</div>
 								</div>
 								</fieldset>
