@@ -471,9 +471,10 @@ function loadPlanners(){
 	 <h2>Edit Event</h2>
 	</div>
 	<div class="row">
-	<div class="pull-right">
-		<a href="javascript:seatingArrangement()" id="btnSeatingArrangement" class="btn btn-info btn-sm">Seating Arrangement</a>
+	<div class="pull-right" style="padding-bottom: 10px;">
+		<a href="javascript:seatingArrangement()" id="btnSeatingArrangement" class="btn btn-info btn-sm" >Seating Arrangement</a>
 	</div>
+	</hr>
 	</div>
 		<div class="row">
 			<div class="panel panel-primary">
@@ -487,15 +488,15 @@ function loadPlanners(){
 							<form  method="post" id="editEventForm" class="form-horizontal">
 								<fieldset>
 									<input type="hidden" id="inputEventID" name="eventId" val="" >
-									<div class="form-group">
+									<div class="form-group form-group-sm">
 										<label for="inputEventTitle" class="col-lg-2 control-label">
 											Event Title
 										</label>
 										<div class="col-lg-10">
-											<input type="text" class="form-control" id="inputTitle" name="eventTitle"	placeholder="Event Title">
+											<input type="text" class="form-control id="inputTitle" name="eventTitle"	placeholder="Event Title">
 										</div>
 									</div>
-									<div class="form-group">
+									<div class="form-group form-group-sm">
 										<label for="inputVenueName" class="col-lg-2 control-label">
 											Venue Name
 										</label>
@@ -504,12 +505,12 @@ function loadPlanners(){
 												placeholder="Venue Name">
 										</div>
 									</div>
-									<div class="form-group">
+									<div class="form-group form-group-sm">
 										<label for="inputEventDate" class="col-lg-2 control-label">Event
 											Date/Time</label>
 										<div class="col-lg-10">
-											<div class="col-sm-6 col-md-6 col-lg-6">
-											<div class="input-group">
+											<div class="col-sm-6 col-md-6 col-lg-6" style="padding-left: 0px; padding-right: 0px;">
+											<div class="input-group input-group-sm">
 												<input type="datetime" class="form-control date-input" id="inputEventDate" name="EventDate" placeholder="Event Date/Time">
 												<span class="input-group-addon">
         												<span class="glyphicon glyphicon-calendar"></span>
@@ -517,8 +518,8 @@ function loadPlanners(){
 											</div>
 											</div>
 										
-										<div class="col-sm-6 col-md-6 col-lg-6">
-												<div class="input-group clockpicker " data-autoclose="true">
+										<div class="col-sm-6 col-md-6 col-lg-6" style="padding-left: 5px; padding-right: 0px;">
+												<div class="input-group input-group-sm clockpicker " data-autoclose="true">
     												<input type="time" class="form-control" id="inputEventTime" name="inputEventTime" value="">
     												<span class="input-group-addon">
         												<span class="glyphicon glyphicon-time"></span>
@@ -527,7 +528,7 @@ function loadPlanners(){
 										</div>
 										</div>
 									</div>
-									<div class="form-group">
+									<div class="form-group form-group-sm">
 										<label for="selectClientName" class="col-lg-2 control-label">Client
 											Name</label>
 										<div class="col-lg-10">
@@ -537,7 +538,7 @@ function loadPlanners(){
 										</div>
 									</div>
 									
-									<div class="form-group">
+									<div class="form-group form-group-sm">
 										<label for="selectPrimaryPlanner"
 											class="col-lg-2 control-label">Primary Planner</label>
 										<div class="col-lg-10">
@@ -547,7 +548,7 @@ function loadPlanners(){
 										</div>
 									</div>
 									
-									<div class="form-group">
+									<div class="form-group form-group-sm">
 										<label for="inputTableSize" class="col-lg-2 control-label">Table
 											Size</label>
 										<div class="col-lg-10">
@@ -556,7 +557,7 @@ function loadPlanners(){
 										</div>
 									</div>
 									
-									<div class="form-group">
+									<div class="form-group form-group-sm">
 										<label for="inputTableEmptySpots"
 											class="col-lg-2 control-label">Max Empty Seats</label>
 										<div class="col-lg-10">
@@ -564,11 +565,13 @@ function loadPlanners(){
 												id="inputTableEmptySpots" placeholder="Max Empty Seats">
 										</div>
 									</div>
-							<div class="btn-group pull-right">
+									<div class="form-group form-group-sm pull-right">
+										<div class="btn-block">
 										<div class="col-md-12 col-lg-12 ">
-											<button id="btnSubmit" type="submit" class="btn btn-primary">Submit</button>
-											<button type="reset" id="btnCancel" class="btn btn-default">Cancel</button> 
+											<button id="btnSubmit" type="submit" class="btn btn-sm btn-primary">Submit</button>
+											<button type="reset" id="btnCancel" class="btn btn-sm btn-default">Cancel</button> 
 										</div>
+									</div>
 								</div>
 								</fieldset>
 
@@ -590,13 +593,15 @@ function loadPlanners(){
 				</div>
 				<div class="panel-body">
 					<div class="row">
-						<a href="javascript:editGuest(0)" id="btnNewGuest" class="btn btn-xs btn-primary pull-right"><i class="glyphicon glyphicon-plus"></i>New Guest</a>
+					<div style="padding-right: 10px;">
+						<a href="javascript:editGuest(0)" id="btnNewGuest" class="btn btn-xs btn-primary pull-right" ><i class="glyphicon glyphicon-plus"></i>New Guest</a>
+					</div>	
 						<div class="form-inline">
 							<div class="input-group input-group-sm">
 <!-- 								<input type="text" class=""	placeholder="Import from file"> -->
 <!-- 								<div class="input-group-btn"> -->
 <!-- 									<label class="btn btn-default btn-sm btn-file"> Browse -->
-										<input type="file" id="inputFileUpload" name="inputFileUpload" />
+										<input style="padding-left: 5px;"type="file" id="inputFileUpload" name="inputFileUpload" />
 <!-- 									</label> -->
 <!-- 								</div> -->
 							</div>
@@ -616,7 +621,7 @@ function loadPlanners(){
 								
 							</tbody>
 						</table>
-						 <ul id="pagination" class="pagination-sm"></ul>
+						
 					</div>
 				</div>
 			</div>
