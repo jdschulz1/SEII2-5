@@ -298,9 +298,11 @@ public class Guest implements Serializable, Cloneable{
 	}
 	
 	public Boolean delete() {
-		for (Guest g: this.blacklist)
+		List<Guest> bl = this.blacklist;
+		List<Guest> wl = this.whitelist;
+		for (Guest g: bl)
 			this.removeFromBlackList(g);
-		for (Guest g: this.whitelist)
+		for (Guest g: wl)
 			this.removeFromWhiteList(g);
 		GuestDAO.removeGuest(this);
 		return true;
