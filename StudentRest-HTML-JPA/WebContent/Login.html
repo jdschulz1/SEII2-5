@@ -91,6 +91,10 @@
 						  alert("Log In Success");
 			        	  document.location.href = "/StudentRest-HTML-JPA/WebContent/", true;
 				  		},
+					401 : function(response) {
+							$('#page-message').html("Incorrect Username/Password");
+							alert("Please enter a valid Username/Password");
+						},
 				  	406: function(response) {
 				  		var errors = response.responseJSON;
 				  		$(".error").html("*");
