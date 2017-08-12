@@ -140,14 +140,15 @@ public class TabletopsService {
 	}
 
 	@Secured()
-	@POST
+	@PUT
 	@Path("/events/{id}/generateSeatingArrangement")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public ArrayList<Message> generateSeatingArrangement(@PathParam("id") String id,
 			@Context final HttpServletResponse response) throws IOException {
 
-		if (id == null) {
+		Event oldEvent = company.findEventByIdNumber(id);
+		if (oldEvent == null) {
 
 			response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
 			try {
@@ -158,10 +159,25 @@ public class TabletopsService {
 			return messages;
 		} else {
 			Event event = EventDAO.findEventByIdNumber(id);
-			boolean result = event.calculateSeatingArrangement(new BigDecimal(90));
-
+			ArrayList<Message> errMessages = event.validate();
+			if (errMessages != null) {
+				response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+				try {
+					response.flushBuffer();
+				} catch (Exception e) {
+				}
+				return errMessages;
+			}
+			
+			EntityTransaction userTransaction = EM.getEM().getTransaction();
+			userTransaction.begin();
+			Boolean result = event.calculateSeatingArrangement(new BigDecimal(100)) && oldEvent.update(event);
+			
+			userTransaction.commit();
+			
 			if (result) {
 				messages.add(new Message("op001", "Success Operation", ""));
+				
 				return messages;
 			}
 			response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);

@@ -36,8 +36,10 @@ import com.owlike.genson.annotation.JsonIgnore;
 import javafx.scene.shape.Line;
 import tabletopsDAO.ClientDAO;
 import tabletopsDAO.EventDAO;
+import tabletopsDAO.EventTableDAO;
 import tabletopsDAO.GuestDAO;
 import tabletopsDAO.LocalDateTimeConverter;
+import tabletopsDAO.SeatingArrangementDAO;
 import tabletopsDAO.UserDAO;
 import tabletopsUT.CSVReader;
 import tabletopsUT.Message;
@@ -159,95 +161,60 @@ public class Event implements Serializable {
 //				currentMostFit = temp;
 //			}
 			population.add(temp);
+			if(temp.isValid())break;
 		}
 		
+		if(!population.last().isValid()){
 		while(topTen.size() < 75){
-			topTen.add(population.pollLast());
-		}
-		population.clear();
-		
-		for(SeatingArrangement sa : topTen){
-			population.add(sa);
-		}
-		topTen.clear();
-		
-		while(population.last().getOverallFitnessRating().compareTo(threshold) == -1){
-			for(int i = 0; i < population.size(); i++){
-				parent = population.pollLast();
-				parent.setMutationFactor(mutationFactor.nextInt(9999));
-				child = parent.crossover(population.last());
-				topTen.add(parent);	
-				if(child != null && !population.contains(child)){
-					population.add(child);
-					
-					while(population.size() > 75){
-						population.pollFirst();
-						Collections.sort(topTen, Collections.reverseOrder());
-					}
-				}
-					
-					
-//					if(child.getOverallFitnessRating().compareTo(topTen.get(9).getOverallFitnessRating()) == 1 &&
-//							child.getOverallFitnessRating().compareTo(topTen.get(8).getOverallFitnessRating()) == -1){
-//						population.add(topTen.get(9));
-//						topTen.remove(9);
-//						topTen.add(child);
-//					}
-//					else if() {
-//				
-//					}
-				if(mutationFactor.nextInt(9999)% 21 == 0);
-				
+				topTen.add(population.pollLast());
 			}
+			population.clear();
 			
 			for(SeatingArrangement sa : topTen){
 				population.add(sa);
 			}
 			topTen.clear();
-//			for(int i = 0; i < population.size(); i++){
-//				parent = population.pollFirst(); 
-//				for(int j = 1; j < population.size(); j++){
-//					parent = ((SeatingArrangement)population.get(i));
-//					child = population.get(i).crossover(population.get(j));
-//					population.add(child);
-//					temp = parent;
-//					if(currentMostFit.getOverallFitnessRating().compareTo(temp.getOverallFitnessRating()) == -1){
-//						currentMostFit = temp;
-//						if(currentMostFit.getOverallFitnessRating().compareTo(threshold) != -1){
-//							this.seatingArrangement = this.finalSA(currentMostFit); 
-//							return true;
-//						}
-//					}
-//						
-//				}
-//			}
 			
-			if(population.last().isValid()){
-				currentMostFit = population.pollLast();
+			while(population.last().getOverallFitnessRating().compareTo(threshold) == -1){
+				for(int i = 0; i < population.size(); i++){
+					parent = population.pollLast();
+					parent.setMutationFactor(mutationFactor.nextInt(9999));
+					child = parent.crossover(population.last());
+					topTen.add(parent);	
+					if(child != null && !population.contains(child)){
+						population.add(child);
+						
+						while(population.size() > 75){
+							population.pollFirst();
+							Collections.sort(topTen, Collections.reverseOrder());
+						}
+					}
+						
+					if(mutationFactor.nextInt(9999)% 21 == 0);
+					
+				}
+				
+				for(SeatingArrangement sa : topTen){
+					population.add(sa);
+				}
+				topTen.clear();
+				
+				if(population.last().isValid()){
+					currentMostFit = population.pollLast();
+				}
+				
+				System.out.println("solution fitness" + population.last().getOverallFitnessRating());
 			}
-			//currentMostFit = this.getTopValid(population, threshold);
-			
-			System.out.println("solution fitness" + population.last().getOverallFitnessRating());
+		}
+		else{
+			currentMostFit = population.last();
 		}
 		
 		if(currentMostFit.getOverallFitnessRating() != null){
-			this.seatingArrangement = currentMostFit;
+			this.seatingArrangement = this.finalSA(currentMostFit);
 			return true;
 		}
 		else return false;	
-	}
-	
-	public SeatingArrangement getTopValid(NavigableSet<SeatingArrangement> seatingArrangements, BigDecimal threshold){
-		SeatingArrangement tvsa = null;
-		
-		while(seatingArrangements.size() > 0){
-			if(seatingArrangements.last().isValid() && seatingArrangements.last().getOverallFitnessRating().compareTo(threshold) != -1){
-				tvsa = seatingArrangements.pollLast();
-				break;
-			}
-		}
-		
-		return tvsa;
 	}
 	
 	public SeatingArrangement bullshit() {
@@ -259,11 +226,18 @@ public class Event implements Serializable {
 		List<Guest> newGuestList = new ArrayList<Guest>();
 		for(EventTable et : newSA.getEventTables()){
 			for(Guest g : et.getGuests()){
-				newGuestList.add(g);
+				this.guestCloneMerge(g, et);
 			}
 		}
-		this.guestList = newGuestList;
+		//this.guestList = newGuestList;
 		return newSA;
+	}
+	
+	public Guest guestCloneMerge(Guest g, EventTable et){
+		Guest orig = this.findGuestByGuestNumber(g.getGuestNumber());
+		orig.setGuestFitness(g.getGuestFitness());
+		orig.setEventTable(et);
+		return orig;
 	}
 	
 	public Guest findGuestByNum (int num){
