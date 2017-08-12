@@ -622,7 +622,7 @@ public class TabletopsService {
 		Guest guest = company.findGuestByIdNumber(guestId);
 		EventTable eventTable = company.findEventTableByIdNumber(tableId);
 		if (guest == null || eventTable == null) {
-			response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
+			response.setStatus(HttpServletResponse.SC_PRECONDITION_FAILED);
 			try {
 				response.flushBuffer();
 			} catch (Exception e) {
