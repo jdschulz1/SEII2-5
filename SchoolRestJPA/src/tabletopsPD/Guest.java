@@ -298,8 +298,8 @@ public class Guest implements Serializable, Cloneable{
 	}
 	
 	public Boolean delete() {
-		List<Guest> bl = this.blacklist;
-		List<Guest> wl = this.whitelist;
+		List<Guest> bl = new ArrayList<Guest>(this.blacklist);
+		List<Guest> wl = new ArrayList<Guest>(this.whitelist);
 		for (Guest g: bl)
 			this.removeFromBlackList(g);
 		for (Guest g: wl)
