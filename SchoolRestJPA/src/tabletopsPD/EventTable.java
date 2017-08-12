@@ -92,7 +92,7 @@ public class EventTable implements Serializable, Cloneable, Comparable{
 	private BigDecimal fitnessRating;
 	
 	@Transient
-	private boolean isValid = true;
+	private boolean isValid;
 	
 	@OneToMany(cascade = CascadeType.ALL, 
 	        mappedBy = "eventTable", orphanRemoval = true)
@@ -130,19 +130,20 @@ public class EventTable implements Serializable, Cloneable, Comparable{
 	public void calculateFitness() {
 		double fitness = 0.0;
 		double perGuest = 100.0/this.guests.size();
-		
+		this.isValid = true;
 		int emptySeatsDiffMax = this.seatingArrangement.getEvent().getEventTableSize() - this.guests.size() - this.seatingArrangement.getEvent().getMaxEmptySeats();
 		
 		for (Guest g : this.guests){
 			double total = 0;
 			int totalGuestsInBLWL = g.getBlacklist().size() + g.getWhitelist().size();
+			double perGuestWLBL = perGuest/totalGuestsInBLWL;
 			
 			//decrease fitness score for each black listed guest at the table
 			if(totalGuestsInBLWL != 0){
 				for(Guest g2 : g.getBlacklist()){
 					if(this.tableHasGuest(g2)){//.getListMember())){
 						//System.out.println("Guest " + g2.getName() + " should not be at the table " + this.getEventTableNum() + " with " + g.getName() + ". Minus "  + perGuest.toString() + " from Gryffindor(" + total.subtract(perGuest).toString() + ")");
-						total = total-perGuest;
+						total = total-perGuestWLBL;
 					}
 				}
 				
@@ -150,25 +151,23 @@ public class EventTable implements Serializable, Cloneable, Comparable{
 				for(Guest g3 : g.getWhitelist()){
 					if(this.tableHasGuest(g3)){//.getListMember())){
 						//System.out.println("Guest " + g3.getName() + " should be at the table " + this.getEventTableNum() + " with " + g.getName() + ". Plus " + perGuest.toString() + " to Gryffindor(" + total.add(perGuest).toString() + ")");
-						total = total+perGuest;
+						total = total+perGuestWLBL;
 					}
 				}
 				
-				if((total-12.5) == (totalGuestsInBLWL * perGuest) && this.isValid && emptySeatsDiffMax <= 0){
+				if(total == perGuest && this.isValid && emptySeatsDiffMax <= 0){
 					this.isValid = true;
 				}
 				else{
 					this.isValid = false;
 				}
-				total = total/totalGuestsInBLWL;
 			}
 			else{
-				total = 12.5;
+				total = perGuest;
 				if(emptySeatsDiffMax > 0){
 					this.isValid = false;
 				}
 			}
-			
 			
 			g.setGuestFitness(BigDecimal.valueOf(total));
 			fitness = fitness+total;
@@ -176,7 +175,8 @@ public class EventTable implements Serializable, Cloneable, Comparable{
 		
 		//decrease fitness score for each empty chair over the maximum allowed empty chairs at a table
 		//this will give us our EventTable fitness
-		this.fitnessRating = BigDecimal.valueOf(fitness-(emptySeatsDiffMax*perGuest));
+		//this.fitnessRating = BigDecimal.valueOf(fitness);
+		this.fitnessRating = this.isValid ? BigDecimal.valueOf(100) : BigDecimal.valueOf(fitness);
 	}
 	
 	public int getEventTableNum() {

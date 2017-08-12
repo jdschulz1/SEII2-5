@@ -64,7 +64,7 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 	private BigDecimal overallFitnessRating;
 	
 	@Transient
-	private boolean saValid = true;
+	private boolean saValid;
 	
 	@OneToMany(cascade = CascadeType.ALL, 
 	        mappedBy = "seatingArrangement", orphanRemoval = true)
@@ -327,6 +327,7 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 	 * This should be the average fitness over all of the tables in the Seating Arrangement
 	 */
 	public void calculateOverallFitness() {
+		this.saValid = true;
 		BigDecimal fitness = BigDecimal.ZERO;
 		
 		for(EventTable et : this.eventTables){
@@ -337,8 +338,10 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 				this.saValid = false;
 			}
 			
-			//System.out.println("fitness(" + fitness + ") + Table #" + et.getEventTableNum() + "("+ et.getFitnessRating() + ") = " + fitness.add(et.getFitnessRating()).toString());
 			fitness = fitness.add(et.getFitnessRating());
+			
+			//System.out.println("fitness(" + fitness + ") + Table #" + et.getEventTableNum() + "("+ et.getFitnessRating() + ") = " + fitness.add(et.getFitnessRating()).toString());
+			//fitness = fitness.add(et.getFitnessRating());
 		}
 		
 		this.overallFitnessRating = fitness.divide(BigDecimal.valueOf(this.eventTables.size()), 2, RoundingMode.HALF_UP);

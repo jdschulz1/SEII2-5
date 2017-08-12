@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.NavigableSet;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.SortedSet;
@@ -145,8 +146,10 @@ public class Event implements Serializable {
 		SeatingArrangement temp, currentMostFit = this.seatingArrangement != null ? this.seatingArrangement : new SeatingArrangement(), parent, child;
 		List<SeatingArrangement> topTen = new ArrayList<SeatingArrangement>(); 
 		if(this.seatingArrangement != null) population.add(this.seatingArrangement);
+		Random mutationFactor = new Random(System.currentTimeMillis());
 		
-		for(int i = 0; i < 1000000; i++){
+		//for(int i = 0; i < 1000000; i++){
+		while(population.size() < 75){
 			temp = SeatingArrangement.createArrangement(this);
 			
 //			if(currentMostFit.getOverallFitnessRating() == null){
@@ -155,11 +158,10 @@ public class Event implements Serializable {
 //			else if (currentMostFit.getOverallFitnessRating().compareTo(temp.getOverallFitnessRating()) == -1){
 //				currentMostFit = temp;
 //			}
-			
 			population.add(temp);
 		}
 		
-		while(topTen.size() < 100){
+		while(topTen.size() < 75){
 			topTen.add(population.pollLast());
 		}
 		population.clear();
@@ -170,21 +172,18 @@ public class Event implements Serializable {
 		topTen.clear();
 		
 		while(population.last().getOverallFitnessRating().compareTo(threshold) == -1){
-			for(int i = 0; i < topTen.size(); i++){
+			for(int i = 0; i < population.size(); i++){
 				parent = population.pollLast();
-				for(int j = 0; j < topTen.size(); j++){
-					if(!parent.equals(topTen.get(j))){
-						child = parent.crossover(topTen.get(j));
+				child = parent.crossover(population.last());
+				topTen.add(parent);	
+				if(child != null && !population.contains(child)){
+					population.add(child);
 					
-						if(child != null && !population.contains(child)){
-							population.add(child);
-							
-							if(population.size() > 99){
-								topTen.add(population.pollLast());
-								Collections.sort(topTen, Collections.reverseOrder());
-							}
-						}
+					while(population.size() > 100){
+						population.pollFirst();
+						Collections.sort(topTen, Collections.reverseOrder());
 					}
+				}
 					
 					
 //					if(child.getOverallFitnessRating().compareTo(topTen.get(9).getOverallFitnessRating()) == 1 &&
@@ -196,8 +195,13 @@ public class Event implements Serializable {
 //					else if() {
 //				
 //					}
-				}
+				
 			}
+			
+			for(SeatingArrangement sa : topTen){
+				population.add(sa);
+			}
+			topTen.clear();
 //			for(int i = 0; i < population.size(); i++){
 //				parent = population.pollFirst(); 
 //				for(int j = 1; j < population.size(); j++){
@@ -215,9 +219,7 @@ public class Event implements Serializable {
 //						
 //				}
 //			}
-			if(population.last().getOverallFitnessRating().compareTo(threshold) != -1){
-				currentMostFit = population.last();
-			}
+			currentMostFit = this.getTopValid(population, threshold);
 			
 			System.out.println("solution fitness" + population.last().getOverallFitnessRating());
 		}
@@ -227,6 +229,19 @@ public class Event implements Serializable {
 			return true;
 		}
 		else return false;	
+	}
+	
+	public SeatingArrangement getTopValid(NavigableSet<SeatingArrangement> seatingArrangements, BigDecimal threshold){
+		SeatingArrangement tvsa = null;
+		
+		while(seatingArrangements.size() > 0){
+			if(seatingArrangements.last().isValid() && seatingArrangements.last().getOverallFitnessRating().compareTo(threshold) != -1){
+				tvsa = seatingArrangements.pollLast();
+				break;
+			}
+		}
+		
+		return tvsa;
 	}
 	
 	public SeatingArrangement bullshit() {
