@@ -639,7 +639,8 @@ public class TabletopsService {
 		}
 		else {
 			messages.add(new Message("op003", "Cannot Move Guest", ""));
-			response.setStatus(HttpServletResponse.SC_PRECONDITION_FAILED);
+//			response.setStatus(HttpServletResponse.SC_PRECONDITION_FAILED);
+			response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED);
 		}
 
 		return messages;
