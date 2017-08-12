@@ -19,6 +19,9 @@
 </head>
 <body>
 	<script type="text/javascript">
+	$(document).ready(function() {
+		$('#title').html("Seating Arrangement - " + localStorage.clientName + " - "+ localStorage.venueName);
+	});
 	function getCookie(cname) {
 		console.log("get cookie");
 		var name = cname + "=";
@@ -134,11 +137,11 @@
 	<div class="container">
 
 		<div class="col-sm-12 col-md-12 col-lg-12">
-			<h1>Seating Arrangement</h1>
+			<h2 id="title" id>Seating Arrangement</h2>
 			<div id="tables-nav"></div>
 			<div class="container">
 				<div class="row">
-					<h1>Guests</h1>
+					<h3>Guests</h3>
 					<button class="btn btn-xs btn-default pull-right" onclick="window.print();">Print</button>
 				</div>
 				<hr />

@@ -124,11 +124,11 @@ function setHeader(xhr) {
  		         	$("#inputTableEmptySpots").val(data.maxEmptySeats);
  		         	console.log(data.primaryPlanner.userID);
  		         	console.log(data.primaryPlanner.name);
- 		         	$("#selectPrimaryPlanner").val(data.primaryPlanner.userID);
+ 		         	$("#selectPrimaryPlanner").val(data.primaryPlanner.userID).change();
  		         	$("#inputTableSize").val(data.eventTableSize);
- 		         	if(data.client != null){
- 		         		$("#selectClientName").val(data.client.clientID);	
- 		         	}
+ 		         	
+ 		         		$("#selectClientName").val(data.client.clientID).change();	
+ 	
  		         	
 		         },
 		         error: function (jqXHR, exception) {
@@ -266,7 +266,9 @@ function setHeader(xhr) {
   });
   function seatingArrangement(){
 		localStorage.eventId = localStorage.event;
-		document.location.href = "/StudentRest-HTML-JPA/WebContent/PlaceCards.html", true;  
+		localStorage.clientName = eventobj.client.name;
+		localStorage.venueName = eventobj.venueName;
+		document.location.href = "/StudentRest-HTML-JPA/WebContent/PrintTablesList.html", true;  
 		
 	}
 function loadPlanners(){

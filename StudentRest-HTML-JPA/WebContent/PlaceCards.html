@@ -19,6 +19,9 @@
   <body>
 
   <script type="text/javascript">
+  $(document).ready(function() {
+		$('#title').html("PlaceCards - " + localStorage.clientName + " - "+ localStorage.venueName);
+	});
   function getCookie(cname) {
 		console.log("get cookie");
 		var name = cname + "=";
@@ -104,18 +107,32 @@
 		}
 	}
   </script>
+  
     <div id="nav-container"></div>
-    <h1>Seating Arrangement</h1>
-	<div id="tables-nav"></div>
+   
     <div class="container">
+    <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+	<h2 id="title"></h2>
+	<div id="tables-nav"></div>
+	
     	<div class="row">
-    		<h1>Placecards</h1>
-    			<button class="btn btn-info" onclick="window.print();">Print</button>
-   			 </div>
+    		<h3 >Placecards</h3>
+    			<button class="btn btn-xs btn-info pull-right" onclick="window.print();">Print</button>
+   		 </div>
     	</div>
-    	<hr/>
-		<div id="guest_placecards"></div>
+    	</div>
+    	
+    	<div class="row">
+    	</hr>
+    	<div class="panel panel-default"> 
+  			<div class="panel-body">
+		<div class="placecard-section" id="guest_placecards"></div>
+		</div>
+		</div>
+		</div>
 	</div>
+	
     <script src="http://code.jquery.com/jquery.js"></script>
     <script src="js/bootstrap.min.js"></script>
       <script type="text/javascript">

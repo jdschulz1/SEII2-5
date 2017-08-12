@@ -21,7 +21,9 @@
     cursor: inherit;
     display: block;
 }
-
+.placecard-section{
+	padding-top: 15px;
+}
 .placecard {
     display: block;
     padding: 4px;
@@ -42,7 +44,7 @@
 }
 
 .scroll-panel{
-	height: 500px;
+	height: 800px;
 	overflow: scroll;
 	overflow-x: hidden;
 }
