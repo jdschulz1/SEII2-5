@@ -469,7 +469,7 @@ public class TabletopsService {
 				messages.add(new Message("op001", "Success Operation", ""));
 				return messages;
 			}
-			response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
+			response.setStatus(HttpServletResponse.SC_PRECONDITION_FAILED);
 			try {
 				response.flushBuffer();
 			} catch (Exception e) {
