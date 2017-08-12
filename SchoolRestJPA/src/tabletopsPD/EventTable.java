@@ -89,7 +89,7 @@ public class EventTable implements Serializable, Cloneable, Comparable{
 	 * The fitness rating for determining the greater fitness rating of the SeatingArrangement containing this instance of Table.
 	 */
 	@Column(name = "fitness_rating")
-	private BigDecimal fitnessRating;
+	private BigDecimal fitnessRating = BigDecimal.ZERO;
 	
 	@Transient
 	private boolean isValid;
@@ -131,6 +131,9 @@ public class EventTable implements Serializable, Cloneable, Comparable{
 		double fitness = 0.0;
 		double perGuest = 100.0/this.guests.size();
 		this.isValid = true;
+		if(this.seatingArrangement == null || this.guests == null){
+			System.out.println();
+		}
 		int emptySeatsDiffMax = this.seatingArrangement.getEvent().getEventTableSize() - this.guests.size() - this.seatingArrangement.getEvent().getMaxEmptySeats();
 		
 		for (Guest g : this.guests){
@@ -144,6 +147,7 @@ public class EventTable implements Serializable, Cloneable, Comparable{
 					if(this.tableHasGuest(g2)){//.getListMember())){
 						//System.out.println("Guest " + g2.getName() + " should not be at the table " + this.getEventTableNum() + " with " + g.getName() + ". Minus "  + perGuest.toString() + " from Gryffindor(" + total.subtract(perGuest).toString() + ")");
 						total = total-perGuestWLBL;
+						this.isValid = false;
 					}
 				}
 				
@@ -153,20 +157,18 @@ public class EventTable implements Serializable, Cloneable, Comparable{
 						//System.out.println("Guest " + g3.getName() + " should be at the table " + this.getEventTableNum() + " with " + g.getName() + ". Plus " + perGuest.toString() + " to Gryffindor(" + total.add(perGuest).toString() + ")");
 						total = total+perGuestWLBL;
 					}
-				}
-				
-				if(total == perGuest && this.isValid && emptySeatsDiffMax <= 0){
-					this.isValid = true;
-				}
-				else{
-					this.isValid = false;
+					else
+					{
+						this.isValid = false;
+					}
 				}
 			}
 			else{
 				total = perGuest;
-				if(emptySeatsDiffMax > 0){
-					this.isValid = false;
-				}
+			}
+			
+			if(emptySeatsDiffMax > 0){
+				this.isValid = false;
 			}
 			
 			g.setGuestFitness(BigDecimal.valueOf(total));
