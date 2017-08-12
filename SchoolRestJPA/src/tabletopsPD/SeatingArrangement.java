@@ -66,6 +66,17 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 	@Transient
 	private boolean saValid;
 	
+	@Transient
+	private int mutationFactor;
+	
+	public int getMutationFactor() {
+		return mutationFactor;
+	}
+
+	public void setMutationFactor(int mutationFactor) {
+		this.mutationFactor = mutationFactor;
+	}
+
 	@OneToMany(cascade = CascadeType.ALL, 
 	        mappedBy = "seatingArrangement", orphanRemoval = true)
 	private List<EventTable> eventTables;
@@ -142,8 +153,17 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 	public void copyTable(EventTable et){
 		System.out.println("Start new copyTable");
 		System.out.println(" ");
+		EventTable current;
+		if(this.mutationFactor % 21 == 0){
+			Random randTable = new Random(System.currentTimeMillis());
+			int idx = randTable.nextInt(this.eventTables.size());
+			current = this.eventTables.get(idx);
+		}
+		else{
+			current = this.leastFitTable();
+		}
 		//EventTable current = this.getEventTableByNumber(et.getEventTableNum());
-		EventTable current = this.leastFitTable();
+		
 		System.out.println("Currently in SeatingArrangement table#" + current.getEventTableNum());
 		int i = 1;
 		for(Guest g : current.getGuests()){
@@ -331,9 +351,8 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 		BigDecimal fitness = BigDecimal.ZERO;
 		
 		for(EventTable et : this.eventTables){
-			if(et.getFitnessRating() == null) {
-				et.calculateFitness();
-			}
+			et.calculateFitness();
+			
 			if(!et.isValid()){
 				this.saValid = false;
 			}

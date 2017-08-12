@@ -174,12 +174,13 @@ public class Event implements Serializable {
 		while(population.last().getOverallFitnessRating().compareTo(threshold) == -1){
 			for(int i = 0; i < population.size(); i++){
 				parent = population.pollLast();
+				parent.setMutationFactor(mutationFactor.nextInt(9999));
 				child = parent.crossover(population.last());
 				topTen.add(parent);	
 				if(child != null && !population.contains(child)){
 					population.add(child);
 					
-					while(population.size() > 100){
+					while(population.size() > 75){
 						population.pollFirst();
 						Collections.sort(topTen, Collections.reverseOrder());
 					}
@@ -195,6 +196,7 @@ public class Event implements Serializable {
 //					else if() {
 //				
 //					}
+				if(mutationFactor.nextInt(9999)% 21 == 0);
 				
 			}
 			
@@ -219,7 +221,11 @@ public class Event implements Serializable {
 //						
 //				}
 //			}
-			currentMostFit = this.getTopValid(population, threshold);
+			
+			if(population.last().isValid()){
+				currentMostFit = population.pollLast();
+			}
+			//currentMostFit = this.getTopValid(population, threshold);
 			
 			System.out.println("solution fitness" + population.last().getOverallFitnessRating());
 		}
