@@ -634,7 +634,7 @@ public class TabletopsService {
 		userTransaction.begin();
 		Boolean result = guest.moveToTable(eventTable);
 		userTransaction.commit();
-		if(result) {
+		if(result == true) {
 			messages.add(new Message("op001", "Success Operation", ""));
 		}
 		else {
