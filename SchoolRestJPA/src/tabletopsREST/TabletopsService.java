@@ -630,7 +630,10 @@ public class TabletopsService {
 			messages.add(new Message("op002", "Fail Operation", ""));
 			return messages;
 		}
+		EntityTransaction userTransaction = EM.getEM().getTransaction();
+		userTransaction.begin();
 		Boolean result = guest.moveToTable(eventTable);
+		userTransaction.commit();
 		if(result) {
 			messages.add(new Message("op001", "Success Operation", ""));
 		}
