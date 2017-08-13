@@ -217,7 +217,7 @@ public class Event implements Serializable {
 			return false;
 	}
 
-	public SeatingArrangement bullshit() {
+	public SeatingArrangement acquireSA() {
 		return seatingArrangement;
 	}
 

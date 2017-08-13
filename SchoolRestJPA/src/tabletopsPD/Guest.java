@@ -311,7 +311,7 @@ public class Guest implements Serializable, Cloneable {
 			newEventTable.addGuest(g);
 		}
 
-		boolean isValidSeatingArrangement = this.event.bullshit().isValid();
+		boolean isValidSeatingArrangement = this.event.acquireSA().isValid();
 		if (isValidSeatingArrangement == true) {
 			return true;
 		} else {
