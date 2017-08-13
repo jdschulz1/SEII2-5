@@ -44,10 +44,7 @@ public class Guest implements Serializable, Cloneable {
 		this.blacklist = new ArrayList<Guest>();
 		this.whitelist = new ArrayList<Guest>();
 		this.eventTable = EventTable.getDefaultTable();
-		// EntityTransaction userTransaction = EM.getEM().getTransaction();
-		// userTransaction.begin();
 		GuestDAO.addGuest(this);
-		// userTransaction.commit();
 	}
 
 	public Guest guestCopy() {
@@ -150,33 +147,24 @@ public class Guest implements Serializable, Cloneable {
 	 * A method for adding to the Black List of Guests for the current Guest.
 	 */
 	public void addToBlackList(Guest member) {
-		// EntityTransaction userTransaction = EM.getEM().getTransaction();
-		// userTransaction.begin();
 		this.blacklist.add(member);
 		GuestDAO.saveGuest(this);
-		// userTransaction.commit();
 	}
 
 	/**
 	 * A method for adding to the White List of Guests for the current Guest.
 	 */
 	public void addToWhiteList(Guest member) {
-		// EntityTransaction userTransaction = EM.getEM().getTransaction();
-		// userTransaction.begin();
 		this.whitelist.add(member);
 		GuestDAO.saveGuest(this);
-		// userTransaction.commit();
 	}
 
 	/**
 	 * A method for remove from the Black List of Guests for the current Guest.
 	 */
 	public void removeFromBlackList(Guest member) {
-		// EntityTransaction userTransaction = EM.getEM().getTransaction();
-		// userTransaction.begin();
 		this.blacklist.remove(member);
 		GuestDAO.saveGuest(this);
-		// userTransaction.commit();
 	}
 
 	/**
@@ -184,11 +172,8 @@ public class Guest implements Serializable, Cloneable {
 	 * Guest.
 	 */
 	public void removeFromWhiteList(Guest member) {
-		// EntityTransaction userTransaction = EM.getEM().getTransaction();
-		// userTransaction.begin();
 		this.whitelist.remove(member);
 		GuestDAO.saveGuest(this);
-		// userTransaction.commit();
 	}
 
 	public int getGuestNumber() {
