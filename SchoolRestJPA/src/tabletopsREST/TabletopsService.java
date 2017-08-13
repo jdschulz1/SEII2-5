@@ -52,8 +52,6 @@ import tabletopsDAO.EventTableDAO;
 import tabletopsDAO.SeatingArrangementDAO;
 import tabletopsDAO.CompanyDAO;
 import tabletopsPD.Token;
-import tabletopsPD.Role;
-import tabletopsPD.RoleAssignment;
 
 @Path("/tabletopservices")
 public class TabletopsService {
@@ -176,6 +174,18 @@ public class TabletopsService {
 			
 			//EM.getEM().getTransaction().begin();
 			Boolean result = event.calculateSeatingArrangement(new BigDecimal(100));
+			//System.out.println(event.bullshit().isValid());
+			//EventTable et6;
+			//When 13 has blacklist entries for 6, 13 can't move to 6
+//			for(EventTable et : event.bullshit().getEventTables()){
+//				if(et.getGuests().contains(event.bullshit().findGuestByNumber(6))){
+//					et6 = et;
+//					System.out.println(event.findGuestByGuestNumber(13).moveToTable(et6));
+//					break;
+//				}
+//			}
+			
+			//System.out.println(event.bullshit().isValid());
 			//EM.getEM().getTransaction().commit();
 			EM.getEM().getTransaction().begin();
 			SeatingArrangementDAO.addSeatingArrangement(event.bullshit());
@@ -189,10 +199,6 @@ public class TabletopsService {
 			EM.getEM().getTransaction().begin();
 			result = result && oldEvent.update(event);
 			
-			EntityTransaction userTransaction = EM.getEM().getTransaction();
-			userTransaction.begin();
-			Boolean result = event.calculateSeatingArrangement(new BigDecimal(100));
-			oldEvent.update(event);
 			EM.getEM().getTransaction().commit();
 			
 			if (result) {
