@@ -174,6 +174,7 @@ public class TabletopsService {
 			
 			//EM.getEM().getTransaction().begin();
 			Boolean result = event.calculateSeatingArrangement(new BigDecimal(100));
+			event.bullshit().setEventTableIDs();
 			//System.out.println(event.bullshit().isValid());
 			//EventTable et6, et13, etmove;
 			//Guest guest13 = event.findGuestByGuestNumber(13);
@@ -204,6 +205,7 @@ public class TabletopsService {
 				EventTableDAO.addEventTable(et);
 				EM.getEM().getTransaction().commit();
 			}
+			
 			EM.getEM().getTransaction().begin();
 			result = result && oldEvent.update(event);
 			

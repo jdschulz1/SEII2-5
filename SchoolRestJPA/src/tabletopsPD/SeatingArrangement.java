@@ -27,6 +27,7 @@ import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import tabletopsDAO.EventTableDAO;
 import tabletopsDAO.GuestDAO;
 import tabletopsDAO.SeatingArrangementDAO;
 import tabletopsUT.Message;
@@ -76,6 +77,16 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 	public void setMutationFactor(int mutationFactor) {
 		this.mutationFactor = mutationFactor;
 	}
+	
+	public void setEventTableIDs(){
+		List<EventTable> dbETList = EventTableDAO.listEventTable();
+		long startidx = dbETList.get(dbETList.size()-1).getEventTableId()+1;
+		
+		for(int i = 0; i < this.eventTables.size(); i++){
+			this.eventTables.get(i).setEventTableId(startidx+i);
+		}
+	}
+	
 
 	@OneToMany(cascade = CascadeType.ALL, 
 	        mappedBy = "seatingArrangement", orphanRemoval = true)
