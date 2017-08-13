@@ -18,7 +18,6 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.MatrixParam;
-import javax.ws.rs.OPTIONS;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -34,19 +33,19 @@ import javax.ws.rs.core.SecurityContext;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
-import tabletopsPD.Company;
+import tabletopsDAO.CompanyDAO;
+import tabletopsDAO.EM;
+import tabletopsDAO.EventDAO;
 import tabletopsPD.Client;
+import tabletopsPD.Company;
 import tabletopsPD.Event;
 import tabletopsPD.EventTable;
 import tabletopsPD.Guest;
 import tabletopsPD.SeatingArrangement;
+import tabletopsPD.Token;
 import tabletopsPD.User;
 import tabletopsUT.Log;
 import tabletopsUT.Message;
-import tabletopsDAO.EM;
-import tabletopsDAO.EventDAO;
-import tabletopsDAO.CompanyDAO;
-import tabletopsPD.Token;
 
 @Path("/tabletopservices")
 public class TabletopsService {
