@@ -225,9 +225,10 @@ public class Event implements Serializable {
 		SeatingArrangement newSA = sa;
 		List<Guest> newGuestList = new ArrayList<Guest>();
 		for (EventTable et : newSA.getEventTables()) {
-			for (Guest g : et.getGuests()) {
-				
-				this.guestCloneMerge(g, et);
+			int etGuestSize = et.getGuests().size();
+			for (int i = 0, mods = 0 ; i < etGuestSize; i++, mods++) {
+				int idx = i-mods;
+				this.guestCloneMerge(et.getGuests().get(idx), et);
 			}
 		}
 		// this.guestList = newGuestList;
@@ -236,8 +237,11 @@ public class Event implements Serializable {
 
 	public Guest guestCloneMerge(Guest g, EventTable et) {
 		Guest orig = this.findGuestByGuestNumber(g.getGuestNumber());
+		et.removeGuest(g);
+		et.addGuest(orig);
 		orig.setGuestFitness(g.getGuestFitness());
 		orig.setEventTable(et);
+		
 		return orig;
 	}
 

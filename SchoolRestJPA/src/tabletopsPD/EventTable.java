@@ -214,6 +214,10 @@ public class EventTable implements Serializable, Cloneable, Comparable {
 		g.setEventTable(this);
 		guests.add(g);
 	}
+	
+	public void tempAddGuest(Guest g){
+		guests.add(g);
+	}
 
 	public void removeGuest(Guest g) {
 		guests.remove(g);

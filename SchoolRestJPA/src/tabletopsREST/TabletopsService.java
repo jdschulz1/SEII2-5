@@ -174,7 +174,7 @@ public class TabletopsService {
 			
 			//EM.getEM().getTransaction().begin();
 			Boolean result = event.calculateSeatingArrangement(new BigDecimal(100));
-			event.bullshit().setEventTableIDs();
+			event.acquireSA().setEventTableIDs();
 			//System.out.println(event.bullshit().isValid());
 			//EventTable et6, et13, etmove;
 			//Guest guest13 = event.findGuestByGuestNumber(13);
@@ -199,12 +199,12 @@ public class TabletopsService {
 			EM.getEM().getTransaction().begin();
 			SeatingArrangementDAO.addSeatingArrangement(event.acquireSA());
 			EM.getEM().getTransaction().commit();
-			
-			for(EventTable et : event.acquireSA().getEventTables()){
-				EM.getEM().getTransaction().begin();
-				EventTableDAO.addEventTable(et);
-				EM.getEM().getTransaction().commit();
-			}
+//			
+//			for(EventTable et : event.acquireSA().getEventTables()){
+//				EM.getEM().getTransaction().begin();
+//				EventTableDAO.addEventTable(et);
+//				EM.getEM().getTransaction().commit();
+//			}
 			
 			EM.getEM().getTransaction().begin();
 			result = result && oldEvent.update(event);

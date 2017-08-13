@@ -123,12 +123,12 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 	    	 newGuest = newArrangement.event.getGuestList().get(guestidx).guestCopy();
 	    	 
 	    	 if(newArrangement.eventTables.get(newArrangement.eventTables.size()-1).getGuests().size() < newArrangement.event.getEventTableSize()){
-	    		 newArrangement.eventTables.get(newArrangement.eventTables.size()-1).addGuest(newGuest);
+	    		 newArrangement.eventTables.get(newArrangement.eventTables.size()-1).tempAddGuest(newGuest);
 	    		 newGuest.setEventTable(newArrangement.eventTables.get(newArrangement.eventTables.size()-1));
 	    	 }
 	    	 else{
 	    		 EventTable newTable = new EventTable(newArrangement.eventTables.size()+1);
-	    		 newTable.addGuest(newGuest);
+	    		 newTable.tempAddGuest(newGuest);
 	    		 newGuest.setEventTable(newTable);
 	    		 newTable.setSeatingArrangement(newArrangement);
 	    		 newArrangement.eventTables.add(newTable);
@@ -271,11 +271,11 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 			
 			for(EventTable et : this.eventTables){
 				if(et.getGuests().size() < tableSize){
-					et.addGuest(g);
+					et.tempAddGuest(g);
 					while(et.getGuests().size() < tableSize && i+1 < guests.size()){
 						i++;
 						g = guests.get(i);
-						et.addGuest(g);
+						et.tempAddGuest(g);
 						System.out.println("Added guest " + g.getName() + " to table #" + et.getEventTableNum());
 					}
 					break;
@@ -379,7 +379,6 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 		this.overallFitnessRating = fitness.divide(BigDecimal.valueOf(this.eventTables.size()), 2, RoundingMode.HALF_UP);
 	}
 	
-	// TODO: Check if seating valid 
 	public Boolean isValid() {
 		this.calculateOverallFitness();
 		return saValid;
