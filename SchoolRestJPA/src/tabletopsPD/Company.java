@@ -25,43 +25,39 @@ import tabletopsDAO.UserDAO;
 import tabletopsDAO.TokenDAO;
 
 /**
- * The object representing the system and overall company information for ACME Couriers.
+ * The object representing the system and overall company information for ACME
+ * Couriers.
  */
 @XmlRootElement(name = "company")
 @Entity(name = "company")
-public class Company implements Serializable{
+public class Company implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Id //signifies the primary key
+	@Id // signifies the primary key
 	@Column(name = "company_id", nullable = false)
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long companyId;
-	
+
 	/**
 	 * The name of the Company.
 	 */
-	@Column(name = "company_name",nullable = false,length = 20)
+	@Column(name = "company_name", nullable = false, length = 20)
 	private String companyName;
-	
-	@OneToMany(cascade = CascadeType.ALL, 
-	        mappedBy = "company", orphanRemoval = true)
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "company", orphanRemoval = true)
 	private List<Client> clients;
-	
-	@OneToMany(cascade = CascadeType.ALL, 
-	        mappedBy = "company", orphanRemoval = true)
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "company", orphanRemoval = true)
 	private List<Event> events;
-	
-	@OneToMany(cascade = CascadeType.ALL, 
-	        mappedBy = "company", orphanRemoval = true)
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "company", orphanRemoval = true)
 	private List<User> users;
-	
+
 	private Collection<Token> tokens;
-	private Collection<Role> roles;
-	
 
 	public String getCompanyName() {
 		return this.companyName;
@@ -81,45 +77,46 @@ public class Company implements Serializable{
 	public void setClients(List<Client> clients) {
 		this.clients = clients;
 	}
-	
+
 	public Boolean addClient(Client client) {
-		//TODO: Double check this line
+		// TODO: Double check this line
 		this.clients.add(client);
-		//WHY!?!?!?!?!?!?!??!
-//		client.setCompany(this);
+		// WHY!?!?!?!?!?!?!??!
+		// client.setCompany(this);
 		ClientDAO.addClient(client);
 		return true;
 	}
-	
+
 	public Boolean addUser(User user) {
-		//TODO: Double check this line
+		// TODO: Double check this line
 		this.users.add(user);
-//		user.setCompany(this);
+		// user.setCompany(this);
 		UserDAO.addUser(user);
 		return true;
 	}
-	
+
 	public Boolean addEvent(Event event) {
-		//TODO: Double check this line
+		// TODO: Double check this line
 		this.events.add(event);
-//		event.setCompany(this);
+		// event.setCompany(this);
 		EventDAO.addEvent(event);
 		return true;
 	}
-	
-//	public Boolean addGuest(Guest guest) {
-//		//TODO: Double check this line
-//		this.guests.add(guest);
-//		GuestDAO.addGuest(guest);
-//		return true;
-//	}
-	
-//	public Boolean addGuestToSeatingArrangement(SeatingArrangement seatingArrangement) {
-//		//TODO: Double check this line
-//		this.seatingArrangements.add(seatingArrangement);
-//		SeatingArrangementDAO.addSeatingArrangement(seatingArrangement);
-//		return true;
-//	}
+
+	// public Boolean addGuest(Guest guest) {
+	// //TODO: Double check this line
+	// this.guests.add(guest);
+	// GuestDAO.addGuest(guest);
+	// return true;
+	// }
+
+	// public Boolean addGuestToSeatingArrangement(SeatingArrangement
+	// seatingArrangement) {
+	// //TODO: Double check this line
+	// this.seatingArrangements.add(seatingArrangement);
+	// SeatingArrangementDAO.addSeatingArrangement(seatingArrangement);
+	// return true;
+	// }
 
 	@JsonIgnore
 	public List<Event> getEvents() {
@@ -140,115 +137,116 @@ public class Company implements Serializable{
 	public void setUsers(List<User> users) {
 		this.users = users;
 	}
-	
+
 	public List<Event> getAllEvents(int page, int perPage) {
-		
-		List<Event> eventList= EventDAO.getAllEvents(page,  perPage);
+
+		List<Event> eventList = EventDAO.getAllEvents(page, perPage);
 		return eventList;
 	}
-	
+
 	public List<SeatingArrangement> getAllSeatingArrangements(int page, int perPage) {
-		
-		List<SeatingArrangement> seatingArrangementList= SeatingArrangementDAO.getAllSeatingArrangements(page,  perPage);
+
+		List<SeatingArrangement> seatingArrangementList = SeatingArrangementDAO.getAllSeatingArrangements(page,
+				perPage);
 		return seatingArrangementList;
 	}
-	
+
 	public List<EventTable> getEventTablesForEvent(String idNumber) {
 		Event event = EventDAO.findEventByIdNumber(idNumber);
 		List<EventTable> eventTableList = event.bullshit().getEventTables();
 		return eventTableList;
 	}
-	
-	
+
 	public List<Event> getEventsForUser(String token, int page, int perPage) {
 		User user = UserDAO.findUserByToken(token);
-		List<Event> eventList= user.getEvents();
+		List<Event> eventList = user.getEvents();
 		return eventList;
 	}
-	
+
 	public List<Event> getEventsForClient(String idNumber, int page, int perPage) {
-		
-		List<Event> eventList= EventDAO.getEventsForClient(idNumber, page,  perPage);
+
+		List<Event> eventList = EventDAO.getEventsForClient(idNumber, page, perPage);
 		return eventList;
 	}
-	
+
 	public List<Event> getEventsForDate(String date, int page, int perPage) {
-		
-		List<Event> eventList= EventDAO.getEventsForDate(date, page,  perPage);
+
+		List<Event> eventList = EventDAO.getEventsForDate(date, page, perPage);
 		return eventList;
 	}
-	
+
 	public List<Event> getEventsForClientAndDate(String idNumber, String date, int page, int perPage) {
-		
-		List<Event> eventList= EventDAO.getEventsForClientAndDate(idNumber, date, page,  perPage);
+
+		List<Event> eventList = EventDAO.getEventsForClientAndDate(idNumber, date, page, perPage);
 		return eventList;
 	}
-	
+
 	public Event findEventByIdNumber(String idNumber) {
-	    return EventDAO.findEventByIdNumber(idNumber); 
+		return EventDAO.findEventByIdNumber(idNumber);
 	}
-	
+
 	public EventTable findEventTableByIdNumber(String idNumber) {
-	    return EventTableDAO.findEventTableByIdNumber(idNumber); 
+		return EventTableDAO.findEventTableByIdNumber(idNumber);
 	}
-	
+
 	public SeatingArrangement findSeatingArrangementByIdNumber(String idNumber) {
-	    return SeatingArrangementDAO.findSeatingArrangementByIdNumber(idNumber); 
+		return SeatingArrangementDAO.findSeatingArrangementByIdNumber(idNumber);
 	}
-	
+
 	public List<Guest> getGuestsForEvent(String idNumber, int page, int perPage) {
-		List<Guest> guestList= EventDAO.getGuestsForEvent(idNumber, page,  perPage);
+		List<Guest> guestList = EventDAO.getGuestsForEvent(idNumber, page, perPage);
 		System.out.println(guestList.toString());
 		return guestList;
 	}
-	
+
 	public List<Guest> getGuestsForTable(String idNumber, int page, int perPage) {
-		List<Guest> guestList= EventTableDAO.getGuestsForTable(idNumber, page,  perPage);
+		List<Guest> guestList = EventTableDAO.getGuestsForTable(idNumber, page, perPage);
 		return guestList;
 	}
-	
+
 	public Guest findGuestByIdNumber(String idNumber) {
-	    return GuestDAO.findGuestByIdNumber(idNumber); 
+		return GuestDAO.findGuestByIdNumber(idNumber);
 	}
-	
+
 	public List<Client> getAllClients(int page, int perPage) {
-		List<Client> clientList= ClientDAO.getAllClients(page,  perPage);
+		List<Client> clientList = ClientDAO.getAllClients(page, perPage);
 		return clientList;
 	}
-	
+
 	public Client findClientByIdNumber(String idNumber) {
-	    return ClientDAO.findClientByIdNumber(idNumber); 
+		return ClientDAO.findClientByIdNumber(idNumber);
 	}
-	
+
 	public List<User> getAllUsers(int page, int perPage) {
-		List<User> userList= UserDAO.getAllUsers(page,  perPage);
+		List<User> userList = UserDAO.getAllUsers(page, perPage);
 		return userList;
 	}
-	
+
 	public User findUserByIdNumber(String idNumber) {
-	    return UserDAO.findUserByIdNumber(idNumber); 
+		return UserDAO.findUserByIdNumber(idNumber);
 	}
+
 	public static User findUserByUserName(String userName) {
-	    return UserDAO.findUserByUserName(userName);
-	 }
-	
-	 public Collection<Token> getTokens() {
-		    return this.tokens;
-		  }
+		return UserDAO.findUserByUserName(userName);
+	}
 
-		  public void setTokens(Collection<Token> tokens) {
-		    this.tokens = tokens;
-		  }
+	public Collection<Token> getTokens() {
+		return this.tokens;
+	}
 
-//		  public Collection<User> getUsers() {
-//		    return this.users;
-//		  }
+	public void setTokens(Collection<Token> tokens) {
+		this.tokens = tokens;
+	}
 
-		  /**
-		   * 
-		   * @param token
-		   */
-		  public static Token findToken(String token) {
-		    return TokenDAO.findTokenByToken(token);
-		  }
+	// public Collection<User> getUsers() {
+	// return this.users;
+	// }
+
+	/**
+	 * 
+	 * @param token
+	 */
+	public static Token findToken(String token) {
+		return TokenDAO.findTokenByToken(token);
+	}
 }

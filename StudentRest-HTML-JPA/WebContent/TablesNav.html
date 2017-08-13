@@ -13,6 +13,29 @@
 
 <script type="text/javascript">
 	
+function getCookie(cname) {
+	console.log("get cookie");
+	var name = cname + "=";
+	var decodedCookie = decodeURIComponent(document.cookie);
+	var ca = decodedCookie.split(';');
+	for (var i = 0; i < ca.length; i++) {
+		var c = ca[i];
+		while (c.charAt(0) == ' ') {
+			c = c.substring(1);
+		}
+		if (c.indexOf(name) == 0) {
+			return c.substring(name.length, c.length);
+		}
+	}
+	return "";
+}
+
+function setHeader(xhr) {
+	console.log("set Header");
+	token = getCookie("token");
+	console.log("Token: " + token);
+	xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+}
 
 function generateSeatingArrangement(){
 	  var id = localStorage.eventId;
@@ -20,7 +43,7 @@ function generateSeatingArrangement(){
 			var url = "/SchoolRestJPA/rest/tabletopservices/events/" + id + "/generateSeatingArrangement";
 	  
 		 $.ajax({ 
-			   type: "POST",  
+			   type: "PUT",  
 		       url: url,  
 		       dataType: "json",  
 		       success: function(resp){  
@@ -31,7 +54,8 @@ function generateSeatingArrangement(){
 		    	    alert("There was an error.");
 		    	    console.log("Error" + jqXHR.responseText);
 		    	    console.log(exception.responseText);
-		    	  }  
+		    	  },
+		    	  beforeSend: setHeader
 			});
 		}
 	}

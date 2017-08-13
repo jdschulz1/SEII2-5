@@ -17,7 +17,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import tabletopsDAO.TokenDAO;
-import tabletopsDAO.UserDAO;
 @XmlRootElement(name = "token")
 @Entity(name = "token")
 public class Token implements Serializable {
