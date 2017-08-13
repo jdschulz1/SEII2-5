@@ -175,13 +175,21 @@ public class TabletopsService {
 			//EM.getEM().getTransaction().begin();
 			Boolean result = event.calculateSeatingArrangement(new BigDecimal(100));
 			//System.out.println(event.bullshit().isValid());
-			//EventTable et6;
+			//EventTable et6, et13, etmove;
+			//Guest guest13 = event.findGuestByGuestNumber(13);
+			//String table13 = guest13.getEventTableNumber();
 			//When 13 has blacklist entries for 6, 13 can't move to 6
 //			for(EventTable et : event.bullshit().getEventTables()){
 //				if(et.getGuests().contains(event.bullshit().findGuestByNumber(6))){
 //					et6 = et;
 //					System.out.println(event.findGuestByGuestNumber(13).moveToTable(et6));
-//					break;
+//				}
+//				else if(et.getGuests().contains(event.bullshit().findGuestByNumber(13))){
+//					et13 = et;
+//				}
+//				else {
+//					etmove = et;
+//					System.out.println(guest13.moveToTable(etmove) ? guest13.getName() + " moved to table #" + etmove.getEventTableNum() + " from table #" + table13 : "Noone moved :(");
 //				}
 //			}
 			
