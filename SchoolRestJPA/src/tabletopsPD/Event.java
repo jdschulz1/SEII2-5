@@ -119,7 +119,7 @@ public class Event implements Serializable {
 	@OneToOne(mappedBy = "event",
 	        cascade = CascadeType.ALL, orphanRemoval = true)
 	private SeatingArrangement seatingArrangement;
-	
+
 	@OneToMany(cascade = CascadeType.ALL, 
 	        mappedBy = "event", orphanRemoval = true)
 	private List<Guest> guestList;
@@ -226,6 +226,7 @@ public class Event implements Serializable {
 		List<Guest> newGuestList = new ArrayList<Guest>();
 		for(EventTable et : newSA.getEventTables()){
 			for(Guest g : et.getGuests()){
+				
 				this.guestCloneMerge(g, et);
 			}
 		}
@@ -246,7 +247,9 @@ public class Event implements Serializable {
 		}
 		return null;
 	}
-
+	
+	//public boolean test
+	
 	/**
 	 * A method for adding to the List of Guests attending the Event.
 	 */

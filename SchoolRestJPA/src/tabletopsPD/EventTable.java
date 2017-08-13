@@ -75,6 +75,7 @@ public class EventTable implements Serializable, Cloneable, Comparable{
 	/**
 	 * @param eventTableId the eventTableId to set
 	 */
+	@XmlElement
 	public void setEventTableId(long eventTableId) {
 		this.eventTableId = eventTableId;
 	}

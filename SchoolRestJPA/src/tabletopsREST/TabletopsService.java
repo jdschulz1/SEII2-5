@@ -45,6 +45,8 @@ import tabletopsUT.Log;
 import tabletopsUT.Message;
 import tabletopsDAO.EM;
 import tabletopsDAO.EventDAO;
+import tabletopsDAO.EventTableDAO;
+import tabletopsDAO.SeatingArrangementDAO;
 import tabletopsDAO.CompanyDAO;
 import tabletopsPD.Token;
 import tabletopsPD.Role;
@@ -169,11 +171,22 @@ public class TabletopsService {
 				return errMessages;
 			}
 			
-			EntityTransaction userTransaction = EM.getEM().getTransaction();
-			userTransaction.begin();
-			Boolean result = event.calculateSeatingArrangement(new BigDecimal(100)) && oldEvent.update(event);
+			//EM.getEM().getTransaction().begin();
+			Boolean result = event.calculateSeatingArrangement(new BigDecimal(100));
+			//EM.getEM().getTransaction().commit();
+			EM.getEM().getTransaction().begin();
+			SeatingArrangementDAO.addSeatingArrangement(event.bullshit());
+			EM.getEM().getTransaction().commit();
 			
-			userTransaction.commit();
+			for(EventTable et : event.bullshit().getEventTables()){
+				EM.getEM().getTransaction().begin();
+				EventTableDAO.addEventTable(et);
+				EM.getEM().getTransaction().commit();
+			}
+			EM.getEM().getTransaction().begin();
+			result = result && oldEvent.update(event);
+			
+			EM.getEM().getTransaction().commit();
 			
 			if (result) {
 				messages.add(new Message("op001", "Success Operation", ""));
