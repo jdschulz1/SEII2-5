@@ -197,10 +197,10 @@ public class TabletopsService {
 			//System.out.println(event.bullshit().isValid());
 			//EM.getEM().getTransaction().commit();
 			EM.getEM().getTransaction().begin();
-			SeatingArrangementDAO.addSeatingArrangement(event.bullshit());
+			SeatingArrangementDAO.addSeatingArrangement(event.acquireSA());
 			EM.getEM().getTransaction().commit();
 			
-			for(EventTable et : event.bullshit().getEventTables()){
+			for(EventTable et : event.acquireSA().getEventTables()){
 				EM.getEM().getTransaction().begin();
 				EventTableDAO.addEventTable(et);
 				EM.getEM().getTransaction().commit();
