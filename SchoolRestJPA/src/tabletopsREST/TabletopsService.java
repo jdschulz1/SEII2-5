@@ -47,8 +47,6 @@ import tabletopsDAO.EM;
 import tabletopsDAO.EventDAO;
 import tabletopsDAO.CompanyDAO;
 import tabletopsPD.Token;
-import tabletopsPD.Role;
-import tabletopsPD.RoleAssignment;
 
 @Path("/tabletopservices")
 public class TabletopsService {
@@ -171,8 +169,8 @@ public class TabletopsService {
 			
 			EntityTransaction userTransaction = EM.getEM().getTransaction();
 			userTransaction.begin();
-			Boolean result = event.calculateSeatingArrangement(new BigDecimal(100)) && oldEvent.update(event);
-			
+			Boolean result = event.calculateSeatingArrangement(new BigDecimal(100));
+			oldEvent.update(event);
 			userTransaction.commit();
 			
 			if (result) {
