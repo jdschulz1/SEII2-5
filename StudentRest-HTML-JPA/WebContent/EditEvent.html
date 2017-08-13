@@ -124,10 +124,11 @@ function setHeader(xhr) {
  		         	$("#inputTableEmptySpots").val(data.maxEmptySeats);
  		         	console.log(data.primaryPlanner.userID);
  		         	console.log(data.primaryPlanner.name);
- 		         	$("#selectPrimaryPlanner").val(data.primaryPlanner.userID).change();
+ 		         	
+ 		         	$("#selectPrimaryPlanner").val(data.primaryPlanner.userID).prop('selected', true);
  		         	$("#inputTableSize").val(data.eventTableSize);
  		         	
- 		         		$("#selectClientName").val(data.client.clientID).change();	
+ 		         		$("#selectClientName").val(data.client.clientID).prop('selected', true);	
  	
  		         	
 		         },
