@@ -92,7 +92,7 @@ public class EventTable implements Serializable, Cloneable, Comparable {
 	@Transient
 	private boolean isValid;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "eventTable", orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "eventTable", orphanRemoval = false)
 	private List<Guest> guests;
 
 	@ManyToOne(optional = false)

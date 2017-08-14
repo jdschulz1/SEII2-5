@@ -175,9 +175,18 @@ public class TabletopsService {
 			Boolean result; 
 			
 			//EM.getEM().getTransaction().begin();
-			if(event.acquireSA() == null){
+			if(event.acquireSA() != null){
+				List<Guest> guests = event.acquireSA().allGuests();
+				for(EventTable et : event.acquireSA().getEventTables()){
+					for(int i = 0; i < et.getGuests().size(); ){
+						et.getGuests().get(i).setEventTable(EventTable.getDefaultTable());
+						et.removeGuest(et.getGuests().get(i));
+					}
+				}
 				
-			
+				event.acquireSA().delete();
+			}
+				
 			result = event.calculateSeatingArrangement(new BigDecimal(100));
 			event.acquireSA().setEventTableIDs();
 			//System.out.println(event.bullshit().isValid());
@@ -198,7 +207,7 @@ public class TabletopsService {
 //					System.out.println(guest13.moveToTable(etmove) ? guest13.getName() + " moved to table #" + etmove.getEventTableNum() + " from table #" + table13 : "Noone moved :(");
 //				}
 //			}
-			
+			//EM.getEM().clear();
 			//System.out.println(event.bullshit().isValid());
 			//EM.getEM().getTransaction().commit();
 			EM.getEM().getTransaction().begin();
@@ -207,8 +216,6 @@ public class TabletopsService {
 			result = result && oldEvent.update(event);
 			
 			EM.getEM().getTransaction().commit();
-			}
-			else result = true;
 			
 			if (result) {
 				messages.add(new Message("op001", "Success Operation", ""));
