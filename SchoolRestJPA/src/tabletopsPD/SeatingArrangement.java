@@ -76,6 +76,17 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 
 	public void setMutationFactor(int mutationFactor) {
 		this.mutationFactor = mutationFactor;
+		
+		if (mutationFactor % 21 == 0){
+			Random guestNo = new Random(System.currentTimeMillis());
+			Mutation deadpool = this.mutate(this.findGuestByNumber(guestNo.nextInt(this.event.getGuestList().size())), guestNo.nextInt(this.eventTables.size())+1);
+			EventTable movET = this.getEventTableByNumber(Integer.parseInt(deadpool.getMoving().getEventTableNumber())),
+					displET = this.getEventTableByNumber(Integer.parseInt(deadpool.getDisplaced().getEventTableNumber()));
+			movET.removeGuest(deadpool.getMoving());
+			displET.removeGuest(deadpool.getDisplaced());
+			movET.addGuest(deadpool.getDisplaced());
+			displET.addGuest(deadpool.getMoving());
+		}
 	}
 	
 	public void setEventTableIDs(){
@@ -145,7 +156,7 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 		//EventTable moveTable = this.eventTables.get(Integer.parseInt(moveTableNum));
 		//EventTable origTable = this.eventTables.get(Integer.parseInt(orig.getEventTableNumber()));
 		EventTable moveTable  = this.getEventTableByNumber(moveTableNum);
-		String origTableNum = this.findGuestByNumber(orig.getGuestNumber()).getEventTableNumber();
+		String origTableNum = orig.getEventTableNumber();
 		//EventTable origTable = this.getEventTableByNumber(origTableNum);
 		
 		Guest displaced = moveTable.getGuests().get(0);
@@ -185,10 +196,13 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 		}
 		System.out.println("Equivalent table#" + et.getEventTableNum());
 		i = 1;
-		for(Guest g : et.getGuests()){
-			System.out.println("#" + i + " " + g.getName() + "(id#" + g.getGuestId() + " #" + g.getGuestNumber() + ") :" + g.getGuestFitness());
-			i++;
-		}
+//		for(Guest g : et.getGuests()){
+//			if(g == null){
+//				break;
+//			}
+//			System.out.println("#" + i + " " + g.getName() + "(id#" + g.getGuestId() + " #" + g.getGuestNumber() + ") :" + g.getGuestFitness());
+//			i++;
+//		}
 		
 		//1
 		this.destroyAllDupes(et.getGuests());
@@ -201,12 +215,9 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 		
 		//4
 		this.removeEventTable(current);
-		
+		et.setEventTableNum(current.getEventTableNum());
 		//5
 		this.addEventTable(et);
-		for(Guest g : et.getGuests()){
-			g.setEventTable(et);
-		}
 		
 		//6
 		this.fillSeats(diff);

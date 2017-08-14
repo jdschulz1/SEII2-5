@@ -180,8 +180,8 @@ public class Event implements Serializable {
 			while (population.last().getOverallFitnessRating().compareTo(threshold) == -1) {
 				for (int i = 0; i < population.size(); i++) {
 					parent = population.pollLast();
-					parent.setMutationFactor(mutationFactor.nextInt(9999));
 					child = parent.crossover(population.last());
+					child.setMutationFactor(mutationFactor.nextInt(9999));
 					topTen.add(parent);
 					if (child != null && !population.contains(child)) {
 						population.add(child);
@@ -190,10 +190,6 @@ public class Event implements Serializable {
 							population.pollFirst();
 							Collections.sort(topTen, Collections.reverseOrder());
 						}
-					}
-
-					if (mutationFactor.nextInt(9999) % 21 == 0){
-						//mutation by random guest moving tables
 					}
 				}
 
