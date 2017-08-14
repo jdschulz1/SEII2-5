@@ -150,7 +150,7 @@ public class Event implements Serializable {
 		Random mutationFactor = new Random(System.currentTimeMillis());
 
 		// for(int i = 0; i < 1000000; i++){
-		while (population.size() < 75) {
+		while (population.size() < 50) {
 			temp = SeatingArrangement.createArrangement(this);
 
 			// if(currentMostFit.getOverallFitnessRating() == null){
@@ -167,7 +167,7 @@ public class Event implements Serializable {
 		}
 
 		if (!population.last().isValid()) {
-			while (topTen.size() < 75) {
+			while (topTen.size() < 50) {
 				topTen.add(population.pollLast());
 			}
 			population.clear();
@@ -186,15 +186,15 @@ public class Event implements Serializable {
 					if (child != null && !population.contains(child)) {
 						population.add(child);
 
-						while (population.size() > 75) {
+						while (population.size() > 50) {
 							population.pollFirst();
 							Collections.sort(topTen, Collections.reverseOrder());
 						}
 					}
 
-					if (mutationFactor.nextInt(9999) % 21 == 0)
-						;
-
+					if (mutationFactor.nextInt(9999) % 21 == 0){
+						//mutation by random guest moving tables
+					}
 				}
 
 				for (SeatingArrangement sa : topTen) {

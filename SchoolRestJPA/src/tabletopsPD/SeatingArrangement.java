@@ -321,6 +321,8 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 			});
 			
 			for(int i = 0; i < saTables.size()/2; i++){
+				EventTable et = saTables.get(i);
+				et.setSeatingArrangement(this);
 				top50.add(saTables.get(i));
 			}
 			
@@ -364,6 +366,9 @@ public class SeatingArrangement implements Serializable, Cloneable, Comparable{
 		BigDecimal fitness = BigDecimal.ZERO;
 		
 		for(EventTable et : this.eventTables){
+			if(et.getSeatingArrangement() ==  null){
+				et.setSeatingArrangement(this);
+			}
 			et.calculateFitness();
 			
 			if(!et.isValid()){
