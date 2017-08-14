@@ -408,14 +408,14 @@
 		<div class="row">
 
 			<form id="guestForm" class="form-horizontal">
-				<div class="form-group">
+				<div class="form-group form-group-sm">
 				<input type="hidden" id="inputGuestId" name="guestId" value="">
 					<label for="inputName" class="col-sm-2 col-md-2 col-lg-2 control-label">Name</label>
 					<div class="col-sm-10 col-md-10 col-lg-10">
 					 <input	type="text" class="form-control" name="name"  id="inputName" placeholder="Guest Name">
 					</div>
 				</div>
-				<div class="form-group">
+				<div class="form-group form-group-sm">
 				
 					<label for="inputComment" class="col-sm-2 col-md-2 col-lg-2 control-label">Client
 						Relationship</label>
@@ -424,10 +424,12 @@
 							 <input type="text" class="form-control" id="inputRelationship" name="clientRelationship" placeholder="Relationship to Client">
 						</div>
 				</div>
-				<div class="btn-group pull-right">
-					<div class="col-md-12 col-lg-12 ">
-						<button type="submit" id="btnSubmit" class="btn btn-primary">Submit</button>
-						<button type="reset" id="btnCancel" class="btn btn-default">Cancel</button>
+				 <div class="col-lg-12 col-lg-12">
+       				<div class="form-group pull-right">
+      					<div class="btn-block">
+							<button type="submit" id="btnSubmit" class="btn btn-sm btn-primary">Submit</button>
+							<button type="reset" id="btnCancel" class="btn btn-sm btn-default">Cancel</button>
+						</div>
 					</div>
 				</div>
 			</form>
@@ -440,9 +442,11 @@
 				<div class="panel-heading clearfix">
 					<div class="pull-right">
 						<div class="form-inline">
+							<div class="form-group form-group-sm">
 								<select class="form-control" id="selectWhiteListGuest" name="EventTime">
 								</select>
-								<a href="javascript:addGuests(0)" id="whiteListAdd" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i>Add Guest</a>
+								</div>
+								<a href="javascript:addGuests(0)" id="whiteListAdd" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-plus"></i>Add Guest</a>
 								
 							
 						</div>
@@ -473,8 +477,10 @@
 					<div class="pull-right">
 						<div class="form-inline">
 							<div class="form-inline">
-							<select class="form-control form-control-sm" id="selectBlackListGuest" name="blacklist"></select>
-								<a href="javascript:addGuests(1)" id="blackListAdd" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i>Add Guest</a>
+								<div class="form-group form-group-sm">
+									<select class="form-control form-control-sm" id="selectBlackListGuest" name="blacklist"></select>
+								</div>
+								<a href="javascript:addGuests(1)" id="blackListAdd" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-plus"></i>Add Guest</a>
 							</div>
 						</div>
 					</div>
