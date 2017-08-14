@@ -8,11 +8,15 @@
          <class>tabletopsPD.Client</class>
          <class>tabletopsPD.Event</class>
          <class>tabletopsPD.Guest</class>
+         <class>tabletopsPD.Role</class>
+         <class>tabletopsPD.RoleAssignment</class>
          <class>tabletopsPD.Token</class>
          <class>tabletopsPD.SeatingArrangement</class>
          <class>tabletopsPD.Company</class>
          <class>tabletopsPD.EventTable</class>
          <class>tabletopsPD.User</class>
+         <class>tabletopsPD.J_Guest_BL</class>
+         <class>tabletopsPD.J_Guest_WL</class>
          <class>tabletopsDAO.LocalDateTimeConverter</class>
 
         <properties>
