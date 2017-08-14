@@ -103,7 +103,7 @@
       
       
 	  var userID = $("#inputUserID").val();
-	
+	  console.log(JSON.stringify(data));
 	  if(userID > 0){
 		  console.log(JSON.stringify(data));
 		  var url =  "/SchoolRestJPA/rest/tabletopservices/users/" + userID;	  
@@ -139,7 +139,7 @@
 	      });
 	  }else{ //new user
 	
-		  var url =  "/SchoolRestJPA/rest/tabletopservices/users/";	  
+		  var url =  "/SchoolRestJPA/rest/tabletopservices/users";	  
 			$.ajax({
 	          type: "POST",
 	          url: url,

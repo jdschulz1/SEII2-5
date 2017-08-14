@@ -73,7 +73,7 @@
 							},
 							405 : function(response) {
 								$('#page-message').html(
-										"Access to the page forbiden");
+										"Access to the page forbidden");
 								alert("Please login to access this page");
 								document.location.href = "/StudentRest-HTML-JPA/WebContent/Login.html", true;
 							}
@@ -147,7 +147,7 @@
 														+ event.eventId
 														+ ")\">Delete</a></td>"
 														+ "</tr>";
-
+												console.log(JSON.stringify(event.eventTitle));
 												$('#eventTable').append(
 														tableRow);
 											});
