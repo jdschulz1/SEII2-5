@@ -137,11 +137,13 @@ public class Event implements Serializable {
 
 		if (this.guestList.isEmpty())
 			return false;
-
+		
+		if (this.seatingArrangement != null){
+			this.seatingArrangement = null;
+		}
+		
 		NavigableSet<SeatingArrangement> population = new TreeSet<SeatingArrangement>();
-		SeatingArrangement temp,
-				currentMostFit = this.seatingArrangement != null ? this.seatingArrangement : new SeatingArrangement(),
-				parent, child;
+		SeatingArrangement temp, currentMostFit = new SeatingArrangement(), parent, child;
 		List<SeatingArrangement> topTen = new ArrayList<SeatingArrangement>();
 		if (this.seatingArrangement != null)
 			population.add(this.seatingArrangement);

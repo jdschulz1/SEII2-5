@@ -31,7 +31,6 @@
             
             <property name="eclipselink.logging.level" value="INFO" />
 			<property name="eclipselink.ddl-generation" value="create-tables" />
-			<property name="eclipselink.allow-zero-id" value="true"/>
         </properties>
 <!--         <persistence-unit name="School" transaction-type="RESOURCE_LOCAL"> -->
 <!--         <class>schoolPD.School</class> -->

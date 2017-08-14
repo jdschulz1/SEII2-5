@@ -173,6 +173,11 @@ public class TabletopsService {
 			}
 			
 			//EM.getEM().getTransaction().begin();
+			if(event.acquireSA() != null){
+				EM.getEM().getTransaction().begin();
+				event.acquireSA().delete();
+				EM.getEM().getTransaction().commit();
+			}
 			Boolean result = event.calculateSeatingArrangement(new BigDecimal(100));
 			event.acquireSA().setEventTableIDs();
 			//System.out.println(event.bullshit().isValid());
@@ -198,15 +203,7 @@ public class TabletopsService {
 			//EM.getEM().getTransaction().commit();
 			EM.getEM().getTransaction().begin();
 			SeatingArrangementDAO.addSeatingArrangement(event.acquireSA());
-			EM.getEM().getTransaction().commit();
-//			
-//			for(EventTable et : event.acquireSA().getEventTables()){
-//				EM.getEM().getTransaction().begin();
-//				EventTableDAO.addEventTable(et);
-//				EM.getEM().getTransaction().commit();
-//			}
 			
-			EM.getEM().getTransaction().begin();
 			result = result && oldEvent.update(event);
 			
 			EM.getEM().getTransaction().commit();
