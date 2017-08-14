@@ -172,13 +172,13 @@ public class TabletopsService {
 				return errMessages;
 			}
 			
+			Boolean result; 
+			
 			//EM.getEM().getTransaction().begin();
-			if(event.acquireSA() != null){
-				EM.getEM().getTransaction().begin();
-				event.acquireSA().delete();
-				EM.getEM().getTransaction().commit();
-			}
-			Boolean result = event.calculateSeatingArrangement(new BigDecimal(100));
+			if(event.acquireSA() == null){
+				
+			
+			result = event.calculateSeatingArrangement(new BigDecimal(100));
 			event.acquireSA().setEventTableIDs();
 			//System.out.println(event.bullshit().isValid());
 			//EventTable et6, et13, etmove;
@@ -207,6 +207,8 @@ public class TabletopsService {
 			result = result && oldEvent.update(event);
 			
 			EM.getEM().getTransaction().commit();
+			}
+			else result = true;
 			
 			if (result) {
 				messages.add(new Message("op001", "Success Operation", ""));
