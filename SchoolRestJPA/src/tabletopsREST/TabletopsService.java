@@ -1152,9 +1152,12 @@ public class TabletopsService {
 		String output = "File uploaded to : " + uploadFileLocation + fileDetail.getFileName();
 		
 		Event event = EventDAO.findEventByIdNumber(id);
-		Boolean result = event.importGuestList(uploadFileLocation + fileDetail.getFileName());
-		
-		if(result) {
+		EntityTransaction userTransaction = EM.getEM().getTransaction();
+		userTransaction.begin();
+		boolean result = event.importGuestList(uploadFileLocation + fileDetail.getFileName());
+		userTransaction.commit();
+		System.out.println("Guests at event: " + event.getGuestList().size());
+		if(result == true) {
 			return Response.status(200).entity(output).build();
 		}
 		else {
