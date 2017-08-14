@@ -46,7 +46,7 @@
 		xhr.setRequestHeader('Authorization', 'Bearer ' + token);
 	}
 		function loadUsersTable() {
-
+			var hasSeatingArrangment = true;
 			var id = localStorage.eventId;
 			if (id > 0) {
 				var guestsUrl = "/SchoolRestJPA/rest/tabletopservices/events/"
@@ -79,12 +79,18 @@
 
 								var guests = [];
 								var tableNums = [];
-
+							    
 								$
 										.each(
 												resp,
 												function(i, guest) {
-													if (guest.eventTableNumber == null) {
+													
+													if(guest.guestFitness == null){
+														console.log("Guest fitness null");
+														hasSeatingArrangment = false;
+														$('#guest_tables').html("<h1>No Seating Arrangment has been generated</h1");
+														return false;
+													}else if (guest.eventTableNumber == null) {
 														alert("No table for guest "
 																+ guest.name);
 													} else {
@@ -97,7 +103,7 @@
 																.push(guest);
 													}
 												});
-
+							if(hasSeatingArrangment){
 								tableNums.sort();
 								var table;
 
@@ -118,9 +124,10 @@
 										table = table + "<tr>" + "<td>"
 												+ guest.name + "</td></tr>";
 									}
-									table = table
+										table = table
 											+ '</tbody></div></div></table></div>';
-									$('#guest_tables').append(table);
+										$('#guest_tables').append(table);
+									}
 								}
 							},
 							error : function(jqXHR, exception) {

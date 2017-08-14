@@ -129,7 +129,7 @@ function setHeader(xhr) {
  		         	$("#inputTableSize").val(data.eventTableSize);
  		         	
  		         		$("#selectClientName").val(data.client.clientID).prop('selected', true);	
- 	
+ 		         		 
  		         	
 		         },
 		         error: function (jqXHR, exception) {
@@ -252,6 +252,16 @@ function setHeader(xhr) {
 	  			
 	  			$("#btnSeatingArrangement").attr("disabled", false);
 	  			$('#btnSeatingArrangement').unbind('click', false);
+	  			
+	  			$.each(data, function(i, message){
+	  				if (message.code == "op001"){
+	  					
+	  					localStorage.event = message.attributeName;
+	  					return false;
+	  				}
+	  				
+	  			});
+	  			console.log("Local Storage Event set to : " + localStorage.event);
 	          },
 	          error: function (e) {
 	        	  alert("Error Saving Event");

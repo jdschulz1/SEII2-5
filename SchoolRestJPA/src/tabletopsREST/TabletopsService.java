@@ -129,7 +129,7 @@ public class TabletopsService {
 			Boolean result = company.addEvent(event);
 			userTransaction.commit();
 			if (result) {
-				messages.add(new Message("op001", "Success Operation", ""));
+				messages.add(new Message("op001", "Success Operation",  String.valueOf(event.getEventId())));
 				return messages;
 			}
 			response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
