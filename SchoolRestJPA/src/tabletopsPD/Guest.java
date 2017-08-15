@@ -289,6 +289,7 @@ public class Guest implements Serializable, Cloneable {
 			this.removeFromBlackList(g);
 		for (Guest g : wl)
 			this.removeFromWhiteList(g);
+		this.event.removeFromGuestList(this);
 		GuestDAO.removeGuest(this);
 		return true;
 	}
