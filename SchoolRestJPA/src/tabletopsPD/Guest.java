@@ -148,7 +148,7 @@ public class Guest implements Serializable, Cloneable {
 	 */
 	public void addToBlackList(Guest member) {
 		this.blacklist.add(member);
-		GuestDAO.saveGuest(this);
+//		GuestDAO.saveGuest(this);
 	}
 
 	/**
@@ -156,7 +156,7 @@ public class Guest implements Serializable, Cloneable {
 	 */
 	public void addToWhiteList(Guest member) {
 		this.whitelist.add(member);
-		GuestDAO.saveGuest(this);
+//		GuestDAO.saveGuest(this);
 	}
 
 	/**
@@ -164,7 +164,7 @@ public class Guest implements Serializable, Cloneable {
 	 */
 	public void removeFromBlackList(Guest member) {
 		this.blacklist.remove(member);
-		GuestDAO.saveGuest(this);
+//		GuestDAO.saveGuest(this);
 	}
 
 	/**
@@ -173,7 +173,7 @@ public class Guest implements Serializable, Cloneable {
 	 */
 	public void removeFromWhiteList(Guest member) {
 		this.whitelist.remove(member);
-		GuestDAO.saveGuest(this);
+//		GuestDAO.saveGuest(this);
 	}
 
 	public int getGuestNumber() {
@@ -289,7 +289,8 @@ public class Guest implements Serializable, Cloneable {
 			this.removeFromBlackList(g);
 		for (Guest g : wl)
 			this.removeFromWhiteList(g);
-		GuestDAO.removeGuest(this);
+		this.delete();
+//		GuestDAO.removeGuest(this);
 		return true;
 	}
 
