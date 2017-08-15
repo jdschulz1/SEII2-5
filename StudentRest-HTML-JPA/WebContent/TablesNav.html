@@ -49,6 +49,9 @@ function generateSeatingArrangement(){
 		       success: function(resp){  
 		         // we have the response
 		         console.log("Success");
+		         Alert("Successfully Generated Seating Arrangement!");
+		         document.location.href = "/StudentRest-HTML-JPA/WebContent/PrintTablesList.html", true;
+		        // window.location.href = "/StudentRest-HTML-JPA/WebContent/PrintTablesList.html", true;
 		       },  
 		       error: function (jqXHR, exception) {
 		    	    alert("There was an error.");
