@@ -44,7 +44,7 @@ public class Guest implements Serializable, Cloneable {
 		this.blacklist = new ArrayList<Guest>();
 		this.whitelist = new ArrayList<Guest>();
 		this.eventTable = EventTable.getDefaultTable();
-		GuestDAO.addGuest(this);
+		//GuestDAO.addGuest(this);
 	}
 
 	public Guest guestCopy() {

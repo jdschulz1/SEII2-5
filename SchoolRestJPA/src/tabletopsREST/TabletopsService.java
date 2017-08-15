@@ -1164,6 +1164,7 @@ public class TabletopsService {
 		EntityTransaction userTransaction = EM.getEM().getTransaction();
 		userTransaction.begin();
 		boolean result = event.importGuestList(uploadFileLocation + fileDetail.getFileName());
+		EventDAO.saveEvent(event);
 		userTransaction.commit();
 		System.out.println("Guests at event: " + event.getGuestList().size());
 		if(result == true) {
