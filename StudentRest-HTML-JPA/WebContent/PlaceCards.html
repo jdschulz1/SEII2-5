@@ -103,34 +103,34 @@
 	      		        	col = 0;
 	     		         }	*/
 		        	}
-		        	if(hasSeatingArrangment)
-					{ 
-		        		keys.sort();
-				        var col = 0;
-				        
-		        		for (var i = 0; i < keys.length; i++) {
-							var key = keys[i];
-							var guest = guests[key];
-							
-							if (col == 0) {
-				        		$('#guest_placecards').append('<div class="row">');
-				        	}
-		       	        	placecard='<div class="col-sm-4 col-md-4 col-lg-4">'
-		       	        		+ '<div class="thumbnail placecard">'
-		       	        		+ '<h2 class="text-center text-primary text-capitalize">'+guest.name+'</h2>'
-		       					+'<h1 class="text-center text-primary">'+guest.eventTableNumber+'</h1>'
-		       					+'<h3 class="text-center text-muted">'+guest.clientRelationship+'</h3>'
-		       					+'</div></div>';
-		       		         $('#guest_placecards').append(placecard);	
-		       		         col = col + 1;
-		       		         if(col == 3){
-		      		        	$('#guest_placecards').append('</div>');
-		      		        	col = 0;
-		     		         }
-		        		}
-					}
 		         });
-		       },  
+	        	if(hasSeatingArrangment)
+				{ 
+	        		keys.sort();
+			        var col = 0;
+			        
+	        		for (var i = 0; i < keys.length; i++) {
+						var key = keys[i];
+						var guest = guests[key];
+						
+						if (col == 0) {
+			        		$('#guest_placecards').append('<div class="row">');
+			        	}
+	       	        	placecard='<div class="col-sm-4 col-md-4 col-lg-4">'
+	       	        		+ '<div class="thumbnail placecard">'
+	       	        		+ '<h2 class="text-center text-primary text-capitalize">'+guest.name+'</h2>'
+	       					+'<h1 class="text-center text-primary">'+guest.eventTableNumber+'</h1>'
+	       					+'<h3 class="text-center text-muted">'+guest.clientRelationship+'</h3>'
+	       					+'</div></div>';
+	       		         $('#guest_placecards').append(placecard);	
+	       		         col = col + 1;
+	       		         if(col == 3){
+	      		        	$('#guest_placecards').append('</div>');
+	      		        	col = 0;
+	     		         }
+	        		}
+				}
+		       },
 		       error: function (jqXHR, exception) {
 		    	    alert("There was an error loading the placecards.");
 		    	    console.log("Error" + jqXHR.responseText);
