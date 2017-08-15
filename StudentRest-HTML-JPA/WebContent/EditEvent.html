@@ -170,7 +170,7 @@ function setHeader(xhr) {
     var stime = $("#inputEventTime").val();
     console.log("TIME ---" + stime);
     var dd = $("#inputEventDate").datepicker("getDate").getDate();
-    var mm = $("#inputEventDate").datepicker("getDate").getMonth();//new Date(sdate).getMonth()+1;
+    var mm = $("#inputEventDate").datepicker("getDate").getMonth()+1;//new Date(sdate).getMonth()+1;
     var yy = $("#inputEventDate").datepicker("getDate").getFullYear();//new Date(sdate).getFullYear();
     var hh = stime.split(":")[0];
     console.log("Hour ---" + hh);
